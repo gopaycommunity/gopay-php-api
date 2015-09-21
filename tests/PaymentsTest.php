@@ -102,6 +102,33 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                     []
                 ]
             ],
+            'create preauthorized payment' => [
+                'createPreauthorizedPayment',
+                [['irrelevant payment']],
+                [
+                    'payments/payment',
+                    $jsonHeaders,
+                    ['irrelevant payment']
+                ]
+            ],
+            'preauthorized - capture' => [
+                'preauthorizedCapture',
+                [$this->id],
+                [
+                    "payments/payment/{$this->id}/capture",
+                    $formHeaders,
+                    []
+                ]
+            ],
+            'preauthorized - void' => [
+                'preauthorizedVoid',
+                [$this->id],
+                [
+                    "payments/payment/{$this->id}/void-authorization",
+                    $formHeaders,
+                    []
+                ]
+            ],
         ];
     }
 }

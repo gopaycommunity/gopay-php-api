@@ -47,6 +47,21 @@ class Payments
         return $this->api("/{$id}/void-recurrence", Browser::FORM, array());
     }
 
+    public function createPreauthorizedPayment(array $payment)
+    {
+        return $this->api('', Browser::JSON, $payment);
+    }
+
+    public function preauthorizedCapture($id)
+    {
+        return $this->api("/{$id}/capture", Browser::FORM, array());
+    }
+
+    public function preauthorizedVoid($id)
+    {
+        return $this->api("/{$id}/void-authorization", Browser::FORM, array());
+    }
+
     private function api($urlPath, $contentType, $data = null)
     {
         $method = is_array($data) ? 'postJson' : 'getJson';
