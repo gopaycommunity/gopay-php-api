@@ -2,68 +2,67 @@
 
 namespace GoPay;
 
-use GoPay\Http\GopayBrowser;
 use GoPay\Auth\OAuth2;
 
 class Payments
 {
+    private $gopay;
     private $auth;
-    private $browser;
 
-    public function __construct(GopayBrowser $b, OAuth2 $a)
+    public function __construct(GoPay $g, OAuth2 $a)
     {
-        $this->browser = $b;
+        $this->gopay = $g;
         $this->auth = $a;
     }
 
     public function createPayment(array $payment)
     {
-        return $this->api('', GopayBrowser::JSON, $payment);
+        return $this->api('', GoPay::JSON, $payment);
     }
 
     public function getStatus($id)
     {
-        return $this->api("/{$id}", GopayBrowser::FORM);
+        return $this->api("/{$id}", GoPay::FORM);
     }
 
     public function refund($id, $amount)
     {
-        return $this->api("/{$id}/refund", GopayBrowser::FORM, ['amount' => $amount]);
+        return $this->api("/{$id}/refund", GoPay::FORM, ['amount' => $amount]);
     }
 
     public function createRecurrencePayment(array $payment)
     {
-        return $this->api('', GopayBrowser::JSON, $payment);
+        return $this->api('', GoPay::JSON, $payment);
     }
 
     public function recurrenceOnDemand($id, array $payment)
     {
-        return $this->api("/{$id}/create-recurrence", GopayBrowser::JSON, $payment);
+        return $this->api("/{$id}/create-recurrence", GoPay::JSON, $payment);
     }
 
     public function recurrenceVoid($id)
     {
-        return $this->api("/{$id}/void-recurrence", GopayBrowser::FORM, array());
+        return $this->api("/{$id}/void-recurrence", GoPay::FORM, array());
     }
 
     public function createPreauthorizedPayment(array $payment)
     {
-        return $this->api('', GopayBrowser::JSON, $payment);
+        return $this->api('', GoPay::JSON, $payment);
     }
 
     public function preauthorizedCapture($id)
     {
-        return $this->api("/{$id}/capture", GopayBrowser::FORM, array());
+        return $this->api("/{$id}/capture", GoPay::FORM, array());
     }
 
     public function preauthorizedVoid($id)
     {
-        return $this->api("/{$id}/void-authorization", GopayBrowser::FORM, array());
+        return $this->api("/{$id}/void-authorization", GoPay::FORM, array());
     }
 
     private function api($urlPath, $contentType, $data = null)
     {
-        return $this->browser->api(
+        return $this->gopay->call(
             "payments/payment{$urlPath}",
             [
                 'Accept' => 'application/json',

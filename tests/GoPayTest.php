@@ -1,10 +1,10 @@
 <?php
 
-namespace GoPay\Http;
+namespace GoPay;
 
 use Prophecy\Argument;
 
-class GopayBrowserTest extends \PHPUnit_Framework_TestCase
+class GoPayTest extends \PHPUnit_Framework_TestCase
 {
     /** @dataProvider provideRequest */
     public function testShouldCompleteRequest(
@@ -24,8 +24,8 @@ class GopayBrowserTest extends \PHPUnit_Framework_TestCase
             $expectedBody
         )->shouldBeCalled();
 
-        $gopay = new GopayBrowser(['isProductionMode' => $isProductionMode], $browser->reveal());
-        $gopay->api('irrelevant url path', $headers, $body);
+        $gopay = new GoPay(['isProductionMode' => $isProductionMode], $browser->reveal());
+        $gopay->call('irrelevant url path', $headers, $body);
     }
 
     public function provideRequest()
@@ -33,7 +33,7 @@ class GopayBrowserTest extends \PHPUnit_Framework_TestCase
         return [
             'get json in production' => [
                 true,
-                ['Content-Type' => GopayBrowser::FORM, 'Authorization' => 'Bearer irrelevantToken'],
+                ['Content-Type' => GoPay::FORM, 'Authorization' => 'Bearer irrelevantToken'],
                 null,
                 'GET',
                 'https://gate.gopay.cz/api/',
@@ -42,7 +42,7 @@ class GopayBrowserTest extends \PHPUnit_Framework_TestCase
             ],
             'send form in production' => [
                 true,
-                ['Content-Type' => GopayBrowser::FORM, 'Authorization' => 'Bearer irrelevantToken'],
+                ['Content-Type' => GoPay::FORM, 'Authorization' => 'Bearer irrelevantToken'],
                 ['key' => 'value'],
                 'POST',
                 'https://gate.gopay.cz/api/',
@@ -51,7 +51,7 @@ class GopayBrowserTest extends \PHPUnit_Framework_TestCase
             ],
             'send json in test' => [
                 false,
-                ['Content-Type' => GopayBrowser::JSON, 'Authorization' => ['user', 'pass']],
+                ['Content-Type' => GoPay::JSON, 'Authorization' => ['user', 'pass']],
                 ['key' => 'value'],
                 'POST',
                 'https://gw.sandbox.gopay.com/api/',

@@ -7,22 +7,22 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
     private $id = 'irrelevant payment id';
     private $accessToken = 'irrelevant token';
 
-    private $browser;
+    private $gopay;
     private $auth;
     private $api;
 
     protected function setUp()
     {
-        $this->browser = $this->prophesize('GoPay\Http\GopayBrowser');
+        $this->gopay = $this->prophesize('GoPay\GoPay');
         $this->auth = $this->prophesize('GoPay\Auth\OAuth2');
-        $this->api = new Payments($this->browser->reveal(), $this->auth->reveal());
+        $this->api = new Payments($this->gopay->reveal(), $this->auth->reveal());
     }
 
     /** @dataProvider provideApiMethods */
     public function testShouldCallApi($method, $params, $expectedRequest)
     {
         $this->auth->getAccessToken()->shouldBeCalled()->willReturn($this->accessToken);
-        $this->browser->api(
+        $this->gopay->call(
             $expectedRequest[0],
             $expectedRequest[1],
             $expectedRequest[2]

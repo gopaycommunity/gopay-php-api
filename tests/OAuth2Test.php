@@ -12,17 +12,17 @@ class OAuth2Test extends \PHPUnit_Framework_TestCase
         'scope' => PaymentScope::ALL
     ];
 
-    private $browser;
+    private $gopay;
     private $auth;
 
     protected function setUp()
     {
         $cache = new InMemoryTokenCache();
-        $this->browser = $this->prophesize('GoPay\Http\GopayBrowser');
+        $this->gopay = $this->prophesize('GoPay\GoPay');
         foreach ($this->config as $key => $value) {
-            $this->browser->getConfig($key)->willReturn($value);
+            $this->gopay->getConfig($key)->willReturn($value);
         }
-        $this->auth = new OAuth2($this->browser->reveal(), $cache);
+        $this->auth = new OAuth2($this->gopay->reveal(), $cache);
     }
 
     /** @dataProvider provideAccessToken */
@@ -32,7 +32,7 @@ class OAuth2Test extends \PHPUnit_Framework_TestCase
         $apiResponse->statusCode = $statusCode;
         $apiResponse->json = $jsonResponse;
 
-        $this->browser->api(
+        $this->gopay->call(
             'oauth2/token',
             [
                 'Accept' => 'application/json',

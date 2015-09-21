@@ -1,10 +1,11 @@
 <?php
 
-namespace GoPay\Http;
+namespace GoPay;
 
 use Unirest\Method;
+use GoPay\Http\Browser;
 
-class GopayBrowser
+class GoPay
 {
     const JSON = 'application/json';
     const FORM = 'application/x-www-form-urlencoded';
@@ -23,7 +24,7 @@ class GopayBrowser
         return $this->config[$key];
     }
 
-    public function api($urlPath, array $headers, $data = null)
+    public function call($urlPath, array $headers, $data = null)
     {
         return $this->browser->send(
             is_array($data) ? Method::POST : Method::GET,
@@ -45,7 +46,7 @@ class GopayBrowser
     private function encodeData(array $headers, $data)
     {
         if ($data) {
-            $encoder = $headers['Content-Type'] == GopayBrowser::FORM ? 'http_build_query' : 'json_encode';
+            $encoder = $headers['Content-Type'] == GoPay::FORM ? 'http_build_query' : 'json_encode';
             return $encoder($data);
         }
         return '';
