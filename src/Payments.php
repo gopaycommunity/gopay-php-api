@@ -32,8 +32,9 @@ class Payments
 
     private function api($urlPath, $contentType, array $data = array())
     {
+        $this->browser->setBaseUrl($this->config['isProductionMode']);
         return $this->browser->postJson(
-            "https://gw.sandbox.gopay.com/api/payments/payment{$urlPath}",
+            "payments/payment{$urlPath}",
             [
                 'Accept' => 'application/json',
                 'Content-Type' => $contentType,

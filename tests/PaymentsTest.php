@@ -4,7 +4,9 @@ namespace GoPay;
 
 class PaymentsTest extends \PHPUnit_Framework_TestCase
 {
-    private $config = [];
+    private $config = [
+        'isProductionMode' => true
+    ];
     private $id = 'irrelevant payment id';
     private $accessToken = 'irrelevant token';
 
@@ -22,6 +24,7 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
     /** @dataProvider provideApiMethods */
     public function testShouldCallApi($method, $params, $expectedRequest)
     {
+        $this->browser->setBaseUrl($this->config['isProductionMode'])->shouldBeCalled();
         $this->auth->getAccessToken()->shouldBeCalled()->willReturn($this->accessToken);
         $this->browser->postJson(
             $expectedRequest[0],
@@ -38,7 +41,7 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                 'createPayment',
                 [['irrelevant payment']],
                 [
-                    'https://gw.sandbox.gopay.com/api/payments/payment',
+                    'payments/payment',
                     [
                         'Accept' => 'application/json',
                         'Content-Type' => 'application/json',
@@ -51,7 +54,7 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                 'getStatus',
                 [$this->id],
                 [
-                    "https://gw.sandbox.gopay.com/api/payments/payment/{$this->id}",
+                    "payments/payment/{$this->id}",
                     [
                         'Accept' => 'application/json',
                         'Content-Type' => 'application/x-www-form-urlencoded',
@@ -64,7 +67,7 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                 'refund',
                 [$this->id, 'amount'],
                 [
-                    "https://gw.sandbox.gopay.com/api/payments/payment/{$this->id}/refund",
+                    "payments/payment/{$this->id}/refund",
                     [
                         'Accept' => 'application/json',
                         'Content-Type' => 'application/x-www-form-urlencoded',
