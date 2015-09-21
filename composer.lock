@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "60668076bdc955432ffeff7ab86ab354",
+    "hash": "480d792d4558daee634bb7eb4a59a3ee",
     "packages": [
         {
             "name": "mashape/unirest-php",
