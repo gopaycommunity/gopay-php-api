@@ -4,9 +4,6 @@ namespace GoPay;
 
 class PaymentsTest extends \PHPUnit_Framework_TestCase
 {
-    private $config = [
-        'isProductionMode' => true
-    ];
     private $id = 'irrelevant payment id';
     private $accessToken = 'irrelevant token';
 
@@ -16,17 +13,16 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->browser = $this->prophesize('GoPay\Http\Browser');
+        $this->browser = $this->prophesize('GoPay\Http\GopayBrowser');
         $this->auth = $this->prophesize('GoPay\Auth\OAuth2');
-        $this->api = new Payments($this->config, $this->auth->reveal(), $this->browser->reveal());
+        $this->api = new Payments($this->browser->reveal(), $this->auth->reveal());
     }
 
     /** @dataProvider provideApiMethods */
-    public function testShouldCallApi($method, $params, $expectedRequest, $expectedMethod = 'postJson')
+    public function testShouldCallApi($method, $params, $expectedRequest)
     {
-        $this->browser->setBaseUrl($this->config['isProductionMode'])->shouldBeCalled();
         $this->auth->getAccessToken()->shouldBeCalled()->willReturn($this->accessToken);
-        $this->browser->{$expectedMethod}(
+        $this->browser->api(
             $expectedRequest[0],
             $expectedRequest[1],
             $expectedRequest[2]
@@ -63,8 +59,7 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                     "payments/payment/{$this->id}",
                     $formHeaders,
                     null
-                ],
-                'getJson'
+                ]
             ],
             'https://doc.gopay.com/en/#refund-of-the-payment-(cancelation)' => [
                 'refund',

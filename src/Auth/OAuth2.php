@@ -2,7 +2,6 @@
 
 namespace GoPay\Auth;
 
-use GoPay\Http\Browser;
 use GoPay\Http\GopayBrowser;
 
 class OAuth2
@@ -11,11 +10,11 @@ class OAuth2
     private $browser;
     private $cache;
 
-    public function __construct(array $config, TokenCache $c, Browser $b)
+    public function __construct(GopayBrowser $b, TokenCache $c)
     {
-        $this->config = $config;
+        $this->browser = $b;
         $this->cache = $c;
-        $this->browser = new GopayBrowser($config, $b);
+        $this->config = $b->getConfig();
     }
 
     public function getAccessToken()

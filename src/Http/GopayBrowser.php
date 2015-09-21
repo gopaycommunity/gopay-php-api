@@ -18,6 +18,11 @@ class GopayBrowser
         $this->browser = $b;
     }
 
+    public function getConfig()
+    {
+        return $this->config;
+    }
+
     public function api($urlPath, array $headers, $data = null)
     {
         return $this->browser->send(

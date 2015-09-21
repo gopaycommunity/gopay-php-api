@@ -7,10 +7,9 @@ use GoPay\Http\Response;
 class OAuth2Test extends \PHPUnit_Framework_TestCase
 {
     private $config = [
-        'clientID' => 'irrelevant id',
-        'clientSecret' => 'irrelevant secret',
-        'scope' => PaymentScope::ALL,
-        'isProductionMode' => false
+        'clientID' => 'user',
+        'clientSecret' => 'pass',
+        'scope' => PaymentScope::ALL
     ];
 
     private $browser;
@@ -19,8 +18,9 @@ class OAuth2Test extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $cache = new InMemoryTokenCache();
-        $this->browser = $this->prophesize('GoPay\Http\Browser');
-        $this->auth = new OAuth2($this->config, $cache, $this->browser->reveal());
+        $this->browser = $this->prophesize('GoPay\Http\GopayBrowser');
+        $this->browser->getConfig()->willReturn($this->config);
+        $this->auth = new OAuth2($this->browser->reveal(), $cache);
     }
 
     /** @dataProvider provideAccessToken */
@@ -30,8 +30,7 @@ class OAuth2Test extends \PHPUnit_Framework_TestCase
         $apiResponse->statusCode = $statusCode;
         $apiResponse->json = $jsonResponse;
 
-        $this->browser->setBaseUrl($this->config['isProductionMode'])->shouldBeCalled();
-        $this->browser->postJson(
+        $this->browser->api(
             'oauth2/token',
             [
                 'Accept' => 'application/json',
