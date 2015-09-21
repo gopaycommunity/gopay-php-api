@@ -47,5 +47,4 @@ class OAuth2Test extends \PHPUnit_Framework_TestCase
             'failure' => [400, ['error' => 'access_denied'], 2, nullValue()]
         ];
     }
-
 }
