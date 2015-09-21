@@ -3,7 +3,6 @@
 namespace GoPay\Auth;
 
 use GoPay\Http\Response;
-use GoPay\Definition\PaymentScope;
 
 class OAuth2Test extends \PHPUnit_Framework_TestCase
 {

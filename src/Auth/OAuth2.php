@@ -19,13 +19,15 @@ class OAuth2
 
     public function getAccessToken()
     {
+        $scope = $this->config['scope'];
+        $this->cache->setScope($scope);
         if ($this->cache->isExpired()) {
-            $this->authorize();
+            $this->authorize($scope);
         }
         return $this->cache->getAccessToken();
     }
 
-    private function authorize()
+    private function authorize($scope)
     {
         $response = $this->api(
             'oauth2/token',
@@ -34,7 +36,7 @@ class OAuth2
                 'Content-Type' => 'application/x-www-form-urlencoded',
                 'Authorization' => [$this->config['clientID'], $this->config['clientSecret']]
             ],
-            ['grant_type' => 'client_credentials', 'scope' => $this->config['scope']]
+            ['grant_type' => 'client_credentials', 'scope' => $scope]
         );
         if ($response->hasSucceed()) {
             $accessToken = $response->json['access_token'];
