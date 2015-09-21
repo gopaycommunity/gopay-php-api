@@ -20,8 +20,12 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
         $this->api->setAccessToken($this->accessToken);
     }
 
-    public function testShouldRequestAccessToken()
+    /** @dataProvider provideAccessToken */
+    public function testShouldRequestAccessToken($statusCode, array $jsonResponse, $expectedToken)
     {
+        $apiResponse = new Response;
+        $apiResponse->statusCode = $statusCode;
+        $apiResponse->json = $jsonResponse;
         $scope = PaymentScope::ALL;
         $this->browser->postJson(
             'https://gw.sandbox.gopay.com/api/oauth2/token',
@@ -31,8 +35,17 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                 'Content-Type' => 'application/x-www-form-urlencoded',
                 'auth' => [$this->config['clientID'], $this->config['clientSecret']],
             ]
-        )->shouldBeCalled()->willReturn(new Response);
+        )->shouldBeCalled()->willReturn($apiResponse);
         $this->api->authorize($scope);
+        assertThat($this->api->getAccessToken(), is($expectedToken));
+    }
+
+    public function provideAccessToken()
+    {
+        return [
+            'success' => [200, ['access_token' => 'new token', 'expires_in' => 100], 'new token'],
+            'failure' => [400, ['error' => 'access_denied'], $this->accessToken]
+        ];
     }
 
     public function testShouldCreateStandardPayment()

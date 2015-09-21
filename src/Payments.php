@@ -17,7 +17,7 @@ class Payments
 
     public function authorize($scope)
     {
-        return $this->api(
+        $response = $this->api(
             'oauth2/token',
             [
                 'Content-Type' => 'application/x-www-form-urlencoded',
@@ -25,11 +25,20 @@ class Payments
             ],
             ['grant_type' => 'client_credentials', 'scope' => $scope]
         );
+        if ($response->hasSucceed()) {
+            $token = $response->json['access_token'];
+            $this->setAccessToken($token);
+        }
     }
 
     public function setAccessToken($token)
     {
         $this->accessToken = $token;
+    }
+
+    public function getAccessToken()
+    {
+        return $this->accessToken;
     }
 
     public function createPayment(array $payment)
