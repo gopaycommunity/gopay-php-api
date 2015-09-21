@@ -8,6 +8,7 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
         'clientID' => 'irrelevant id',
         'clientSecret' => 'irrelevant secret',
     ];
+    private $id = 'irrelevant payment id';
     private $accessToken = 'irrelevant token';
 
     private $browser;
@@ -29,12 +30,12 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
         $scope = PaymentScope::ALL;
         $this->browser->postJson(
             'https://gw.sandbox.gopay.com/api/oauth2/token',
-            ['grant_type' => 'client_credentials', 'scope' => $scope],
             [
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/x-www-form-urlencoded',
                 'auth' => [$this->config['clientID'], $this->config['clientSecret']],
-            ]
+            ],
+            ['grant_type' => 'client_credentials', 'scope' => $scope]
         )->shouldBeCalled()->willReturn($apiResponse);
         $this->api->authorize($scope);
         assertThat($this->api->getAccessToken(), is($expectedToken));
@@ -48,49 +49,59 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
-    public function testShouldCreateStandardPayment()
+    /** @dataProvider provideApiMethods */
+    public function testShouldCallApi($method, $params, $expectedRequest)
     {
-        $payment = ['irrelevant data'];
         $this->browser->postJson(
-            'https://gw.sandbox.gopay.com/api/payments/payment',
-            $payment,
-            [
-                'Accept' => 'application/json',
-                'Content-Type' => 'application/json',
-                'Authorization' => "Bearer {$this->accessToken}"
-            ]
-        )->shouldBeCalled()->willReturn(new Response);
-        $this->api->createPayment($payment);
+            $expectedRequest[0],
+            $expectedRequest[1],
+            $expectedRequest[2]
+        )->shouldBeCalled();
+        call_user_func_array(array($this->api, $method), $params);
     }
 
-    public function testShouldGetStatusOfPayment()
+    public function provideApiMethods()
     {
-        $id = 'irrelevant id';
-        $this->browser->postJson(
-            "https://gw.sandbox.gopay.com/api/payments/payment/{$id}",
-            [],
-            [
-                'Accept' => 'application/json',
-                'Content-Type' => 'application/x-www-form-urlencoded',
-                'Authorization' => "Bearer {$this->accessToken}"
+        return [
+            'create payment' => [
+                'createPayment',
+                [['irrelevant payment']],
+                [
+                    'https://gw.sandbox.gopay.com/api/payments/payment',
+                    [
+                        'Accept' => 'application/json',
+                        'Content-Type' => 'application/json',
+                        'Authorization' => "Bearer {$this->accessToken}"
+                    ],
+                    ['irrelevant payment']
+                ]
+            ],
+            'status of payment' => [
+                'getStatus',
+                [$this->id],
+                [
+                    "https://gw.sandbox.gopay.com/api/payments/payment/{$this->id}",
+                    [
+                        'Accept' => 'application/json',
+                        'Content-Type' => 'application/x-www-form-urlencoded',
+                        'Authorization' => "Bearer {$this->accessToken}"
+                    ],
+                    []
+                ]
+            ],
+            'refund payment' => [
+                'refund',
+                [$this->id, 'amount'],
+                [
+                    "https://gw.sandbox.gopay.com/api/payments/payment/{$this->id}/refund",
+                    [
+                        'Accept' => 'application/json',
+                        'Content-Type' => 'application/x-www-form-urlencoded',
+                        'Authorization' => "Bearer {$this->accessToken}"
+                    ],
+                    ['amount' => 'amount']
+                ]
             ]
-        )->shouldBeCalled()->willReturn(new Response);
-        $this->api->getStatus($id);
-    }
-
-    public function testShouldRefundPayment()
-    {
-        $id = 'irrelevant id';
-        $amount = 'irrelevant amount';
-        $this->browser->postJson(
-            "https://gw.sandbox.gopay.com/api/payments/payment/{$id}/refund",
-            ['amount' => $amount],
-            [
-                'Accept' => 'application/json',
-                'Content-Type' => 'application/x-www-form-urlencoded',
-                'Authorization' => "Bearer {$this->accessToken}"
-            ]
-        )->shouldBeCalled()->willReturn(new Response);
-        $this->api->refund($id, $amount);
+        ];
     }
 }

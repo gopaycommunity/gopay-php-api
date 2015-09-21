@@ -68,8 +68,8 @@ class Payments
         }
         return $this->browser->postJson(
             "https://gw.sandbox.gopay.com/api/{$urlPath}",
-            $data,
-            $headers + ['Accept' => 'application/json']
+            $headers + ['Accept' => 'application/json'],
+            $data
         );
     }
 }
