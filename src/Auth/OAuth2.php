@@ -14,12 +14,11 @@ class OAuth2
     {
         $this->browser = $b;
         $this->cache = $c;
-        $this->config = $b->getConfig();
     }
 
     public function getAccessToken()
     {
-        $scope = $this->config['scope'];
+        $scope = $this->browser->getConfig('scope');
         $this->cache->setScope($scope);
         if ($this->cache->isExpired()) {
             $this->authorize($scope);
@@ -34,7 +33,7 @@ class OAuth2
             [
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/x-www-form-urlencoded',
-                'Authorization' => [$this->config['clientID'], $this->config['clientSecret']]
+                'Authorization' => [$this->browser->getConfig('clientID'), $this->browser->getConfig('clientSecret')]
             ],
             ['grant_type' => 'client_credentials', 'scope' => $scope]
         );

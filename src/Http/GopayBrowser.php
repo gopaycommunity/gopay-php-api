@@ -18,9 +18,9 @@ class GopayBrowser
         $this->browser = $b;
     }
 
-    public function getConfig()
+    public function getConfig($key)
     {
-        return $this->config;
+        return $this->config[$key];
     }
 
     public function api($urlPath, array $headers, $data = null)
@@ -39,7 +39,7 @@ class GopayBrowser
             true => 'https://gate.gopay.cz/api/',
             false => 'https://gw.sandbox.gopay.com/api/'
         ];
-        return $urls[(bool) $this->config['isProductionMode']];
+        return $urls[(bool) $this->getConfig('isProductionMode')];
     }
 
     private function encodeData(array $headers, $data)

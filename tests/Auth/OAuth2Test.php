@@ -19,7 +19,9 @@ class OAuth2Test extends \PHPUnit_Framework_TestCase
     {
         $cache = new InMemoryTokenCache();
         $this->browser = $this->prophesize('GoPay\Http\GopayBrowser');
-        $this->browser->getConfig()->willReturn($this->config);
+        foreach ($this->config as $key => $value) {
+            $this->browser->getConfig($key)->willReturn($value);
+        }
         $this->auth = new OAuth2($this->browser->reveal(), $cache);
     }
 
