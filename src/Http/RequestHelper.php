@@ -24,7 +24,7 @@ class RequestHelper
 
     public function normalizeHeaders(array $headers)
     {
-        if (is_array($headers['Authorization'])) {
+        if (array_key_exists('Authorization', $headers) && is_array($headers['Authorization'])) {
             $credentials = implode(':', $headers['Authorization']);
             $headers['Authorization'] = 'Basic ' . base64_encode($credentials);
         }

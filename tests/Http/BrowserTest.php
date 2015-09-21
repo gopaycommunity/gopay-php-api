@@ -5,7 +5,7 @@ namespace GoPay\Http;
 class BrowserTest extends \PHPUnit_Framework_TestCase
 {
     /** @dataProvider provideJson */
-    public function testShouldParseJsonAttributeFromResponse($url, $hasSucceed, $expectedJson)
+    public function testShouldExecuteHttpRequestAndAlwaysReturnResponse($url, $hasSucceed, $expectedJson)
     {
         $browser = new Browser();
         $response = $browser->getJson($url, array());
@@ -17,7 +17,7 @@ class BrowserTest extends \PHPUnit_Framework_TestCase
     public function provideJson()
     {
         return array(
-            'existing json and field' => array('http://www.rozpisyzapasu.cz/api/', true, nonEmptyArray()),
+            'existing json' => array('http://www.rozpisyzapasu.cz/api/', true, nonEmptyArray()),
             'non existent page' => array('http://www.non-existent-page.cz/', false, emptyArray())
         );
     }

@@ -57,4 +57,10 @@ class RequestHelperTest extends \PHPUnit_Framework_TestCase
             'basic auth' => [['user', 'pass'], 'Basic dXNlcjpwYXNz'],
         ];
     }
+
+    public function testShouldNotChangeEmptyHeaders()
+    {
+        $normalized = $this->request->normalizeHeaders([]);
+        assertThat($normalized, is(emptyArray()));
+    }
 }
