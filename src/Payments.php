@@ -25,4 +25,21 @@ class Payments
         $r->json = $json;
         return $r;
     }
+
+    public function createPayment(array $payment, $token)
+    {
+        list($statusCode, $json) = $this->browser->postJson(
+            'https://gw.sandbox.gopay.com/api/payments/payment',
+            $payment,
+            [
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+                'Authorization' => "Bearer {$token}"
+            ]
+        );
+        $r = new Response;
+        $r->hasSucceed = $statusCode == 200;
+        $r->json = $json;
+        return $r;
+    }
 }

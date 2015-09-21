@@ -43,4 +43,33 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
             'failure' => [400, ['error' => 'access_denied'], false]
         ];
     }
+
+    /** @dataProvider providePayment */
+    public function testShouldCreateStandardPayment($statusCode, $hasSucceed)
+    {
+        $jsonResponse = ['irrelevant response'];
+        $token = 'irrelevant access token';
+        $payment = ['irrelevant data'];
+        $this->browser->postJson(
+            'https://gw.sandbox.gopay.com/api/payments/payment',
+            $payment,
+            array(
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+                'Authorization' => "Bearer {$token}"
+            )
+        )->shouldBeCalled()->willReturn([$statusCode, $jsonResponse]);
+        $response = $this->api->createPayment($payment, $token);
+
+        assertThat($response->hasSucceed, is($hasSucceed));
+        assertThat($response->json, is($jsonResponse));
+    }
+
+    public function providePayment()
+    {
+        return [
+            'success' => [200, true],
+            'failure - validation' => [409, false]
+        ];
+    }
 }
