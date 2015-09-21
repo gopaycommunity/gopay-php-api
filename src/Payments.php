@@ -3,19 +3,18 @@
 namespace GoPay;
 
 use GoPay\Http\Browser;
+use GoPay\Http\GopayBrowser;
 use GoPay\Auth\OAuth2;
 
 class Payments
 {
-    private $config;
     private $auth;
     private $browser;
 
     public function __construct(array $config, OAuth2 $a, Browser $b)
     {
-        $this->config = $config;
+        $this->browser = new GopayBrowser($config, $b);
         $this->auth = $a;
-        $this->browser = $b;
     }
 
     public function createPayment(array $payment)
@@ -65,9 +64,7 @@ class Payments
 
     private function api($urlPath, $contentType, $data = null)
     {
-        $method = is_array($data) ? 'postJson' : 'getJson';
-        $this->browser->setBaseUrl($this->config['isProductionMode']);
-        return $this->browser->{$method}(
+        return $this->browser->api(
             "payments/payment{$urlPath}",
             [
                 'Accept' => 'application/json',

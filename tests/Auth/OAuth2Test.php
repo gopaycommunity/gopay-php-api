@@ -9,7 +9,8 @@ class OAuth2Test extends \PHPUnit_Framework_TestCase
     private $config = [
         'clientID' => 'irrelevant id',
         'clientSecret' => 'irrelevant secret',
-        'scope' => PaymentScope::ALL
+        'scope' => PaymentScope::ALL,
+        'isProductionMode' => false
     ];
 
     private $browser;
@@ -29,8 +30,9 @@ class OAuth2Test extends \PHPUnit_Framework_TestCase
         $apiResponse->statusCode = $statusCode;
         $apiResponse->json = $jsonResponse;
 
+        $this->browser->setBaseUrl($this->config['isProductionMode'])->shouldBeCalled();
         $this->browser->postJson(
-            'https://gw.sandbox.gopay.com/api/oauth2/token',
+            'oauth2/token',
             [
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/x-www-form-urlencoded',

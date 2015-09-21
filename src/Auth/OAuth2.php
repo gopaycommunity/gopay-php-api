@@ -3,6 +3,7 @@
 namespace GoPay\Auth;
 
 use GoPay\Http\Browser;
+use GoPay\Http\GopayBrowser;
 
 class OAuth2
 {
@@ -14,7 +15,7 @@ class OAuth2
     {
         $this->config = $config;
         $this->cache = $c;
-        $this->browser = $b;
+        $this->browser = new GopayBrowser($config, $b);
     }
 
     public function getAccessToken()
@@ -29,7 +30,7 @@ class OAuth2
 
     private function authorize($scope)
     {
-        $response = $this->api(
+        $response = $this->browser->api(
             'oauth2/token',
             [
                 'Accept' => 'application/json',
@@ -43,14 +44,5 @@ class OAuth2
             $expirationDate = new \DateTime("now + {$response->json['expires_in']} seconds");
             $this->cache->setAccessToken($accessToken, $expirationDate);
         }
-    }
-
-    private function api($urlPath, $headers, array $data)
-    {
-        return $this->browser->postJson(
-            "https://gw.sandbox.gopay.com/api/{$urlPath}",
-            $headers,
-            $data
-        );
     }
 }
