@@ -3,13 +3,14 @@
 namespace GoPay;
 
 use GoPay\Http\Response;
+use GoPay\Definition\PaymentScope;
 
 class OAuth2Test extends \PHPUnit_Framework_TestCase
 {
     private $config = [
         'clientID' => 'irrelevant id',
         'clientSecret' => 'irrelevant secret',
-        'scope' =>PaymentScope::ALL
+        'scope' => PaymentScope::ALL
     ];
 
     private $browser;
