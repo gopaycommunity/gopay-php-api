@@ -36,17 +36,23 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
 
     public function provideApiMethods()
     {
+        $jsonHeaders = [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+            'Authorization' => "Bearer {$this->accessToken}"
+        ];
+        $formHeaders = [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/x-www-form-urlencoded',
+            'Authorization' => "Bearer {$this->accessToken}"
+        ];
         return [
             'create payment' => [
                 'createPayment',
                 [['irrelevant payment']],
                 [
                     'payments/payment',
-                    [
-                        'Accept' => 'application/json',
-                        'Content-Type' => 'application/json',
-                        'Authorization' => "Bearer {$this->accessToken}"
-                    ],
+                    $jsonHeaders,
                     ['irrelevant payment']
                 ]
             ],
@@ -55,11 +61,7 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                 [$this->id],
                 [
                     "payments/payment/{$this->id}",
-                    [
-                        'Accept' => 'application/json',
-                        'Content-Type' => 'application/x-www-form-urlencoded',
-                        'Authorization' => "Bearer {$this->accessToken}"
-                    ],
+                    $formHeaders,
                     null
                 ],
                 'getJson'
@@ -69,11 +71,7 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                 [$this->id, 'amount'],
                 [
                     "payments/payment/{$this->id}/refund",
-                    [
-                        'Accept' => 'application/json',
-                        'Content-Type' => 'application/x-www-form-urlencoded',
-                        'Authorization' => "Bearer {$this->accessToken}"
-                    ],
+                    $formHeaders,
                     ['amount' => 'amount']
                 ]
             ],
@@ -82,37 +80,25 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                 [['irrelevant payment']],
                 [
                     'payments/payment',
-                    [
-                        'Accept' => 'application/json',
-                        'Content-Type' => 'application/json',
-                        'Authorization' => "Bearer {$this->accessToken}"
-                    ],
+                    $jsonHeaders,
                     ['irrelevant payment']
                 ]
             ],
-            'create recurrence on demand' => [
+            'recurrence - on demand' => [
                 'recurrenceOnDemand',
                 [$this->id, ['irrelevant subsequent payment']],
                 [
                     "payments/payment/{$this->id}/create-recurrence",
-                    [
-                        'Accept' => 'application/json',
-                        'Content-Type' => 'application/json',
-                        'Authorization' => "Bearer {$this->accessToken}"
-                    ],
+                    $jsonHeaders,
                     ['irrelevant subsequent payment']
                 ]
             ],
-            'void recurrence' => [
+            'recurrence - void' => [
                 'recurrenceVoid',
                 [$this->id],
                 [
                     "payments/payment/{$this->id}/void-recurrence",
-                    [
-                        'Accept' => 'application/json',
-                        'Content-Type' => 'application/x-www-form-urlencoded',
-                        'Authorization' => "Bearer {$this->accessToken}"
-                    ],
+                    $formHeaders,
                     []
                 ]
             ],
