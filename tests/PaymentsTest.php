@@ -47,7 +47,7 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
             'Authorization' => "Bearer {$this->accessToken}"
         ];
         return [
-            'create payment' => [
+            'https://doc.gopay.com/en/#standard-payment' => [
                 'createPayment',
                 [['irrelevant payment']],
                 [
@@ -56,7 +56,7 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                     ['irrelevant payment']
                 ]
             ],
-            'status of payment' => [
+            'https://doc.gopay.com/en/#status-of-the-payment' => [
                 'getStatus',
                 [$this->id],
                 [
@@ -66,7 +66,7 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                 ],
                 'getJson'
             ],
-            'refund payment' => [
+            'https://doc.gopay.com/en/#refund-of-the-payment-(cancelation)' => [
                 'refund',
                 [$this->id, 'amount'],
                 [
@@ -75,7 +75,7 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                     ['amount' => 'amount']
                 ]
             ],
-            'create recurrence payment' => [
+            'https://doc.gopay.com/en/#recurring-payment' => [
                 'createRecurrencePayment',
                 [['irrelevant payment']],
                 [
@@ -84,7 +84,7 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                     ['irrelevant payment']
                 ]
             ],
-            'recurrence - on demand' => [
+            'https://doc.gopay.com/en/#recurring-payment-on-demand' => [
                 'recurrenceOnDemand',
                 [$this->id, ['irrelevant subsequent payment']],
                 [
@@ -93,7 +93,7 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                     ['irrelevant subsequent payment']
                 ]
             ],
-            'recurrence - void' => [
+            'https://doc.gopay.com/en/#cancellation-of-the-recurring-payment' => [
                 'recurrenceVoid',
                 [$this->id],
                 [
@@ -102,7 +102,7 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                     []
                 ]
             ],
-            'create preauthorized payment' => [
+            'https://doc.gopay.com/en/#pre-authorized-payment' => [
                 'createPreauthorizedPayment',
                 [['irrelevant payment']],
                 [
@@ -111,7 +111,7 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                     ['irrelevant payment']
                 ]
             ],
-            'preauthorized - capture' => [
+            'https://doc.gopay.com/en/#charge-of-pre-authorized-payment' => [
                 'preauthorizedCapture',
                 [$this->id],
                 [
@@ -120,7 +120,7 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                     []
                 ]
             ],
-            'preauthorized - void' => [
+            'https://doc.gopay.com/en/#cancellation-of-the-pre-authorized-payment' => [
                 'preauthorizedVoid',
                 [$this->id],
                 [
