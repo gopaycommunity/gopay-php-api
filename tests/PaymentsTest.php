@@ -22,11 +22,11 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
     }
 
     /** @dataProvider provideApiMethods */
-    public function testShouldCallApi($method, $params, $expectedRequest)
+    public function testShouldCallApi($method, $params, $expectedRequest, $expectedMethod = 'postJson')
     {
         $this->browser->setBaseUrl($this->config['isProductionMode'])->shouldBeCalled();
         $this->auth->getAccessToken()->shouldBeCalled()->willReturn($this->accessToken);
-        $this->browser->postJson(
+        $this->browser->{$expectedMethod}(
             $expectedRequest[0],
             $expectedRequest[1],
             $expectedRequest[2]
@@ -60,8 +60,9 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                         'Content-Type' => 'application/x-www-form-urlencoded',
                         'Authorization' => "Bearer {$this->accessToken}"
                     ],
-                    []
-                ]
+                    null
+                ],
+                'getJson'
             ],
             'refund payment' => [
                 'refund',

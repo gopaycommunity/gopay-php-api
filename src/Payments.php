@@ -32,10 +32,11 @@ class Payments
         return $this->api("/{$id}/refund", Browser::FORM, ['amount' => $amount]);
     }
 
-    private function api($urlPath, $contentType, array $data = array())
+    private function api($urlPath, $contentType, $data = null)
     {
+        $method = is_array($data) ? 'postJson' : 'getJson';
         $this->browser->setBaseUrl($this->config['isProductionMode']);
-        return $this->browser->postJson(
+        return $this->browser->{$method}(
             "payments/payment{$urlPath}",
             [
                 'Accept' => 'application/json',
