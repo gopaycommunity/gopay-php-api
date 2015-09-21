@@ -17,14 +17,13 @@ class Payments
 
     public function authorize($scope)
     {
-        return $this->callApi(
+        return $this->api(
             'oauth2/token',
-            ['grant_type' => 'client_credentials', 'scope' => $scope],
             [
                 'Content-Type' => 'application/x-www-form-urlencoded',
                 'auth' => [$this->config['clientID'], $this->config['clientSecret']]
             ],
-            'getOAuthToken'
+            ['grant_type' => 'client_credentials', 'scope' => $scope]
         );
     }
 
@@ -35,42 +34,29 @@ class Payments
 
     public function createPayment(array $payment)
     {
-        return $this->callApi(
-            'payments/payment',
-            $payment,
-            [
-                'Content-Type' => 'application/json',
-                'Authorization' => "Bearer {$this->accessToken}"
-            ]
-        );
+        return $this->api('payments/payment', Browser::JSON, $payment);
     }
 
     public function getStatus($id)
     {
-        return $this->callApi(
-            "payments/payment/{$id}",
-            [],
-            [
-                'Content-Type' => 'application/x-www-form-urlencoded',
-                'Authorization' => "Bearer {$this->accessToken}"
-            ]
-        );
+        return $this->api("payments/payment/{$id}", Browser::FORM);
     }
 
     public function refund($id, $amount)
     {
-        return $this->callApi(
-            "payments/payment/{$id}/refund",
-            ['amount' => $amount],
-            [
-                'Content-Type' => 'application/x-www-form-urlencoded',
-                'Authorization' => "Bearer {$this->accessToken}"
-            ]
-        );
+        return $this->api("payments/payment/{$id}/refund", Browser::FORM, ['amount' => $amount]);
     }
 
-    private function callApi($urlPath, array $data, array $headers)
+    private function api($urlPath, $headersOrContentType, array $data = array())
     {
+        if (is_array($headersOrContentType)) {
+            $headers = $headersOrContentType;
+        } else {
+            $headers = [
+                'Content-Type' => $headersOrContentType,
+                'Authorization' => "Bearer {$this->accessToken}"
+            ];
+        }
         return $this->browser->postJson(
             "https://gw.sandbox.gopay.com/api/{$urlPath}",
             $data,
