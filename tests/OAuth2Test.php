@@ -2,6 +2,8 @@
 
 namespace GoPay;
 
+use GoPay\Http\Response;
+
 class OAuth2Test extends \PHPUnit_Framework_TestCase
 {
     private $config = [
