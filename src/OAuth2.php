@@ -3,26 +3,27 @@
 namespace GoPay;
 
 use GoPay\Http\Browser;
+use GoPay\Auth\TokenCache;
 
 class OAuth2
 {
     private $config;
     private $browser;
+    private $cache;
 
-    private $accessToken;
-
-    public function __construct(array $config, Browser $b)
+    public function __construct(array $config, TokenCache $c, Browser $b)
     {
         $this->config = $config;
+        $this->cache = $c;
         $this->browser = $b;
     }
 
     public function getAccessToken()
     {
-        if (!$this->accessToken) {
+        if ($this->cache->isExpired()) {
             $this->authorize();
         }
-        return $this->accessToken;
+        return $this->cache->getAccessToken();
     }
 
     private function authorize()
@@ -37,7 +38,9 @@ class OAuth2
             ['grant_type' => 'client_credentials', 'scope' => $this->config['scope']]
         );
         if ($response->hasSucceed()) {
-            $this->accessToken = $response->json['access_token'];
+            $accessToken = $response->json['access_token'];
+            $expirationDate = new \DateTime("now + {$response->json['expires_in']} seconds");
+            $this->cache->setAccessToken($accessToken, $expirationDate);
         }
     }
 

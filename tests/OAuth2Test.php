@@ -18,8 +18,9 @@ class OAuth2Test extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
+        $cache = new Auth\InMemoryTokenCache();
         $this->browser = $this->prophesize('GoPay\Http\Browser');
-        $this->auth = new OAuth2($this->config, $this->browser->reveal());
+        $this->auth = new OAuth2($this->config, $cache, $this->browser->reveal());
     }
 
     /** @dataProvider provideAccessToken */
@@ -46,8 +47,8 @@ class OAuth2Test extends \PHPUnit_Framework_TestCase
     public function provideAccessToken()
     {
         return [
-            'success' => [200, ['access_token' => 'new token', 'expires_in' => 100], 1, 'new token'],
-            'failure' => [400, ['error' => 'access_denied'], 2, nullValue()]
+            'success' => [200, ['access_token' => 'new token', 'expires_in' => 1800], 1, 'new token'],
+            'failure' => [400, ['error' => 'access_denied'], 2, emptyString()]
         ];
     }
 }
