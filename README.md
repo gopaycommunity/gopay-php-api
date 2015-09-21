@@ -36,12 +36,12 @@ Then run `composer install --no-dev`
 ## Basic usage
 
 ```
-$gopay = new Gopay([
+$gopay = GoPay\payments([
     'goid' => 'A',
     'clientId' => 'B',
     'clientSecret' => 'C',
     'isProductionMode' => false
-])
+]);
 ```
 
 API method
@@ -68,6 +68,11 @@ Your cache must implement [`GoPay\Token\TokenCache`](src/Token/TokenCache.php) i
 Be aware that there are two [scopes](https://doc.gopay.com/en/?shell#scope) (`PaymentScope`).
 So token must be cached for each scope. 
 Below you can see example implementation of caching tokens in file (@todo test it :):
+
+
+```
+$gopay = GoPay\payments(['..config...'], new PrimitiveFileCache());
+```
 
 ```
 <?php
