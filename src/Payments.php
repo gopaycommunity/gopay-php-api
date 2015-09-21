@@ -15,10 +15,14 @@ class Payments
 
     public function authorize($scope)
     {
-        $this->browser->getOAuthToken(
+        list($statusCode, $json) = $this->browser->getOAuthToken(
             'https://gw.sandbox.gopay.com/api/oauth2/token',
             "grant_type=client_credentials&scope={$scope}",
             ['auth' => [$this->config['clientID'], $this->config['clientSecret']]]
         );
+        $r = new Response;
+        $r->hasSucceed = $statusCode == 200;
+        $r->json = $json;
+        return $r;
     }
 }

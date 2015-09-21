@@ -18,7 +18,8 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
         $this->api = new Payments($this->config, $this->browser->reveal());
     }
 
-    public function testShouldCreateAccessToken()
+    /** @dataProvider provideAccessToken */
+    public function testShouldRequestAccessToken($statusCode, $jsonResponse, $hasSucceed)
     {
         $scope = PaymentScope::ALL;
         $this->browser->getOAuthToken(
@@ -27,7 +28,19 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
             array(
                 'auth' => [$this->config['clientID'], $this->config['clientSecret']],
             )
-        )->shouldBeCalled();
-        $this->api->authorize($scope);
+        )->shouldBeCalled()->willReturn([$statusCode, $jsonResponse]);
+        $response = $this->api->authorize($scope);
+
+        assertThat($response, anInstanceOf('GoPay\Response'));
+        assertThat($response->hasSucceed, is($hasSucceed));
+        assertThat($response->json, is($jsonResponse));
+    }
+
+    public function provideAccessToken()
+    {
+        return [
+            'success' => [200, ['access_token' => 'token', 'expires_in' => 100], true],
+            'failure' => [400, ['error' => 'access_denied'], false]
+        ];
     }
 }
