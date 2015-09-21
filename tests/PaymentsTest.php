@@ -18,10 +18,8 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
         $this->api = new Payments($this->config, $this->browser->reveal());
     }
 
-    /** @dataProvider provideAccessToken */
-    public function testShouldRequestAccessToken($statusCode, $hasSucceed)
+    public function testShouldRequestAccessToken()
     {
-        $jsonResponse = ['irrelevant response'];
         $scope = PaymentScope::ALL;
         $this->browser->postJson(
             'https://gw.sandbox.gopay.com/api/oauth2/token',
@@ -31,26 +29,12 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                 'Content-Type' => 'application/x-www-form-urlencoded',
                 'auth' => [$this->config['clientID'], $this->config['clientSecret']],
             ]
-        )->shouldBeCalled()->willReturn([$statusCode, $jsonResponse]);
-        $response = $this->api->authorize($scope);
-
-        assertThat($response, anInstanceOf('GoPay\Response'));
-        assertThat($response->hasSucceed, is($hasSucceed));
-        assertThat($response->json, is($jsonResponse));
+        )->shouldBeCalled()->willReturn(new Response);
+        $this->api->authorize($scope);
     }
 
-    public function provideAccessToken()
+    public function testShouldCreateStandardPayment()
     {
-        return [
-            'success' => [200, true],
-            'failure' => [400, false]
-        ];
-    }
-
-    /** @dataProvider providePayment */
-    public function testShouldCreateStandardPayment($statusCode, $hasSucceed)
-    {
-        $jsonResponse = ['irrelevant response'];
         $token = 'irrelevant access token';
         $payment = ['irrelevant data'];
         $this->browser->postJson(
@@ -61,17 +45,12 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                 'Content-Type' => 'application/json',
                 'Authorization' => "Bearer {$token}"
             ]
-        )->shouldBeCalled()->willReturn([$statusCode, $jsonResponse]);
-        $response = $this->api->createPayment($payment, $token);
-
-        assertThat($response->hasSucceed, is($hasSucceed));
-        assertThat($response->json, is($jsonResponse));
+        )->shouldBeCalled()->willReturn(new Response);
+        $this->api->createPayment($payment, $token);
     }
 
-    /** @dataProvider providePayment */
-    public function testShouldGetStatusOfPayment($statusCode, $hasSucceed)
+    public function testShouldGetStatusOfPayment()
     {
-        $jsonResponse = ['irrelevant response'];
         $token = 'irrelevant access token';
         $id = 'irrelevant id';
         $this->browser->postJson(
@@ -82,17 +61,12 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                 'Content-Type' => 'application/x-www-form-urlencoded',
                 'Authorization' => "Bearer {$token}"
             ]
-        )->shouldBeCalled()->willReturn([$statusCode, $jsonResponse]);
-        $response = $this->api->getStatus($id, $token);
-
-        assertThat($response->hasSucceed, is($hasSucceed));
-        assertThat($response->json, is($jsonResponse));
+        )->shouldBeCalled()->willReturn(new Response);
+        $this->api->getStatus($id, $token);
     }
 
-    /** @dataProvider providePayment */
-    public function testShouldRefundPayment($statusCode, $hasSucceed)
+    public function testShouldRefundPayment()
     {
-        $jsonResponse = ['irrelevant response'];
         $token = 'irrelevant access token';
         $id = 'irrelevant id';
         $amount = 'irrelevant amount';
@@ -104,18 +78,7 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                 'Content-Type' => 'application/x-www-form-urlencoded',
                 'Authorization' => "Bearer {$token}"
             ]
-        )->shouldBeCalled()->willReturn([$statusCode, $jsonResponse]);
-        $response = $this->api->refund($id, $amount, $token);
-
-        assertThat($response->hasSucceed, is($hasSucceed));
-        assertThat($response->json, is($jsonResponse));
-    }
-
-    public function providePayment()
-    {
-        return [
-            'success' => [200, true],
-            'failure - validation' => [409, false]
-        ];
+        )->shouldBeCalled()->willReturn(new Response);
+        $this->api->refund($id, $amount, $token);
     }
 }

@@ -64,14 +64,10 @@ class Payments
 
     private function callApi($urlPath, array $data, array $headers)
     {
-        list($statusCode, $json) = $this->browser->postJson(
+        return $this->browser->postJson(
             "https://gw.sandbox.gopay.com/api/{$urlPath}",
             $data,
             $headers + ['Accept' => 'application/json']
         );
-        $r = new Response;
-        $r->hasSucceed = $statusCode == 200;
-        $r->json = $json;
-        return $r;
     }
 }
