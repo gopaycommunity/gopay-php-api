@@ -15,61 +15,59 @@ class Payments
 
     public function authorize($scope)
     {
-        list($statusCode, $json) = $this->browser->getOAuthToken(
-            'https://gw.sandbox.gopay.com/api/oauth2/token',
-            "grant_type=client_credentials&scope={$scope}",
-            ['auth' => [$this->config['clientID'], $this->config['clientSecret']]]
+        return $this->callApi(
+            'oauth2/token',
+            ['grant_type' => 'client_credentials', 'scope' => $scope],
+            [
+                'Content-Type' => 'application/x-www-form-urlencoded',
+                'auth' => [$this->config['clientID'], $this->config['clientSecret']]
+            ],
+            'getOAuthToken'
         );
-        $r = new Response;
-        $r->hasSucceed = $statusCode == 200;
-        $r->json = $json;
-        return $r;
     }
 
     public function createPayment(array $payment, $token)
     {
-        list($statusCode, $json) = $this->browser->postJson(
-            'https://gw.sandbox.gopay.com/api/payments/payment',
+        return $this->callApi(
+            'payments/payment',
             $payment,
             [
-                'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
                 'Authorization' => "Bearer {$token}"
             ]
         );
-        $r = new Response;
-        $r->hasSucceed = $statusCode == 200;
-        $r->json = $json;
-        return $r;
     }
 
     public function getStatus($id, $token)
     {
-        list($statusCode, $json) = $this->browser->postJson(
-            "https://gw.sandbox.gopay.com/api/payments/payment/{$id}",
+        return $this->callApi(
+            "payments/payment/{$id}",
             [],
             [
-                'Accept' => 'application/json',
                 'Content-Type' => 'application/x-www-form-urlencoded',
                 'Authorization' => "Bearer {$token}"
             ]
         );
-        $r = new Response;
-        $r->hasSucceed = $statusCode == 200;
-        $r->json = $json;
-        return $r;
     }
 
     public function refund($id, $amount, $token)
     {
-        list($statusCode, $json) = $this->browser->postJson(
-            "https://gw.sandbox.gopay.com/api/payments/payment/{$id}/refund",
+        return $this->callApi(
+            "payments/payment/{$id}/refund",
             ['amount' => $amount],
             [
-                'Accept' => 'application/json',
                 'Content-Type' => 'application/x-www-form-urlencoded',
                 'Authorization' => "Bearer {$token}"
             ]
+        );
+    }
+
+    private function callApi($urlPath, array $data, array $headers)
+    {
+        list($statusCode, $json) = $this->browser->postJson(
+            "https://gw.sandbox.gopay.com/api/{$urlPath}",
+            $data,
+            $headers + ['Accept' => 'application/json']
         );
         $r = new Response;
         $r->hasSucceed = $statusCode == 200;

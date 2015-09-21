@@ -4,10 +4,10 @@ namespace GoPay;
 
 class PaymentsTest extends \PHPUnit_Framework_TestCase
 {
-    private $config = array(
+    private $config = [
         'clientID' => 'irrelevant id',
         'clientSecret' => 'irrelevant secret',
-    );
+    ];
 
     private $browser;
     private $api;
@@ -19,15 +19,18 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
     }
 
     /** @dataProvider provideAccessToken */
-    public function testShouldRequestAccessToken($statusCode, $jsonResponse, $hasSucceed)
+    public function testShouldRequestAccessToken($statusCode, $hasSucceed)
     {
+        $jsonResponse = ['irrelevant response'];
         $scope = PaymentScope::ALL;
-        $this->browser->getOAuthToken(
+        $this->browser->postJson(
             'https://gw.sandbox.gopay.com/api/oauth2/token',
-            "grant_type=client_credentials&scope={$scope}",
-            array(
+            ['grant_type' => 'client_credentials', 'scope' => $scope],
+            [
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/x-www-form-urlencoded',
                 'auth' => [$this->config['clientID'], $this->config['clientSecret']],
-            )
+            ]
         )->shouldBeCalled()->willReturn([$statusCode, $jsonResponse]);
         $response = $this->api->authorize($scope);
 
@@ -39,8 +42,8 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
     public function provideAccessToken()
     {
         return [
-            'success' => [200, ['access_token' => 'token', 'expires_in' => 100], true],
-            'failure' => [400, ['error' => 'access_denied'], false]
+            'success' => [200, true],
+            'failure' => [400, false]
         ];
     }
 
@@ -53,11 +56,11 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
         $this->browser->postJson(
             'https://gw.sandbox.gopay.com/api/payments/payment',
             $payment,
-            array(
+            [
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
                 'Authorization' => "Bearer {$token}"
-            )
+            ]
         )->shouldBeCalled()->willReturn([$statusCode, $jsonResponse]);
         $response = $this->api->createPayment($payment, $token);
 
@@ -73,12 +76,12 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
         $id = 'irrelevant id';
         $this->browser->postJson(
             "https://gw.sandbox.gopay.com/api/payments/payment/{$id}",
-            array(),
-            array(
+            [],
+            [
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/x-www-form-urlencoded',
                 'Authorization' => "Bearer {$token}"
-            )
+            ]
         )->shouldBeCalled()->willReturn([$statusCode, $jsonResponse]);
         $response = $this->api->getStatus($id, $token);
 
@@ -95,12 +98,12 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
         $amount = 'irrelevant amount';
         $this->browser->postJson(
             "https://gw.sandbox.gopay.com/api/payments/payment/{$id}/refund",
-            array('amount' => $amount),
-            array(
+            ['amount' => $amount],
+            [
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/x-www-form-urlencoded',
                 'Authorization' => "Bearer {$token}"
-            )
+            ]
         )->shouldBeCalled()->willReturn([$statusCode, $jsonResponse]);
         $response = $this->api->refund($id, $amount, $token);
 
