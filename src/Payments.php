@@ -32,6 +32,21 @@ class Payments
         return $this->api("/{$id}/refund", Browser::FORM, ['amount' => $amount]);
     }
 
+    public function createRecurrencePayment(array $payment)
+    {
+        return $this->api('', Browser::JSON, $payment);
+    }
+
+    public function recurrenceOnDemand($id, array $payment)
+    {
+        return $this->api("/{$id}/create-recurrence", Browser::JSON, $payment);
+    }
+
+    public function recurrenceVoid($id)
+    {
+        return $this->api("/{$id}/void-recurrence", Browser::FORM, array());
+    }
+
     private function api($urlPath, $contentType, $data = null)
     {
         $method = is_array($data) ? 'postJson' : 'getJson';

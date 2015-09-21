@@ -76,7 +76,46 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                     ],
                     ['amount' => 'amount']
                 ]
-            ]
+            ],
+            'create recurrence payment' => [
+                'createRecurrencePayment',
+                [['irrelevant payment']],
+                [
+                    'payments/payment',
+                    [
+                        'Accept' => 'application/json',
+                        'Content-Type' => 'application/json',
+                        'Authorization' => "Bearer {$this->accessToken}"
+                    ],
+                    ['irrelevant payment']
+                ]
+            ],
+            'create recurrence on demand' => [
+                'recurrenceOnDemand',
+                [$this->id, ['irrelevant subsequent payment']],
+                [
+                    "payments/payment/{$this->id}/create-recurrence",
+                    [
+                        'Accept' => 'application/json',
+                        'Content-Type' => 'application/json',
+                        'Authorization' => "Bearer {$this->accessToken}"
+                    ],
+                    ['irrelevant subsequent payment']
+                ]
+            ],
+            'void recurrence' => [
+                'recurrenceVoid',
+                [$this->id],
+                [
+                    "payments/payment/{$this->id}/void-recurrence",
+                    [
+                        'Accept' => 'application/json',
+                        'Content-Type' => 'application/x-www-form-urlencoded',
+                        'Authorization' => "Bearer {$this->accessToken}"
+                    ],
+                    []
+                ]
+            ],
         ];
     }
 }
