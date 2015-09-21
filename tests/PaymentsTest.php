@@ -20,13 +20,14 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
 
     public function testShouldCreateAccessToken()
     {
+        $scope = PaymentScope::ALL;
         $this->browser->getOAuthToken(
             'https://gw.sandbox.gopay.com/api/oauth2/token',
-            'grant_type=client_credentials&scope=payment-create',
+            "grant_type=client_credentials&scope={$scope}",
             array(
                 'auth' => [$this->config['clientID'], $this->config['clientSecret']],
             )
         )->shouldBeCalled();
-        $this->api->authorize();
+        $this->api->authorize($scope);
     }
 }

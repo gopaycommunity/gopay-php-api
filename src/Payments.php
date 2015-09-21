@@ -13,11 +13,11 @@ class Payments
         $this->browser = $b;
     }
 
-    public function authorize()
+    public function authorize($scope)
     {
         $this->browser->getOAuthToken(
             'https://gw.sandbox.gopay.com/api/oauth2/token',
-            'grant_type=client_credentials&scope=payment-create',
+            "grant_type=client_credentials&scope={$scope}",
             ['auth' => [$this->config['clientID'], $this->config['clientSecret']]]
         );
     }
