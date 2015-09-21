@@ -5,70 +5,40 @@ namespace GoPay;
 class Payments
 {
     private $config;
+    private $auth;
     private $browser;
 
-    private $accessToken;
-
-    public function __construct(array $config, Browser $b)
+    public function __construct(array $config, OAuth2 $a, Browser $b)
     {
         $this->config = $config;
+        $this->auth = $a;
         $this->browser = $b;
-    }
-
-    public function authorize($scope)
-    {
-        $response = $this->api(
-            'oauth2/token',
-            [
-                'Content-Type' => 'application/x-www-form-urlencoded',
-                'auth' => [$this->config['clientID'], $this->config['clientSecret']]
-            ],
-            ['grant_type' => 'client_credentials', 'scope' => $scope]
-        );
-        if ($response->hasSucceed()) {
-            $token = $response->json['access_token'];
-            $this->setAccessToken($token);
-        }
-    }
-
-    public function setAccessToken($token)
-    {
-        $this->accessToken = $token;
-    }
-
-    public function getAccessToken()
-    {
-        return $this->accessToken;
     }
 
     public function createPayment(array $payment)
     {
-        return $this->api('payments/payment', Browser::JSON, $payment);
+        return $this->api('', Browser::JSON, $payment);
     }
 
     public function getStatus($id)
     {
-        return $this->api("payments/payment/{$id}", Browser::FORM);
+        return $this->api("/{$id}", Browser::FORM);
     }
 
     public function refund($id, $amount)
     {
-        return $this->api("payments/payment/{$id}/refund", Browser::FORM, ['amount' => $amount]);
+        return $this->api("/{$id}/refund", Browser::FORM, ['amount' => $amount]);
     }
 
-    private function api($urlPath, $headersOrContentType, array $data = array())
+    private function api($urlPath, $contentType, array $data = array())
     {
-        if (is_array($headersOrContentType)) {
-            $headers = $headersOrContentType;
-        } else {
-            $headers = [
-                'Content-Type' => $headersOrContentType,
-                'Authorization' => "Bearer {$this->accessToken}"
-            ];
-        }
         return $this->browser->postJson(
-            "https://gw.sandbox.gopay.com/api/{$urlPath}",
-            $headers + ['Accept' => 'application/json'],
+            "https://gw.sandbox.gopay.com/api/payments/payment{$urlPath}",
+            [
+                'Accept' => 'application/json',
+                'Content-Type' => $contentType,
+                'Authorization' => "Bearer {$this->auth->getAccessToken()}"
+            ],
             $data
         );
     }

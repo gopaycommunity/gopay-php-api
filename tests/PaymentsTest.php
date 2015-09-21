@@ -4,54 +4,25 @@ namespace GoPay;
 
 class PaymentsTest extends \PHPUnit_Framework_TestCase
 {
-    private $config = [
-        'clientID' => 'irrelevant id',
-        'clientSecret' => 'irrelevant secret',
-    ];
+    private $config = [];
     private $id = 'irrelevant payment id';
     private $accessToken = 'irrelevant token';
 
     private $browser;
+    private $auth;
     private $api;
 
     protected function setUp()
     {
         $this->browser = $this->prophesize('GoPay\Browser');
-        $this->api = new Payments($this->config, $this->browser->reveal());
-        $this->api->setAccessToken($this->accessToken);
-    }
-
-    /** @dataProvider provideAccessToken */
-    public function testShouldRequestAccessToken($statusCode, array $jsonResponse, $expectedToken)
-    {
-        $apiResponse = new Response;
-        $apiResponse->statusCode = $statusCode;
-        $apiResponse->json = $jsonResponse;
-        $scope = PaymentScope::ALL;
-        $this->browser->postJson(
-            'https://gw.sandbox.gopay.com/api/oauth2/token',
-            [
-                'Accept' => 'application/json',
-                'Content-Type' => 'application/x-www-form-urlencoded',
-                'auth' => [$this->config['clientID'], $this->config['clientSecret']],
-            ],
-            ['grant_type' => 'client_credentials', 'scope' => $scope]
-        )->shouldBeCalled()->willReturn($apiResponse);
-        $this->api->authorize($scope);
-        assertThat($this->api->getAccessToken(), is($expectedToken));
-    }
-
-    public function provideAccessToken()
-    {
-        return [
-            'success' => [200, ['access_token' => 'new token', 'expires_in' => 100], 'new token'],
-            'failure' => [400, ['error' => 'access_denied'], $this->accessToken]
-        ];
+        $this->auth = $this->prophesize('GoPay\OAuth2');
+        $this->api = new Payments($this->config, $this->auth->reveal(), $this->browser->reveal());
     }
 
     /** @dataProvider provideApiMethods */
     public function testShouldCallApi($method, $params, $expectedRequest)
     {
+        $this->auth->getAccessToken()->shouldBeCalled()->willReturn($this->accessToken);
         $this->browser->postJson(
             $expectedRequest[0],
             $expectedRequest[1],
