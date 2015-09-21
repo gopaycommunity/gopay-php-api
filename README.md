@@ -44,7 +44,7 @@ $gopay = GoPay\payments([
 ]);
 ```
 
-API method
+API method |
 ----------------------------------------------------------------------- |
 [`$gopay->createPayment(array $payment)`](https://doc.gopay.com/en/#standard-payment) |
 [`$gopay->getStatus($id)`](https://doc.gopay.com/en/#status-of-the-payment) |
