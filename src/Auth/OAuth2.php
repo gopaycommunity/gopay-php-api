@@ -1,9 +1,8 @@
 <?php
 
-namespace GoPay;
+namespace GoPay\Auth;
 
 use GoPay\Http\Browser;
-use GoPay\Auth\TokenCache;
 
 class OAuth2
 {

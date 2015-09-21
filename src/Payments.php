@@ -3,6 +3,7 @@
 namespace GoPay;
 
 use GoPay\Http\Browser;
+use GoPay\Auth\OAuth2;
 
 class Payments
 {

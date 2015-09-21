@@ -1,6 +1,6 @@
 <?php
 
-namespace GoPay;
+namespace GoPay\Auth;
 
 use GoPay\Http\Response;
 use GoPay\Definition\PaymentScope;
@@ -18,7 +18,7 @@ class OAuth2Test extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $cache = new Auth\InMemoryTokenCache();
+        $cache = new InMemoryTokenCache();
         $this->browser = $this->prophesize('GoPay\Http\Browser');
         $this->auth = new OAuth2($this->config, $cache, $this->browser->reveal());
     }
