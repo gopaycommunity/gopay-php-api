@@ -8,6 +8,7 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
         'clientID' => 'irrelevant id',
         'clientSecret' => 'irrelevant secret',
     ];
+    private $accessToken = 'irrelevant token';
 
     private $browser;
     private $api;
@@ -16,6 +17,7 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
     {
         $this->browser = $this->prophesize('GoPay\Browser');
         $this->api = new Payments($this->config, $this->browser->reveal());
+        $this->api->setAccessToken($this->accessToken);
     }
 
     public function testShouldRequestAccessToken()
@@ -35,7 +37,6 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
 
     public function testShouldCreateStandardPayment()
     {
-        $token = 'irrelevant access token';
         $payment = ['irrelevant data'];
         $this->browser->postJson(
             'https://gw.sandbox.gopay.com/api/payments/payment',
@@ -43,15 +44,14 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
             [
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
-                'Authorization' => "Bearer {$token}"
+                'Authorization' => "Bearer {$this->accessToken}"
             ]
         )->shouldBeCalled()->willReturn(new Response);
-        $this->api->createPayment($payment, $token);
+        $this->api->createPayment($payment);
     }
 
     public function testShouldGetStatusOfPayment()
     {
-        $token = 'irrelevant access token';
         $id = 'irrelevant id';
         $this->browser->postJson(
             "https://gw.sandbox.gopay.com/api/payments/payment/{$id}",
@@ -59,15 +59,14 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
             [
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/x-www-form-urlencoded',
-                'Authorization' => "Bearer {$token}"
+                'Authorization' => "Bearer {$this->accessToken}"
             ]
         )->shouldBeCalled()->willReturn(new Response);
-        $this->api->getStatus($id, $token);
+        $this->api->getStatus($id);
     }
 
     public function testShouldRefundPayment()
     {
-        $token = 'irrelevant access token';
         $id = 'irrelevant id';
         $amount = 'irrelevant amount';
         $this->browser->postJson(
@@ -76,9 +75,9 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
             [
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/x-www-form-urlencoded',
-                'Authorization' => "Bearer {$token}"
+                'Authorization' => "Bearer {$this->accessToken}"
             ]
         )->shouldBeCalled()->willReturn(new Response);
-        $this->api->refund($id, $amount, $token);
+        $this->api->refund($id, $amount);
     }
 }
