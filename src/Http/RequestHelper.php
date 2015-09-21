@@ -21,4 +21,13 @@ class RequestHelper
         }
         return '';
     }
+
+    public function normalizeHeaders(array $headers)
+    {
+        if (is_array($headers['Authorization'])) {
+            $credentials = implode(':', $headers['Authorization']);
+            $headers['Authorization'] = 'Basic ' . base64_encode($credentials);
+        }
+        return $headers;
+    }
 }

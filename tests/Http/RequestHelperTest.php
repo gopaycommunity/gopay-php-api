@@ -41,4 +41,20 @@ class RequestHelperTest extends \PHPUnit_Framework_TestCase
             'json' => [Browser::JSON, ['key' => 'value'], '{"key":"value"}'],
         ];
     }
+
+    /** @dataProvider provideAuth */
+    public function testShouldNormalizeAuthorization($auth, $expectedHeader)
+    {
+        $headers = ['Authorization' => $auth];
+        $normalized = $this->request->normalizeHeaders($headers);
+        assertThat($normalized['Authorization'], identicalTo($expectedHeader));
+    }
+
+    public function provideAuth()
+    {
+        return [
+            'token' => ['Bearer irrelevantToken', 'Bearer irrelevantToken'],
+            'basic auth' => [['user', 'pass'], 'Basic dXNlcjpwYXNz'],
+        ];
+    }
 }

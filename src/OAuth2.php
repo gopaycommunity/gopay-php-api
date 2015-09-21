@@ -32,7 +32,7 @@ class OAuth2
             [
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/x-www-form-urlencoded',
-                'auth' => [$this->config['clientID'], $this->config['clientSecret']]
+                'Authorization' => [$this->config['clientID'], $this->config['clientSecret']]
             ],
             ['grant_type' => 'client_credentials', 'scope' => $this->config['scope']]
         );
