@@ -65,6 +65,49 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
         assertThat($response->json, is($jsonResponse));
     }
 
+    /** @dataProvider providePayment */
+    public function testShouldGetStatusOfPayment($statusCode, $hasSucceed)
+    {
+        $jsonResponse = ['irrelevant response'];
+        $token = 'irrelevant access token';
+        $id = 'irrelevant id';
+        $this->browser->postJson(
+            "https://gw.sandbox.gopay.com/api/payments/payment/{$id}",
+            array(),
+            array(
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/x-www-form-urlencoded',
+                'Authorization' => "Bearer {$token}"
+            )
+        )->shouldBeCalled()->willReturn([$statusCode, $jsonResponse]);
+        $response = $this->api->getStatus($id, $token);
+
+        assertThat($response->hasSucceed, is($hasSucceed));
+        assertThat($response->json, is($jsonResponse));
+    }
+
+    /** @dataProvider providePayment */
+    public function testShouldRefundPayment($statusCode, $hasSucceed)
+    {
+        $jsonResponse = ['irrelevant response'];
+        $token = 'irrelevant access token';
+        $id = 'irrelevant id';
+        $amount = 'irrelevant amount';
+        $this->browser->postJson(
+            "https://gw.sandbox.gopay.com/api/payments/payment/{$id}/refund",
+            array('amount' => $amount),
+            array(
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/x-www-form-urlencoded',
+                'Authorization' => "Bearer {$token}"
+            )
+        )->shouldBeCalled()->willReturn([$statusCode, $jsonResponse]);
+        $response = $this->api->refund($id, $amount, $token);
+
+        assertThat($response->hasSucceed, is($hasSucceed));
+        assertThat($response->json, is($jsonResponse));
+    }
+
     public function providePayment()
     {
         return [

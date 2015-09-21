@@ -42,4 +42,38 @@ class Payments
         $r->json = $json;
         return $r;
     }
+
+    public function getStatus($id, $token)
+    {
+        list($statusCode, $json) = $this->browser->postJson(
+            "https://gw.sandbox.gopay.com/api/payments/payment/{$id}",
+            [],
+            [
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/x-www-form-urlencoded',
+                'Authorization' => "Bearer {$token}"
+            ]
+        );
+        $r = new Response;
+        $r->hasSucceed = $statusCode == 200;
+        $r->json = $json;
+        return $r;
+    }
+
+    public function refund($id, $amount, $token)
+    {
+        list($statusCode, $json) = $this->browser->postJson(
+            "https://gw.sandbox.gopay.com/api/payments/payment/{$id}/refund",
+            ['amount' => $amount],
+            [
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/x-www-form-urlencoded',
+                'Authorization' => "Bearer {$token}"
+            ]
+        );
+        $r = new Response;
+        $r->hasSucceed = $statusCode == 200;
+        $r->json = $json;
+        return $r;
+    }
 }
