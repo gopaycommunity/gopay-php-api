@@ -1,6 +1,6 @@
 <?php
 
-namespace GoPay;
+namespace GoPay\Http;
 
 class Browser
 {

@@ -2,8 +2,6 @@
 
 namespace GoPay\Http;
 
-use GoPay\Browser;
-
 class RequestHelper
 {
     public function getBaseApiUrl($isProductionMode)

@@ -2,6 +2,8 @@
 
 namespace GoPay;
 
+use GoPay\Http\Browser;
+
 class OAuth2
 {
     private $config;

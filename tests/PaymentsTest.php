@@ -16,7 +16,7 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->browser = $this->prophesize('GoPay\Browser');
+        $this->browser = $this->prophesize('GoPay\Http\Browser');
         $this->auth = $this->prophesize('GoPay\OAuth2');
         $this->api = new Payments($this->config, $this->auth->reveal(), $this->browser->reveal());
     }

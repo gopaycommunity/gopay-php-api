@@ -2,6 +2,8 @@
 
 namespace GoPay;
 
+use GoPay\Http\Browser;
+
 class Payments
 {
     private $config;

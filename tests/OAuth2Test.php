@@ -15,7 +15,7 @@ class OAuth2Test extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->browser = $this->prophesize('GoPay\Browser');
+        $this->browser = $this->prophesize('GoPay\Http\Browser');
         $this->auth = new OAuth2($this->config, $this->browser->reveal());
     }
 

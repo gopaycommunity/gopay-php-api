@@ -2,8 +2,6 @@
 
 namespace GoPay\Http;
 
-use GoPay\Browser;
-
 class RequestHelperTest extends \PHPUnit_Framework_TestCase
 {
     private $request;
