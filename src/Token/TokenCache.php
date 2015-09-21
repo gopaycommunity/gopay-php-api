@@ -1,6 +1,6 @@
 <?php
 
-namespace GoPay\Auth;
+namespace GoPay\Token;
 
 interface TokenCache
 {

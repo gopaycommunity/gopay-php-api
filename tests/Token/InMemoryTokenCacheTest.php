@@ -1,6 +1,6 @@
 <?php
 
-namespace GoPay\Auth;
+namespace GoPay\Token;
 
 class InMemoryTokenCacheTest extends \PHPUnit_Framework_TestCase
 {

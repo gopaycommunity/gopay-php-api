@@ -1,15 +1,16 @@
 <?php
 
-namespace GoPay\Auth;
+namespace GoPay;
 
 use GoPay\Http\Response;
+use GoPay\Token\InMemoryTokenCache;
 
 class OAuth2Test extends \PHPUnit_Framework_TestCase
 {
     private $config = [
         'clientID' => 'user',
         'clientSecret' => 'pass',
-        'scope' => PaymentScope::ALL
+        'scope' => 'irrelevant scope'
     ];
 
     private $gopay;

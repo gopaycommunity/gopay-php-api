@@ -2,8 +2,6 @@
 
 namespace GoPay;
 
-use GoPay\Auth\OAuth2;
-
 class Payments
 {
     private $gopay;

@@ -61,16 +61,18 @@ API method
 ## Cache access token
 
 Access token expires after 30 minutes so it's expensive to use new token for every request.
-Unfortunately it's default behavior of [`GoPay\Auth\InMemoryTokenCache`](src/Auth/InMemoryTokenCache.php).
+Unfortunately it's default behavior of [`GoPay\Token\InMemoryTokenCache`](src/Token/InMemoryTokenCache.php).
 But you can implement your cache and store tokens in Memcache, Redis, files, ... It's up to you.
 
-Your cache must implement [`GoPay\Auth\TokenCache`](src/Auth/TokenCache.php) interface.
+Your cache must implement [`GoPay\Token\TokenCache`](src/Token/TokenCache.php) interface.
 Be aware that there are two [scopes](https://doc.gopay.com/en/?shell#scope) (`PaymentScope`).
 So token must be cached for each scope. 
 Below you can see example implementation of caching tokens in file (@todo test it :):
 
 ```
 <?php
+
+use GoPay\Token\TokenCache;
 
 class PrimitiveFileCache implements TokenCache
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace GoPay\Auth;
+namespace GoPay\Token;
 
 class InMemoryTokenCache implements TokenCache
 {
@@ -12,7 +12,7 @@ class InMemoryTokenCache implements TokenCache
 
     public function setScope($scope)
     {
-        $this->scope = $scope;
+        $this->scope = $scope == PaymentScope::ALL ? PaymentScope::ALL : PaymentScope::CREATE; // helper for tests :)
     }
 
     public function isExpired()
