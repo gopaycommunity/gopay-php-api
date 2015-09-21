@@ -1,0 +1,5 @@
+/vendor/
+/nbproject/
+/bin/
+!/bin/jenkins.sh
+/var/
