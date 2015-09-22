@@ -21,7 +21,7 @@ of the Composer documentation.
 
 Add this line to `composer.json`
 
-```
+```json
 {
     "repositories": [
         { "type": "vcs", "url": "git@bitbucket.org:edgedesigncz/gop-016-sdk-php.git" }
@@ -31,7 +31,7 @@ Add this line to `composer.json`
 
 ## Basic usage
 
-```
+```php
 $gopay = GoPay\payments([
     'clientId' => 'my id',
     'clientSecret' => 'my secret',
@@ -44,10 +44,10 @@ $gopay = GoPay\payments([
 
 Required field | Data type | Documentation |
 -------------- | --------- | ----------- |
-`clientId` | string | [https://doc.gopay.com/en/?shell#oauth] |
-`clientSecret` | string | [https://doc.gopay.com/en/?shell#oauth] |
+`clientId` | string | https://doc.gopay.com/en/?shell#oauth |
+`clientSecret` | string | https://doc.gopay.com/en/?shell#oauth |
 `isProductionMode` | boolean | [test or production environment?](https://help.gopay.com/en/s/ey) |
-`scope` | [`GoPay\Token\TokenScope`](src/Token/TokenScope.php) constant | [https://doc.gopay.com/en/?shell#scope] |
+`scope` | [`GoPay\Token\TokenScope`](src/Token/TokenScope.php) constant | https://doc.gopay.com/en/?shell#scope |
 
 ### Available methods
 
@@ -111,11 +111,11 @@ So token must be cached for each scope.
 Below you can see example implementation of caching tokens in file (@todo test it :):
 
 
-```
+```php
 $gopay = GoPay\payments(['..config...'], new PrimitiveFileCache());
 ```
 
-```
+```php
 <?php
 
 use GoPay\Token\TokenCache;
