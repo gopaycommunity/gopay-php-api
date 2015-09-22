@@ -6,6 +6,7 @@ use GoPay\Definition\Language;
 use GoPay\Definition\Currency;
 use GoPay\Definition\PaymentInstrument;
 use GoPay\Definition\BankSwiftCode;
+use GoPay\Definition\Recurrence;
 
 $gopay = GoPay\payments([
     'goid' => 'A',
@@ -13,6 +14,20 @@ $gopay = GoPay\payments([
     'clientSecret' => 'C',
     'isProductionMode' => false
 ]);
+
+// recurrent payment must have field ''
+$recurrentPayment = [
+    'recurrence' => [
+        'recurrence_cycle' => Recurrence::DAILY,
+        'recurrence_period' => "7",
+        'recurrence_date_to' => '2015-12-31'
+    ]
+];
+
+// pre-authorized payment must have field 'preauthorization'
+$preauthorizedPayment = [
+    'preauthorization' => true
+];
 
 $response = $gopay->createPayment([
     'payer' => [
