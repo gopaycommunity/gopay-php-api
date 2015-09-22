@@ -13,8 +13,11 @@ class Payments
         $this->auth = $a;
     }
 
-    public function createPayment(array $payment)
+    public function createPayment(array $rawPayment)
     {
+        $payment = $rawPayment + [
+            'lang' => $this->gopay->getConfig('language')
+        ];
         return $this->api('', GoPay::JSON, $payment);
     }
 

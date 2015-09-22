@@ -3,11 +3,15 @@
 namespace GoPay;
 
 use GoPay\Token\AccessToken;
+use GoPay\Definition\Language;
 
 class PaymentsTest extends \PHPUnit_Framework_TestCase
 {
     private $id = 'irrelevant payment id';
     private $accessToken = 'irrelevant token';
+    private $config = [
+        'language' => Language::CZECH
+    ];
 
     private $gopay;
     private $auth;
@@ -16,6 +20,9 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->gopay = $this->prophesize('GoPay\GoPay');
+        foreach ($this->config as $key => $value) {
+            $this->gopay->getConfig($key)->willReturn($value);
+        }
         $this->auth = $this->prophesize('GoPay\OAuth2');
         $this->api = new Payments($this->gopay->reveal(), $this->auth->reveal());
     }
@@ -53,13 +60,22 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
             'Authorization' => "Bearer {$this->accessToken}"
         ];
         return [
-            'https://doc.gopay.com/en/#standard-payment' => [
+            'https://doc.gopay.com/en/#standard-payment - add default language' => [
                 'createPayment',
                 [['irrelevant payment']],
                 [
                     'payments/payment',
                     $jsonHeaders,
-                    ['irrelevant payment']
+                    ['irrelevant payment', 'lang' => $this->config['language']]
+                ]
+            ],
+            'create payment - do not override parameters' => [
+                'createPayment',
+                [['irrelevant payment', 'lang' => 'invalid-lang']],
+                [
+                    'payments/payment',
+                    $jsonHeaders,
+                    ['irrelevant payment', 'lang' => 'invalid-lang']
                 ]
             ],
             'https://doc.gopay.com/en/#status-of-the-payment' => [
