@@ -10,3 +10,12 @@ function payments(array $config, Token\TokenCache $cache = null)
     $auth = new OAuth2($gopay, $cache);
     return new Payments($gopay, $auth);
 }
+
+/** Symfony container needs class for factory :( */
+class Api
+{
+    public static function payments(array $config, Token\TokenCache $cache = null)
+    {
+        return payments($config, $cache);
+    }
+}

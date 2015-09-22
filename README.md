@@ -104,6 +104,10 @@ behavior is well documented in [doc.gopay.com](https://doc.gopay.com/en).
 
 ## Advanced usage
 
+### Framework integration
+
+* [Symfony2](/examples/symfony.md)
+
 ### Cache access token
 
 Access token expires after 30 minutes so it's expensive to use new token for every request.
