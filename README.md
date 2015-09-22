@@ -29,20 +29,27 @@ Add this line to `composer.json`
 }
 ```
 
-Then run `composer install --no-dev`
-
-*****
-
 ## Basic usage
 
 ```
 $gopay = GoPay\payments([
-    'goid' => 'A',
-    'clientId' => 'B',
-    'clientSecret' => 'C',
-    'isProductionMode' => false
+    'clientId' => 'my id',
+    'clientSecret' => 'my secret',
+    'isProductionMode' => false,
+    'scope' => GoPay\Token\TokenScope::ALL
 ]);
 ```
+
+### Configuration
+
+Required field | Data type | Documentation |
+-------------- | --------- | ----------- |
+`clientId` | string | [https://doc.gopay.com/en/?shell#oauth] |
+`clientSecret` | string | [https://doc.gopay.com/en/?shell#oauth] |
+`isProductionMode` | boolean | [test or production environment?](https://help.gopay.com/en/s/ey) |
+`scope` | [`GoPay\Token\TokenScope`](src/Token/TokenScope.php) constant | [https://doc.gopay.com/en/?shell#scope] |
+
+### Available methods
 
 API | SDK method |
 --- | ---------- |
@@ -55,6 +62,44 @@ API | SDK method |
 [Create pre-authorized payment](https://doc.gopay.com/en/#pre-authorized-payment) | `$gopay->createPayment(array $payment)` |
 [Charge of pre-authorized payment](https://doc.gopay.com/en/#charge-of-pre-authorized-payment) | `$gopay->preauthorizedCapture($id)` |
 [Cancellation of the pre-authorized payment](https://doc.gopay.com/en/#cancellation-of-the-pre-authorized-payment) | `$gopay->preauthorizedVoid($id)` |
+
+*****
+
+## SDK response? Has my call succeed?
+
+SDK returns wrapped API response. Every method returns
+[`GoPay\Http\Response` object](src/Http/Response.php). Structure of `json/__toString`
+should be same as in [documentation](https://doc.gopay.com/en).
+SDK throws no exception. Please create an issue if you catch one. 
+
+```php
+$response = $gopay->createPayment([/* define your payment  */]);
+if ($response->hasSucceed()) {
+    echo "hooray, API returned {$response}";
+    return $response->json['gw_url']; // url for initiation of gateway
+} else {
+    echo "oop, API returns {$response->statusCode}";
+    // errors format: https://doc.gopay.com/en/?shell#http-result-codes
+    echo var_dump($response->json);
+}
+
+```
+
+Method | Description |
+------ | ---------- |
+`$response->hasSucceed()` | checks if API returns status code _200_ |
+`$response->json` | decoded response, returned objects are converted into associative arrays |
+`$response->statusCode` | HTTP status code |
+`$response->__toString()` | raw body from HTTP response |
+
+*****
+
+## Are required fields and allowed values validated?
+
+**No.** API [validates fields](https://doc.gopay.com/en/?shell#return-errors) pretty extensively
+so there is no need to duplicate validation in SDK. It would only introduce new type of error.
+Or we would have to perfectly simulate API error messages. That's why SDK just calls API which
+behavior is well documented in [doc.gopay.com](https://doc.gopay.com/en).
 
 *****
 

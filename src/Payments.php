@@ -48,6 +48,7 @@ class Payments
         return $this->api("/{$id}/void-authorization", GoPay::FORM, array());
     }
 
+    /** @return \GoPay\Http\Response */
     private function api($urlPath, $contentType, $data = null)
     {
         $token = $this->auth->getAccessToken();
