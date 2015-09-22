@@ -39,7 +39,8 @@ $gopay = GoPay\payments([
     'clientId' => 'my id',
     'clientSecret' => 'my secret',
     'isProductionMode' => false,
-    'scope' => GoPay\Token\TokenScope::ALL
+    'scope' => GoPay\Token\TokenScope::ALL,
+    'language' => GoPay\Definition\Language::CZECH
 ]);
 ```
 
@@ -50,7 +51,8 @@ Required field | Data type | Documentation |
 `clientId` | string | https://doc.gopay.com/en/?shell#oauth |
 `clientSecret` | string | https://doc.gopay.com/en/?shell#oauth |
 `isProductionMode` | boolean | [test or production environment?](https://help.gopay.com/en/s/ey) |
-`scope` | [`GoPay\Token\TokenScope`](src/Token/TokenScope.php) constant | https://doc.gopay.com/en/?shell#scope |
+`scope` | [`GoPay\Token\TokenScope`](src/Token/TokenScope.php) | https://doc.gopay.com/en/?shell#scope |
+`language` | [`GoPay\Definition\Language`](src/Definition/Language.php) | default language used in `createPayment` if `lang` is not specified + used for [localization of errors](https://doc.gopay.com/en/?shell#return-errors)
 
 ### Available methods
 

@@ -13,6 +13,7 @@ parameters:
         clientSecret: my_secret
         isProductionMode: false
         scope: payment-all
+        language: CS
 
 services:
     gopay.payments:
