@@ -110,7 +110,7 @@ behavior is well documented in [doc.gopay.com](https://doc.gopay.com/en).
 ### Enums ([Code lists](https://doc.gopay.com/en/?php#code-lists))
 
 Instead of hardcoding bank codes string you can use predefined enums. 
-Check using enums in  [create-payment example](/example/create-payment.php)
+Check using enums in  [create-payment example](/examples/create-payment.php)
 
 Type | Description |
 ---- | ----------- |
