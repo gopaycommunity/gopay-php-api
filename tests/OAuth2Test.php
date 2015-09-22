@@ -25,11 +25,12 @@ class OAuth2Test extends \PHPUnit_Framework_TestCase
 
     public function testNoRequestWhenCachedTokenIsValid()
     {
+        $this->cache->getAccessToken()->shouldBeCalled();
         $this->getAccessTokenWhenExpirationIs(false);
     }
 
     /** @dataProvider provideAccessToken */
-    public function testShouldRequestAccessTokenOnce($statusCode, array $jsonResponse, $isTokenLoaded)
+    public function testShouldRequestAccessTokenOnce($statusCode, array $jsonResponse, $isExpired)
     {
         $response = new Response;
         $response->statusCode = $statusCode;
@@ -45,18 +46,21 @@ class OAuth2Test extends \PHPUnit_Framework_TestCase
             ['grant_type' => 'client_credentials', 'scope' => $this->config['scope']]
         )->shouldBeCalled()->willReturn($response);
 
-        if ($isTokenLoaded) {
-            $this->cache->setAccessToken(Argument::cetera())->shouldBeCalled();
-        }
+        $this->cache
+            ->setAccessToken(Argument::type('GoPay\Token\AccessToken'))->shouldBeCalled()
+            ->will(function ($args) {
+                $this->getAccessToken()->willReturn($args[0]);
+            });
 
-        $this->getAccessTokenWhenExpirationIs(true);
+        $token = $this->getAccessTokenWhenExpirationIs(true);
+        assertThat($token->isExpired(), is($isExpired));
     }
 
     public function provideAccessToken()
     {
         return [
-            'success' => [200, ['access_token' => 'new token', 'expires_in' => 1800], true],
-            'failure' => [400, ['error' => 'access_denied'], false]
+            'success' => [200, ['access_token' => 'new token', 'expires_in' => 1800], false],
+            'failure' => [400, ['error' => 'access_denied'], true]
         ];
     }
 
@@ -68,9 +72,8 @@ class OAuth2Test extends \PHPUnit_Framework_TestCase
 
         $this->cache->setScope($this->config['scope'])->willReturn(null);
         $this->cache->isExpired()->willReturn($isExpired);
-        $this->cache->getAccessToken()->shouldBeCalled();
 
         $this->auth = new OAuth2($this->gopay->reveal(), $this->cache->reveal());
-        $this->auth->getAccessToken();
+        return $this->auth->getAccessToken();
     }
 }

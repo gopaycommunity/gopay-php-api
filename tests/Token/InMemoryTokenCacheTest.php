@@ -52,13 +52,13 @@ class InMemoryTokenCacheTest extends \PHPUnit_Framework_TestCase
     private function tokenShouldBeExpired()
     {
         assertThat($this->cache->isExpired(), is(true));
-        assertThat($this->cache->getAccessToken(), is(emptyString()));
+        assertThat($this->cache->getAccessToken()->token, is(emptyString()));
     }
 
     private function tokenShouldBeValid()
     {
         assertThat($this->cache->isExpired(), is(false));
-        assertThat($this->cache->getAccessToken(), not(emptyString()));
+        assertThat($this->cache->getAccessToken()->token, not(emptyString()));
     }
 
     public function provideScope()

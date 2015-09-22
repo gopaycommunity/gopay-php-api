@@ -16,6 +16,7 @@ class OAuth2
         $this->cache = $c;
     }
 
+    /** @return AccessToken */
     public function getAccessToken()
     {
         $scope = $this->gopay->getConfig('scope');
@@ -37,11 +38,12 @@ class OAuth2
             ],
             ['grant_type' => 'client_credentials', 'scope' => $scope]
         );
+        $t = new AccessToken;
+        $t->response = $response;
         if ($response->hasSucceed()) {
-            $t = new Token\AccessToken;
             $t->token = $response->json['access_token'];
             $t->expirationDate = new \DateTime("now + {$response->json['expires_in']} seconds");
-            $this->cache->setAccessToken($t);
         }
+        $this->cache->setAccessToken($t);
     }
 }

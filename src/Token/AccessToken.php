@@ -8,6 +8,8 @@ class AccessToken
     public $expirationDate;
     /** @var string */
     public $token = '';
+    /** @var \GoPay\Http\Response */
+    public $response;
 
     public function isExpired()
     {

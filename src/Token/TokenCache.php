@@ -19,7 +19,7 @@ abstract class TokenCache
 
     public function getAccessToken()
     {
-        return $this->isExpired() ? '' : $this->loadToken()->token;
+        return $this->isExpired() ? new AccessToken : $this->loadToken();
     }
 
     abstract public function setAccessToken(AccessToken $t);
