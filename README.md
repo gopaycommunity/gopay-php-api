@@ -63,9 +63,7 @@ API | SDK method |
 [Charge of pre-authorized payment](https://doc.gopay.com/en/#charge-of-pre-authorized-payment) | `$gopay->preauthorizedCapture($id)` |
 [Cancellation of the pre-authorized payment](https://doc.gopay.com/en/#cancellation-of-the-pre-authorized-payment) | `$gopay->preauthorizedVoid($id)` |
 
-*****
-
-## SDK response? Has my call succeed?
+### SDK response? Has my call succeed?
 
 SDK returns wrapped API response. Every method returns
 [`GoPay\Http\Response` object](src/Http/Response.php). Structure of `json/__toString`
@@ -92,9 +90,7 @@ Method | Description |
 `$response->statusCode` | HTTP status code |
 `$response->__toString()` | raw body from HTTP response |
 
-*****
-
-## Are required fields and allowed values validated?
+### Are required fields and allowed values validated?
 
 **No.** API [validates fields](https://doc.gopay.com/en/?shell#return-errors) pretty extensively
 so there is no need to duplicate validation in SDK. It would only introduce new type of error.
