@@ -10,7 +10,8 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
     private $id = 'irrelevant payment id';
     private $accessToken = 'irrelevant token';
     private $config = [
-        'language' => Language::CZECH
+        'language' => Language::CZECH,
+        'goid' => 'irrelevant id'
     ];
 
     private $gopay;
@@ -57,16 +58,23 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                 [
                     'payments/payment',
                     GoPay::JSON,
-                    ['irrelevant payment', 'lang' => $this->config['language']]
+                    [
+                        'irrelevant payment',
+                        'lang' => $this->config['language'],
+                        'target' => [
+                            'type' => 'ACCOUNT',
+                            'goid' => $this->config['goid']
+                        ]
+                    ]
                 ]
             ],
             'create payment - do not override parameters' => [
                 'createPayment',
-                [['irrelevant payment', 'lang' => 'invalid-lang']],
+                [['irrelevant payment', 'lang' => 'invalid-lang', 'target' => 'invalid-target']],
                 [
                     'payments/payment',
                     GoPay::JSON,
-                    ['irrelevant payment', 'lang' => 'invalid-lang']
+                    ['irrelevant payment', 'lang' => 'invalid-lang', 'target' => 'invalid-target']
                 ]
             ],
             'https://doc.gopay.com/en/#status-of-the-payment' => [

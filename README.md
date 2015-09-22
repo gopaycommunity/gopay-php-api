@@ -36,6 +36,7 @@ Add this line to `composer.json`
 
 ```php
 $gopay = GoPay\payments([
+    'goid' => 'my goid',
     'clientId' => 'my id',
     'clientSecret' => 'my secret',
     'isProductionMode' => false,
@@ -48,6 +49,7 @@ $gopay = GoPay\payments([
 
 Required field | Data type | Documentation |
 -------------- | --------- | ----------- |
+`goid` | string | default GoPay account used in `createPayment` if `target` is not specified
 `clientId` | string | https://doc.gopay.com/en/?shell#oauth |
 `clientSecret` | string | https://doc.gopay.com/en/?shell#oauth |
 `isProductionMode` | boolean | [test or production environment?](https://help.gopay.com/en/s/ey) |

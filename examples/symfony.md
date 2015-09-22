@@ -9,6 +9,7 @@ Example integration with basic configuration and
 ```yml
 parameters:
     gopay.config:
+        goid: my_goid
         clientId: my_id
         clientSecret: my_secret
         isProductionMode: false

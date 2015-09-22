@@ -16,6 +16,10 @@ class Payments
     public function createPayment(array $rawPayment)
     {
         $payment = $rawPayment + [
+            'target' => [
+                'type' => 'ACCOUNT',
+                'goid' => $this->gopay->getConfig('goid')
+            ],
             'lang' => $this->gopay->getConfig('language')
         ];
         return $this->api('', GoPay::JSON, $payment);
