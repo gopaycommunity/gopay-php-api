@@ -5,6 +5,7 @@ namespace GoPay;
 use Unirest\Method;
 use GoPay\Http\Request;
 use GoPay\Http\JsonBrowser;
+use GoPay\Definition\Language;
 
 class GoPay
 {
@@ -54,10 +55,17 @@ class GoPay
 
     private function normalizeHeaders(array $headers)
     {
+        $headers['Accept-Language'] = $this->getAcceptedLanguage();
         if (array_key_exists('Authorization', $headers) && is_array($headers['Authorization'])) {
             $credentials = implode(':', $headers['Authorization']);
             $headers['Authorization'] = 'Basic ' . base64_encode($credentials);
         }
         return $headers;
+    }
+
+    private function getAcceptedLanguage()
+    {
+        $language = $this->getConfig('language');
+        return Language::getAcceptedLocale($language);
     }
 }
