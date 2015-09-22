@@ -4,11 +4,18 @@ namespace GoPay\Token;
 
 class InMemoryTokenCache implements TokenCache
 {
+    /** @var TokenScope */
     private $scope;
-    private $tokens = [
-        TokenScope::ALL => ['', null],
-        TokenScope::CREATE_PAYMENT => ['', null]
-    ];
+    /** @var AccessToken[] */
+    private $tokens;
+
+    public function __construct()
+    {
+        $this->tokens = [
+            TokenScope::ALL => new AccessToken(),
+            TokenScope::CREATE_PAYMENT => new AccessToken()
+        ];
+    }
 
     public function setScope($scope)
     {
@@ -17,8 +24,7 @@ class InMemoryTokenCache implements TokenCache
 
     public function isExpired()
     {
-        list($token, $expirationDate) = $this->tokens[$this->scope];
-        return $token == '' || $expirationDate < (new \DateTime);
+        return $this->tokens[$this->scope]->isExpired();
     }
 
     public function getAccessToken()
@@ -28,6 +34,6 @@ class InMemoryTokenCache implements TokenCache
 
     public function setAccessToken($token, \DateTime $expirationDate)
     {
-        $this->tokens[$this->scope] = [$token, $expirationDate];
+        $this->tokens[$this->scope]->setToken($token, $expirationDate);
     }
 }
