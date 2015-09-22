@@ -20,7 +20,7 @@ class InMemoryTokenCache extends TokenCache
         $this->tokens[$this->scope] = $t;
     }
 
-    protected function loadToken()
+    public function getAccessToken()
     {
         return $this->tokens[$this->scope];
     }

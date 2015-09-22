@@ -14,16 +14,10 @@ abstract class TokenCache
 
     public function isExpired()
     {
-        return $this->loadToken()->isExpired();
-    }
-
-    public function getAccessToken()
-    {
-        return $this->isExpired() ? new AccessToken : $this->loadToken();
+        return $this->getAccessToken()->isExpired();
     }
 
     abstract public function setAccessToken(AccessToken $t);
 
-    /** @return \GoPay\Token\AccessToken */
-    abstract protected function loadToken();
+    abstract public function getAccessToken();
 }

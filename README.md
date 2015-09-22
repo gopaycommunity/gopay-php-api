@@ -94,7 +94,7 @@ class PrimitiveFileCache extends TokenCache
         file_put_contents($this->file, serialize($t);
     }
 
-    protected function loadToken()
+    public function getAccessToken()
     {
         if (file_exists($this->file)) {
             return unserialize(file_get_contents($this->file));

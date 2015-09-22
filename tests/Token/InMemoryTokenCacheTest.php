@@ -13,17 +13,17 @@ class InMemoryTokenCacheTest extends \PHPUnit_Framework_TestCase
     }
 
     /** @dataProvider provideScope */
-    public function testNotInitiliazedCacheHasEmptyToken($scope)
+    public function testNotInitiliazedCacheIsExpired($scope)
     {
         $this->cache->setScope($scope);
         $this->tokenShouldBeExpired();
     }
 
-    public function testExpiredTokenIsIgnored()
+    public function testDateIsExpiredButTokenIsNotOverriden()
     {
         $expiredDate = new \DateTime('now - 1 month');
         $this->givenToken('irrelevant token', $expiredDate);
-        $this->tokenShouldBeExpired();
+        $this->tokenShouldBeExpired('irrelevant token');
     }
 
     public function testIsNotExpiredWhenTokenIsSetAndDateIsInTheFuture()
@@ -49,10 +49,11 @@ class InMemoryTokenCacheTest extends \PHPUnit_Framework_TestCase
         $this->cache->setAccessToken($t);
     }
 
-    private function tokenShouldBeExpired()
+    private function tokenShouldBeExpired($expectedToken = null)
     {
+        $expectedToken = $expectedToken ?: emptyString();
         assertThat($this->cache->isExpired(), is(true));
-        assertThat($this->cache->getAccessToken()->token, is(emptyString()));
+        assertThat($this->cache->getAccessToken()->token, is($expectedToken));
     }
 
     private function tokenShouldBeValid()
