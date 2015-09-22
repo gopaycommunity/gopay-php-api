@@ -10,9 +10,12 @@ class Language
     const GERMAN = 'DE';
     const RUSSIAN = 'RU';
 
+    const LOCALE_CZECH = 'cs-CZ';
+    const LOCALE_ENGLISH = 'en-US';
+
     public static function getAcceptedLocale($language)
     {
         static $czechLike = [Language::CZECH, Language::SLOVAK];
-        return in_array($language, $czechLike) ? 'cs-CZ' : 'en-US';
+        return in_array($language, $czechLike) ? self::LOCALE_CZECH : self::LOCALE_ENGLISH;
     }
 }

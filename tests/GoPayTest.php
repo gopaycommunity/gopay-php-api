@@ -10,33 +10,11 @@ use Prophecy\Argument;
 class GoPayTest extends \PHPUnit_Framework_TestCase
 {
     private $urlPath = 'irrelevant-path';
+    private $browser;
 
-    /** @dataProvider provideLanguage */
-    public function testShouldLocalizeErrorMessages($language, $expectedLanguage)
+    protected function setUp()
     {
-        $browser = $this->prophesize('GoPay\Http\JsonBrowser');
-        $browser->send(Argument::that(function (Request $r) use ($expectedLanguage) {
-            assertThat($r->headers['Accept-Language'], is($expectedLanguage));
-            return true;
-        }))->shouldBeCalled();
-
-        $gopay = new GoPay(['isProductionMode' => false, 'language' => $language], $browser->reveal());
-        $gopay->call($this->urlPath, []);
-    }
-
-    public function provideLanguage()
-    {
-        $languages = [
-            'cs-CZ' => [Language::CZECH, Language::SLOVAK],
-            'en-US' => ['', Language::ENGLISH, Language::RUSSIAN, 'unknown language'],
-        ];
-        $params = [];
-        foreach ($languages as $locale => $langs) {
-            foreach ($langs as $lang) {
-                $params[] = [$lang, $locale];
-            }
-        }
-        return $params;
+        $this->browser = $this->prophesize('GoPay\Http\JsonBrowser');
     }
 
     /** @dataProvider provideRequest */
@@ -45,14 +23,10 @@ class GoPayTest extends \PHPUnit_Framework_TestCase
         $expectedRequest->headers = array_merge(
             $headers,
             $expectedRequest->headers,
-            ['Accept-Language' => 'cs-CZ']
+            ['Accept-Language' => Language::LOCALE_CZECH]
         );
-
-        $browser = $this->prophesize('GoPay\Http\JsonBrowser');
-        $browser->send($expectedRequest)->shouldBeCalled();
-
-        $gopay = new GoPay(['isProductionMode' => $isProductionMode, 'language' => Language::CZECH], $browser->reveal());
-        $gopay->call($this->urlPath, $headers, $body);
+        $this->browser->send($expectedRequest)->shouldBeCalled();
+        $this->givenGopay(Language::CZECH, $isProductionMode)->call($this->urlPath, $headers, $body);
     }
 
     public function provideRequest()
@@ -93,6 +67,31 @@ class GoPayTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
+    /** @dataProvider provideLanguage */
+    public function testShouldLocalizeErrorMessages($language, $expectedLanguage)
+    {
+        $this->browser->send(Argument::that(function (Request $r) use ($expectedLanguage) {
+            assertThat($r->headers['Accept-Language'], is($expectedLanguage));
+            return true;
+        }))->shouldBeCalled();
+        $this->givenGopay($language)->call($this->urlPath, []);
+    }
+
+    public function provideLanguage()
+    {
+        $languages = [
+            Language::LOCALE_CZECH => [Language::CZECH, Language::SLOVAK],
+            Language::LOCALE_ENGLISH => ['', Language::ENGLISH, Language::RUSSIAN, 'unknown language'],
+        ];
+        $params = [];
+        foreach ($languages as $locale => $langs) {
+            foreach ($langs as $lang) {
+                $params[] = [$lang, $locale];
+            }
+        }
+        return $params;
+    }
+
     private function buildRequest($method, $baseUrl, $auth, $body = '')
     {
         $r = new Request("{$baseUrl}{$this->urlPath}");
@@ -100,5 +99,9 @@ class GoPayTest extends \PHPUnit_Framework_TestCase
         $r->headers = ['Authorization' => $auth];
         $r->body = $body;
         return $r;
+    }
+    private function givenGopay($language, $isProduction = false)
+    {
+        return new GoPay(['isProductionMode' => $isProduction, 'language' => $language], $this->browser->reveal());
     }
 }
