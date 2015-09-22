@@ -3,6 +3,7 @@
 namespace GoPay;
 
 use Unirest\Method;
+use GoPay\Http\Request;
 use GoPay\Http\Browser;
 
 class GoPay
@@ -26,12 +27,11 @@ class GoPay
 
     public function call($urlPath, array $headers, $data = null)
     {
-        return $this->browser->send(
-            is_array($data) ? Method::POST : Method::GET,
-            "{$this->getBaseApiUrl()}{$urlPath}",
-            $this->normalizeHeaders($headers),
-            $this->encodeData($headers, $data)
-        );
+        $r = new Request("{$this->getBaseApiUrl()}{$urlPath}");
+        $r->method = is_array($data) ? Method::POST : Method::GET;
+        $r->headers = $this->normalizeHeaders($headers);
+        $r->body = $this->encodeData($headers, $data);
+        return $this->browser->send($r);
     }
 
     private function getBaseApiUrl()

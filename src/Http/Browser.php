@@ -2,14 +2,14 @@
 
 namespace GoPay\Http;
 
-use Unirest\Request;
+use Unirest\Request as Unirest;
 
 class Browser
 {
-    public function send($method, $url, $headers = array(), $body = null)
+    public function send(Request $r)
     {
         try {
-            $http = Request::{$method}($url, $headers, $body);
+            $http = Unirest::{$r->method}($r->url, $r->headers, $r->body);
             $response = new Response((string) $http->raw_body);
             $response->statusCode = (string) $http->code;
             $response->json = json_decode((string) $response, true);
