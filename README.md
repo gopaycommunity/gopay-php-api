@@ -107,6 +107,18 @@ behavior is well documented in [doc.gopay.com](https://doc.gopay.com/en).
 
 ## Advanced usage
 
+### Enums ([Code lists](https://doc.gopay.com/en/?php#code-lists))
+
+Instead of hardcoding bank codes string you can use predefined enums. 
+Check using enums in  [create-payment example](/example/create-payment.php)
+
+Type | Description |
+---- | ----------- |
+[Language](/src/Definition/Language.php) | Payment language, localization of error messages |
+[Token scope](/src/Token/TokenScope.php) | Authorization scope for [OAuth2](https://doc.gopay.com/en/?php#oauth) |
+[Payment enums](/src/Definition/Payment) | Enums for creating payment |
+[Response enums](/src/Definition/Response) | Result of creating payment, executing payment operations |
+
 ### Framework integration
 
 * [Symfony2](/examples/symfony.md)
