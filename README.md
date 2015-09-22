@@ -80,7 +80,7 @@ $gopay = GoPay\payments(['..config...'], new PrimitiveFileCache());
 use GoPay\Token\TokenCache;
 use GoPay\Token\AccessToken;
 
-class PrimitiveFileCache implements TokenCache
+class PrimitiveFileCache extends TokenCache
 {
     private $file;
 
@@ -89,22 +89,12 @@ class PrimitiveFileCache implements TokenCache
         $this->file = __DIR__ . "/{$scope}";
     }
 
-    public function isExpired()
-    {
-        return $this->loadTokenFromFile()->isExpired();
-    }
-
-    public function getAccessToken()
-    {
-        return $this->loadTokenFromFile()->getAccessToken();
-    }
-
     public function setAccessToken(AccessToken $t)
     {
         file_put_contents($this->file, serialize($t);
     }
 
-    private function loadToken()
+    protected function loadToken()
     {
         if (file_exists($this->file)) {
             return unserialize(file_get_contents($this->file));

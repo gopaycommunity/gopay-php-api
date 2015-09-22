@@ -2,13 +2,28 @@
 
 namespace GoPay\Token;
 
-interface TokenCache
+abstract class TokenCache
 {
-    public function setScope($scope);
+    /** @var TokenScope */
+    protected $scope;
 
-    public function isExpired();
+    public function setScope($scope)
+    {
+        $this->scope = $scope;
+    }
 
-    public function getAccessToken();
+    public function isExpired()
+    {
+        return $this->loadToken()->isExpired();
+    }
 
-    public function setAccessToken(AccessToken $t);
+    public function getAccessToken()
+    {
+        return $this->isExpired() ? '' : $this->loadToken()->token;
+    }
+
+    abstract public function setAccessToken(AccessToken $t);
+
+    /** @return \GoPay\Token\AccessToken */
+    abstract protected function loadToken();
 }
