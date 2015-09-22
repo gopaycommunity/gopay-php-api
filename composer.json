@@ -18,7 +18,7 @@
         "psr-4": {
             "GoPay\\": "src/"
         },
-        "files": ["bootstrap.php"]
+        "files": ["factory.php"]
     },
     "require": {
         "mashape/unirest-php": ">2.6"
