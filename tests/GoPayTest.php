@@ -14,7 +14,7 @@ class GoPayTest extends \PHPUnit_Framework_TestCase
     {
         $expectedRequest->headers = array_merge($headers, $expectedRequest->headers);
 
-        $browser = $this->prophesize('GoPay\Http\Browser');
+        $browser = $this->prophesize('GoPay\Http\JsonBrowser');
         $browser->send($expectedRequest)->shouldBeCalled();
 
         $gopay = new GoPay(['isProductionMode' => $isProductionMode], $browser->reveal());

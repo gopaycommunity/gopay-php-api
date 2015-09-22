@@ -2,12 +2,12 @@
 
 namespace GoPay\Http;
 
-class BrowserTest extends \PHPUnit_Framework_TestCase
+class JsonBrowserTest extends \PHPUnit_Framework_TestCase
 {
     /** @dataProvider provideJson */
     public function testShouldExecuteHttpRequestAndAlwaysReturnResponse($url, $hasSucceed, $expectedJson)
     {
-        $browser = new Browser();
+        $browser = new JsonBrowser();
         $response = $browser->send(new Request($url));
         assertThat($response->hasSucceed(), is($hasSucceed));
         assertThat((string) $response, is(nonEmptyString()));

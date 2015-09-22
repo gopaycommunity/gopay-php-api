@@ -4,7 +4,7 @@ namespace GoPay\Http;
 
 use Unirest\Request as Unirest;
 
-class Browser
+class JsonBrowser
 {
     public function send(Request $r)
     {
