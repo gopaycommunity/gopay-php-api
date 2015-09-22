@@ -14,7 +14,8 @@ abstract class TokenCache
 
     public function isExpired()
     {
-        return $this->getAccessToken()->isExpired();
+        $token = $this->getAccessToken();
+        return !($token instanceof AccessToken) || $token->isExpired();
     }
 
     abstract public function setAccessToken(AccessToken $t);
