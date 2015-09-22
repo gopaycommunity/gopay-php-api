@@ -6,8 +6,8 @@ class InMemoryTokenCache implements TokenCache
 {
     private $scope;
     private $tokens = [
-        PaymentScope::ALL => ['', null],
-        PaymentScope::CREATE => ['', null]
+        TokenScope::ALL => ['', null],
+        TokenScope::CREATE_PAYMENT => ['', null]
     ];
 
     public function setScope($scope)

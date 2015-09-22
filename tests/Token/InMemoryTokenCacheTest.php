@@ -9,7 +9,7 @@ class InMemoryTokenCacheTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->cache = new InMemoryTokenCache;
-        $this->cache->setScope(PaymentScope::ALL);
+        $this->cache->setScope(TokenScope::ALL);
     }
 
     /** @dataProvider provideScope */
@@ -34,10 +34,10 @@ class InMemoryTokenCacheTest extends \PHPUnit_Framework_TestCase
 
     public function testExpirationTokenIsDifferentForEachScope()
     {
-        $this->cache->setScope(PaymentScope::ALL);
+        $this->cache->setScope(TokenScope::ALL);
         $this->cache->setAccessToken('irrelevant token', new \DateTime('now + 1 day'));
         $this->tokenShouldBeValid();
-        $this->cache->setScope(PaymentScope::CREATE);
+        $this->cache->setScope(TokenScope::CREATE_PAYMENT);
         $this->tokenShouldBeExpired();
     }
 
@@ -56,8 +56,8 @@ class InMemoryTokenCacheTest extends \PHPUnit_Framework_TestCase
     public function provideScope()
     {
         return [
-            [PaymentScope::ALL],
-            [PaymentScope::CREATE],
+            [TokenScope::ALL],
+            [TokenScope::CREATE_PAYMENT],
         ];
     }
 }

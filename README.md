@@ -65,7 +65,7 @@ Unfortunately it's default behavior of [`GoPay\Token\InMemoryTokenCache`](src/To
 But you can implement your cache and store tokens in Memcache, Redis, files, ... It's up to you.
 
 Your cache must implement [`GoPay\Token\TokenCache`](src/Token/TokenCache.php) interface.
-Be aware that there are two [scopes](https://doc.gopay.com/en/?shell#scope) (`PaymentScope`).
+Be aware that there are two [scopes](https://doc.gopay.com/en/?shell#scope) (`TokenScope`).
 So token must be cached for each scope. 
 Below you can see example implementation of caching tokens in file (@todo test it :):
 

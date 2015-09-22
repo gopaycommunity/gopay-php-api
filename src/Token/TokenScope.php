@@ -2,8 +2,8 @@
 
 namespace GoPay\Token;
 
-class PaymentScope
+class TokenScope
 {
-    const CREATE = 'payment-create';
+    const CREATE_PAYMENT = 'payment-create';
     const ALL = 'payment-all';
 }
