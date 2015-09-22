@@ -83,9 +83,8 @@ if ($response->hasSucceed()) {
     echo "hooray, API returned {$response}";
     return $response->json['gw_url']; // url for initiation of gateway
 } else {
-    echo "oop, API returns {$response->statusCode}: {$response}";
     // errors format: https://doc.gopay.com/en/?shell#http-result-codes
-    echo var_dump($response->json);
+    echo "oops, API returned {$response->statusCode}: {$response}";
 }
 
 ```
