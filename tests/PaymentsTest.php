@@ -70,15 +70,6 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                     ['amount' => 'amount']
                 ]
             ],
-            'https://doc.gopay.com/en/#recurring-payment' => [
-                'createRecurrencePayment',
-                [['irrelevant payment']],
-                [
-                    'payments/payment',
-                    $jsonHeaders,
-                    ['irrelevant payment']
-                ]
-            ],
             'https://doc.gopay.com/en/#recurring-payment-on-demand' => [
                 'recurrenceOnDemand',
                 [$this->id, ['irrelevant subsequent payment']],
@@ -95,15 +86,6 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                     "payments/payment/{$this->id}/void-recurrence",
                     $formHeaders,
                     []
-                ]
-            ],
-            'https://doc.gopay.com/en/#pre-authorized-payment' => [
-                'createPreauthorizedPayment',
-                [['irrelevant payment']],
-                [
-                    'payments/payment',
-                    $jsonHeaders,
-                    ['irrelevant payment']
                 ]
             ],
             'https://doc.gopay.com/en/#charge-of-pre-authorized-payment' => [
