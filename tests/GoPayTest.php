@@ -3,6 +3,7 @@
 namespace GoPay;
 
 use Prophecy\Argument;
+use Unirest\Method;
 
 class GoPayTest extends \PHPUnit_Framework_TestCase
 {
@@ -35,7 +36,7 @@ class GoPayTest extends \PHPUnit_Framework_TestCase
                 true,
                 ['Content-Type' => GoPay::FORM, 'Authorization' => 'Bearer irrelevantToken'],
                 null,
-                'GET',
+                Method::GET,
                 'https://gate.gopay.cz/api/',
                 'Bearer irrelevantToken',
                 ''
@@ -44,7 +45,7 @@ class GoPayTest extends \PHPUnit_Framework_TestCase
                 true,
                 ['Content-Type' => GoPay::FORM, 'Authorization' => 'Bearer irrelevantToken'],
                 ['key' => 'value'],
-                'POST',
+                Method::POST,
                 'https://gate.gopay.cz/api/',
                 'Bearer irrelevantToken',
                 'key=value'
@@ -53,7 +54,7 @@ class GoPayTest extends \PHPUnit_Framework_TestCase
                 false,
                 ['Content-Type' => GoPay::JSON, 'Authorization' => ['user', 'pass']],
                 ['key' => 'value'],
-                'POST',
+                Method::POST,
                 'https://gw.sandbox.gopay.com/api/',
                 'Basic dXNlcjpwYXNz',
                 '{"key":"value"}'
