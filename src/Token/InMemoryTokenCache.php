@@ -32,8 +32,8 @@ class InMemoryTokenCache implements TokenCache
         return $this->isExpired() ? '' : reset($this->tokens[$this->scope]);
     }
 
-    public function setAccessToken($token, \DateTime $expirationDate)
+    public function setAccessToken(AccessToken $t)
     {
-        $this->tokens[$this->scope]->setToken($token, $expirationDate);
+        $this->tokens[$this->scope] = $t;
     }
 }

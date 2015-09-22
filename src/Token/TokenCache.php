@@ -10,5 +10,5 @@ interface TokenCache
 
     public function getAccessToken();
 
-    public function setAccessToken($token, \DateTime $expirationDate);
+    public function setAccessToken(AccessToken $t);
 }

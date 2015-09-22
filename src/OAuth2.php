@@ -3,6 +3,7 @@
 namespace GoPay;
 
 use GoPay\Token\TokenCache;
+use GoPay\Token\AccessToken;
 
 class OAuth2
 {
@@ -37,9 +38,10 @@ class OAuth2
             ['grant_type' => 'client_credentials', 'scope' => $scope]
         );
         if ($response->hasSucceed()) {
-            $accessToken = $response->json['access_token'];
-            $expirationDate = new \DateTime("now + {$response->json['expires_in']} seconds");
-            $this->cache->setAccessToken($accessToken, $expirationDate);
+            $t = new Token\AccessToken;
+            $t->token = $response->json['access_token'];
+            $t->expirationDate = new \DateTime("now + {$response->json['expires_in']} seconds");
+            $this->cache->setAccessToken($t);
         }
     }
 }

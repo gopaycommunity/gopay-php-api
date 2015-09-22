@@ -99,11 +99,9 @@ class PrimitiveFileCache implements TokenCache
         return $this->loadTokenFromFile()->getAccessToken();
     }
 
-    public function setAccessToken($token, \DateTime $expirationDate)
+    public function setAccessToken(AccessToken $t)
     {
-        $token = new AccessToken;
-        $token->setToken($token, $expirationDate);
-        file_put_contents($this->file, serialize($token);
+        file_put_contents($this->file, serialize($t);
     }
 
     private function loadToken()

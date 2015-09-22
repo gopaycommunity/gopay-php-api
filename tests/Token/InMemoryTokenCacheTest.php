@@ -22,23 +22,31 @@ class InMemoryTokenCacheTest extends \PHPUnit_Framework_TestCase
     public function testExpiredTokenIsIgnored()
     {
         $expiredDate = new \DateTime('now - 1 month');
-        $this->cache->setAccessToken('irrelevant token', $expiredDate);
+        $this->givenToken('irrelevant token', $expiredDate);
         $this->tokenShouldBeExpired();
     }
 
     public function testIsNotExpiredWhenTokenIsSetAndDateIsInTheFuture()
     {
-        $this->cache->setAccessToken('irrelevant token', new \DateTime('now + 1 day'));
+        $this->givenToken('irrelevant token', new \DateTime('now + 1 day'));
         $this->tokenShouldBeValid();
     }
 
     public function testExpirationTokenIsDifferentForEachScope()
     {
         $this->cache->setScope(TokenScope::ALL);
-        $this->cache->setAccessToken('irrelevant token', new \DateTime('now + 1 day'));
+        $this->givenToken('irrelevant token', new \DateTime('now + 1 day'));
         $this->tokenShouldBeValid();
         $this->cache->setScope(TokenScope::CREATE_PAYMENT);
         $this->tokenShouldBeExpired();
+    }
+
+    public function givenToken($token, $expiration)
+    {
+        $t = new AccessToken();
+        $t->token = $token;
+        $t->expirationDate = $expiration;
+        $this->cache->setAccessToken($t);
     }
 
     private function tokenShouldBeExpired()
