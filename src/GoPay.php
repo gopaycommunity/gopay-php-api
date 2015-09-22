@@ -26,12 +26,12 @@ class GoPay
         return $this->config[$key];
     }
 
-    public function call($urlPath, array $headers, $data = null)
+    public function call($urlPath, $contentType, $authorization, $data = null)
     {
         $r = new Request("{$this->getBaseApiUrl()}{$urlPath}");
         $r->method = is_array($data) ? Method::POST : Method::GET;
-        $r->headers = $this->normalizeHeaders($headers);
-        $r->body = $this->encodeData($headers, $data);
+        $r->headers = $this->buildHeaders($contentType, $authorization);
+        $r->body = $this->encodeData($contentType, $data);
         return $this->browser->send($r);
     }
 
@@ -44,23 +44,32 @@ class GoPay
         return $urls[(bool) $this->getConfig('isProductionMode')];
     }
 
-    private function encodeData(array $headers, $data)
+    private function encodeData($contentType, $data)
     {
         if ($data) {
-            $encoder = $headers['Content-Type'] == GoPay::FORM ? 'http_build_query' : 'json_encode';
+            $encoder = $contentType == GoPay::FORM ? 'http_build_query' : 'json_encode';
             return $encoder($data);
         }
         return '';
     }
 
-    private function normalizeHeaders(array $headers)
+    private function buildHeaders($contentType, $authorization)
     {
-        $headers['Accept-Language'] = $this->getAcceptedLanguage();
-        if (array_key_exists('Authorization', $headers) && is_array($headers['Authorization'])) {
-            $credentials = implode(':', $headers['Authorization']);
-            $headers['Authorization'] = 'Basic ' . base64_encode($credentials);
+        return [
+            'Accept' => 'application/json',
+            'Accept-Language' => $this->getAcceptedLanguage(),
+            'Content-Type' => $contentType,
+            'Authorization' => $this->getAuthorization($authorization)
+        ];
+    }
+
+    private function getAuthorization($authorization)
+    {
+        if (is_array($authorization)) {
+            $credentials = implode(':', $authorization);
+            return 'Basic ' . base64_encode($credentials);
         }
-        return $headers;
+        return $authorization;
     }
 
     private function getAcceptedLanguage()

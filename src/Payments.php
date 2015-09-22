@@ -58,11 +58,8 @@ class Payments
         if ($token->token) {
             return $this->gopay->call(
                 "payments/payment{$urlPath}",
-                [
-                    'Accept' => 'application/json',
-                    'Content-Type' => $contentType,
-                    'Authorization' => "Bearer {$token->token}"
-                ],
+                $contentType,
+                "Bearer {$token->token}",
                 $data
             );
         }

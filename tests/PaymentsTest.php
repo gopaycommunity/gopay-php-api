@@ -42,6 +42,7 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
         $this->gopay->call(
             $expectedRequest[0],
             $expectedRequest[1],
+            "Bearer {$this->accessToken}",
             $expectedRequest[2]
         )->shouldBeCalled();
         call_user_func_array(array($this->api, $method), $params);
@@ -49,23 +50,13 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
 
     public function provideApiMethods()
     {
-        $jsonHeaders = [
-            'Accept' => 'application/json',
-            'Content-Type' => 'application/json',
-            'Authorization' => "Bearer {$this->accessToken}"
-        ];
-        $formHeaders = [
-            'Accept' => 'application/json',
-            'Content-Type' => 'application/x-www-form-urlencoded',
-            'Authorization' => "Bearer {$this->accessToken}"
-        ];
         return [
             'https://doc.gopay.com/en/#standard-payment - add default language' => [
                 'createPayment',
                 [['irrelevant payment']],
                 [
                     'payments/payment',
-                    $jsonHeaders,
+                    GoPay::JSON,
                     ['irrelevant payment', 'lang' => $this->config['language']]
                 ]
             ],
@@ -74,7 +65,7 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                 [['irrelevant payment', 'lang' => 'invalid-lang']],
                 [
                     'payments/payment',
-                    $jsonHeaders,
+                    GoPay::JSON,
                     ['irrelevant payment', 'lang' => 'invalid-lang']
                 ]
             ],
@@ -83,7 +74,7 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                 [$this->id],
                 [
                     "payments/payment/{$this->id}",
-                    $formHeaders,
+                    GoPay::FORM,
                     null
                 ]
             ],
@@ -92,7 +83,7 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                 [$this->id, 'amount'],
                 [
                     "payments/payment/{$this->id}/refund",
-                    $formHeaders,
+                    GoPay::FORM,
                     ['amount' => 'amount']
                 ]
             ],
@@ -101,7 +92,7 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                 [$this->id, ['irrelevant subsequent payment']],
                 [
                     "payments/payment/{$this->id}/create-recurrence",
-                    $jsonHeaders,
+                    GoPay::JSON,
                     ['irrelevant subsequent payment']
                 ]
             ],
@@ -110,7 +101,7 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                 [$this->id],
                 [
                     "payments/payment/{$this->id}/void-recurrence",
-                    $formHeaders,
+                    GoPay::FORM,
                     []
                 ]
             ],
@@ -119,7 +110,7 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                 [$this->id],
                 [
                     "payments/payment/{$this->id}/capture",
-                    $formHeaders,
+                    GoPay::FORM,
                     []
                 ]
             ],
@@ -128,7 +119,7 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                 [$this->id],
                 [
                     "payments/payment/{$this->id}/void-authorization",
-                    $formHeaders,
+                    GoPay::FORM,
                     []
                 ]
             ],

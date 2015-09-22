@@ -18,15 +18,15 @@ class GoPayTest extends \PHPUnit_Framework_TestCase
     }
 
     /** @dataProvider provideRequest */
-    public function testShouldCompleteRequest($isProductionMode, $headers, $body, Request $expectedRequest)
+    public function testShouldCompleteRequest($isProductionMode, $contentType, $auth, $body, Request $expectedRequest)
     {
-        $expectedRequest->headers = array_merge(
-            $headers,
-            $expectedRequest->headers,
-            ['Accept-Language' => Language::LOCALE_CZECH]
-        );
+        $expectedRequest->headers = $expectedRequest->headers + [
+            'Accept' => 'application/json',
+            'Content-Type' => $contentType,
+            'Accept-Language' => Language::LOCALE_CZECH
+        ];
         $this->browser->send($expectedRequest)->shouldBeCalled();
-        $this->givenGopay(Language::CZECH, $isProductionMode)->call($this->urlPath, $headers, $body);
+        $this->givenGopay(Language::CZECH, $isProductionMode)->call($this->urlPath, $contentType, $auth, $body);
     }
 
     public function provideRequest()
@@ -34,7 +34,8 @@ class GoPayTest extends \PHPUnit_Framework_TestCase
         return [
             'get form in production' => [
                 true,
-                ['Content-Type' => GoPay::FORM, 'Authorization' => 'Bearer irrelevantToken'],
+                GoPay::FORM,
+                'Bearer irrelevantToken',
                 null,
                 $this->buildRequest(
                     Method::GET,
@@ -44,7 +45,8 @@ class GoPayTest extends \PHPUnit_Framework_TestCase
             ],
             'send form in production' => [
                 true,
-                ['Content-Type' => GoPay::FORM, 'Authorization' => 'Bearer irrelevantToken'],
+                GoPay::FORM,
+                'Bearer irrelevantToken',
                 ['key' => 'value'],
                 $this->buildRequest(
                     Method::POST,
@@ -55,7 +57,8 @@ class GoPayTest extends \PHPUnit_Framework_TestCase
             ],
             'send json in test' => [
                 false,
-                ['Content-Type' => GoPay::JSON, 'Authorization' => ['user', 'pass']],
+                GoPay::JSON,
+                ['user', 'pass'],
                 ['key' => 'value'],
                 $this->buildRequest(
                     Method::POST,
@@ -74,7 +77,7 @@ class GoPayTest extends \PHPUnit_Framework_TestCase
             assertThat($r->headers['Accept-Language'], is($expectedLanguage));
             return true;
         }))->shouldBeCalled();
-        $this->givenGopay($language)->call($this->urlPath, []);
+        $this->givenGopay($language)->call($this->urlPath, 'irrelevant content-type', 'irrelevant auth');
     }
 
     public function provideLanguage()

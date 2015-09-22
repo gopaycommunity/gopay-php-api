@@ -38,11 +38,8 @@ class OAuth2Test extends \PHPUnit_Framework_TestCase
 
         $this->gopay->call(
             'oauth2/token',
-            [
-                'Accept' => 'application/json',
-                'Content-Type' => 'application/x-www-form-urlencoded',
-                'Authorization' => [$this->config['clientID'], $this->config['clientSecret']],
-            ],
+            GoPay::FORM,
+            [$this->config['clientID'], $this->config['clientSecret']],
             ['grant_type' => 'client_credentials', 'scope' => $this->config['scope']]
         )->shouldBeCalled()->willReturn($response);
 
