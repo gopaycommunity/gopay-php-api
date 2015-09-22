@@ -50,14 +50,18 @@ class Payments
 
     private function api($urlPath, $contentType, $data = null)
     {
-        return $this->gopay->call(
-            "payments/payment{$urlPath}",
-            [
-                'Accept' => 'application/json',
-                'Content-Type' => $contentType,
-                'Authorization' => "Bearer {$this->auth->getAccessToken()}"
-            ],
-            $data
-        );
+        $token = $this->auth->getAccessToken();
+        if ($token->token) {
+            return $this->gopay->call(
+                "payments/payment{$urlPath}",
+                [
+                    'Accept' => 'application/json',
+                    'Content-Type' => $contentType,
+                    'Authorization' => "Bearer {$token->token}"
+                ],
+                $data
+            );
+        }
+        return $token->response;
     }
 }

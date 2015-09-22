@@ -2,6 +2,8 @@
 
 namespace GoPay;
 
+use GoPay\Token\AccessToken;
+
 class PaymentsTest extends \PHPUnit_Framework_TestCase
 {
     private $id = 'irrelevant payment id';
@@ -18,10 +20,18 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
         $this->api = new Payments($this->gopay->reveal(), $this->auth->reveal());
     }
 
+    public function testShouldReturnAuthRequestWhenTokenIsNotLoaded()
+    {
+        $token = $this->givenAccessToken('');
+        $token->response = 'irrelevant response (instanceof Response)';
+        $response = $this->api->getStatus('irrelevant id');
+        assertThat($response, identicalTo($token->response));
+    }
+
     /** @dataProvider provideApiMethods */
     public function testShouldCallApi($method, $params, $expectedRequest)
     {
-        $this->auth->getAccessToken()->shouldBeCalled()->willReturn($this->accessToken);
+        $this->givenAccessToken($this->accessToken);
         $this->gopay->call(
             $expectedRequest[0],
             $expectedRequest[1],
@@ -107,5 +117,12 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                 ]
             ],
         ];
+    }
+    private function givenAccessToken($token)
+    {
+        $t = new AccessToken;
+        $t->token = $token;
+        $this->auth->getAccessToken()->shouldBeCalled()->willReturn($t);
+        return $t;
     }
 }
