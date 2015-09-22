@@ -3,10 +3,10 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use GoPay\Definition\Language;
-use GoPay\Definition\Currency;
-use GoPay\Definition\PaymentInstrument;
-use GoPay\Definition\BankSwiftCode;
-use GoPay\Definition\Recurrence;
+use GoPay\Definition\Payment\Currency;
+use GoPay\Definition\Payment\PaymentInstrument;
+use GoPay\Definition\Payment\BankSwiftCode;
+use GoPay\Definition\Payment\Recurrence;
 
 $gopay = GoPay\payments([
     'goid' => 'A',

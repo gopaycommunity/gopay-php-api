@@ -1,6 +1,6 @@
 <?php
 
-namespace GoPay\Definition;
+namespace GoPay\Definition\Payment;
 
 class Recurrence
 {
