@@ -120,7 +120,7 @@ But you can implement your cache and store tokens in Memcache, Redis, files, ...
 Your cache must implement template methods from [`GoPay\Token\TokenCache`](src/Token/TokenCache.php).
 Be aware that there are two [scopes](https://doc.gopay.com/en/?shell#scope) (`TokenScope`).
 So token must be cached for each scope. 
-Below you can see example implementation of caching tokens in file (@todo test it :):
+Below you can see example implementation of caching tokens in file:
 
 
 ```php
