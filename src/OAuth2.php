@@ -31,7 +31,7 @@ class OAuth2
     {
         $response = $this->gopay->call(
             'oauth2/token',
-            Gopay::FORM,
+            GoPay::FORM,
             [$this->gopay->getConfig('clientId'), $this->gopay->getConfig('clientSecret')],
             ['grant_type' => 'client_credentials', 'scope' => $scope]
         );

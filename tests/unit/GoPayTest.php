@@ -26,7 +26,7 @@ class GoPayTest extends \PHPUnit_Framework_TestCase
             'Accept-Language' => Language::LOCALE_CZECH
         ];
         $this->browser->send($expectedRequest)->shouldBeCalled();
-        $this->givenGopay(Language::CZECH, $isProductionMode)->call($this->urlPath, $contentType, $auth, $body);
+        $this->givenGoPay(Language::CZECH, $isProductionMode)->call($this->urlPath, $contentType, $auth, $body);
     }
 
     public function provideRequest()
@@ -77,7 +77,7 @@ class GoPayTest extends \PHPUnit_Framework_TestCase
             assertThat($r->headers['Accept-Language'], is($expectedLanguage));
             return true;
         }))->shouldBeCalled();
-        $this->givenGopay($language)->call($this->urlPath, 'irrelevant content-type', 'irrelevant auth');
+        $this->givenGoPay($language)->call($this->urlPath, 'irrelevant content-type', 'irrelevant auth');
     }
 
     public function provideLanguage()
@@ -103,7 +103,7 @@ class GoPayTest extends \PHPUnit_Framework_TestCase
         $r->body = $body;
         return $r;
     }
-    private function givenGopay($language, $isProduction = false)
+    private function givenGoPay($language, $isProduction = false)
     {
         return new GoPay(['isProductionMode' => $isProduction, 'language' => $language], $this->browser->reveal());
     }

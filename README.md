@@ -1,5 +1,5 @@
 
-# Gopay's PHP SDK for Payments REST API
+# GoPay's PHP SDK for Payments REST API
 
 [![License](https://poser.pugx.org/gopay/payments-php-sdk/license)](https://packagist.org/packages/gopay/payments-php-sdk)
 [![Latest Stable Version](https://poser.pugx.org/gopay/payments-php-sdk/v/stable)](https://packagist.org/packages/gopay/payments-php-sdk)
@@ -206,5 +206,5 @@ Contributions from others would be very much appreciated! Send
 
 ## License
 
-Copyright (c) 2015 Gopay.com. MIT Licensed,
+Copyright (c) 2015 GoPay.com. MIT Licensed,
 see [LICENSE](/LICENSE) for details.

@@ -1,6 +1,6 @@
 {
     "name": "gopay/payments-sdk-php",
-    "description": "Gopay's PHP SDK for Payments REST API",
+    "description": "GoPay's PHP SDK for Payments REST API",
     "keywords": ["gopay", "payments", "sdk", "rest", "api"],
     "type": "library",
     "license": "MIT",
