@@ -67,3 +67,22 @@ class GoPayController
     }
 }
 ```
+
+## Optional: Register custom cache and logger
+
+```yml
+services:
+    gopay.payments:
+        class: GoPay\Payments
+        factory: ["GoPay\Api", payments]
+        arguments:
+            - %gopay.config%
+            - cache: @gopay.cache
+              logger: @gopay.logger
+
+    gopay.cache:
+        class: GoPay\Token\InMemoryTokenCache
+
+    gopay.logger:
+        class: GoPay\Http\Log\PrintHttpRequest
+```
