@@ -6,6 +6,13 @@ use Unirest\Request as Unirest;
 
 class JsonBrowser
 {
+    private $logger;
+
+    public function __construct(Logger $l)
+    {
+        $this->logger = $l;
+    }
+
     public function send(Request $r)
     {
         try {
@@ -17,6 +24,7 @@ class JsonBrowser
             $response = new Response($e->getMessage());
             $response->statusCode = 500;
         }
+        $this->logger->logHttpCommunication($r, $response);
         return $response;
     }
 }

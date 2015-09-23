@@ -2,12 +2,17 @@
 
 namespace GoPay\Http;
 
+use Prophecy\Argument;
+
 class JsonBrowserTest extends \PHPUnit_Framework_TestCase
 {
     /** @dataProvider provideJson */
     public function testShouldExecuteHttpRequestAndAlwaysReturnResponse($url, $hasSucceed, $expectedJson)
     {
-        $browser = new JsonBrowser();
+        $logger = $this->prophesize('GoPay\Http\Logger');
+        $logger->logHttpCommunication(Argument::cetera())->shouldBeCalled();
+
+        $browser = new JsonBrowser($logger->reveal());
         $response = $browser->send(new Request($url));
         assertThat($response->hasSucceed(), is($hasSucceed));
         assertThat((string) $response, is(nonEmptyString()));
