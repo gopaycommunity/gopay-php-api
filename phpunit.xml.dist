@@ -18,4 +18,10 @@
         </testsuite>
     </testsuites>
 
+    <php>
+        <env name="goid" value="" />
+        <env name="clientId" value="" />
+        <env name="clientSecret" value="" />
+    </php>
+
 </phpunit>
