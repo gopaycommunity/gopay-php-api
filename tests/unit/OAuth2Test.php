@@ -30,7 +30,7 @@ class OAuth2Test extends \PHPUnit_Framework_TestCase
     }
 
     /** @dataProvider provideAccessToken */
-    public function testShouldRequestAccessTokenOnce($statusCode, array $jsonResponse, $isExpired)
+    public function testShouldLoadAccessTokenWhenTokenIsExpired($statusCode, array $jsonResponse, $isExpired)
     {
         $response = new Response;
         $response->statusCode = $statusCode;

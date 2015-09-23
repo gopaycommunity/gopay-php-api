@@ -18,7 +18,7 @@ class GoPayTest extends \PHPUnit_Framework_TestCase
     }
 
     /** @dataProvider provideRequest */
-    public function testShouldCompleteRequest($isProductionMode, $contentType, $auth, $body, Request $expectedRequest)
+    public function testShouldBuildRequest($isProductionMode, $contentType, $auth, $body, Request $expectedRequest)
     {
         $expectedRequest->headers = $expectedRequest->headers + [
             'Accept' => 'application/json',
@@ -71,7 +71,7 @@ class GoPayTest extends \PHPUnit_Framework_TestCase
     }
 
     /** @dataProvider provideLanguage */
-    public function testShouldLocalizeErrorMessages($language, $expectedLanguage)
+    public function testShouldLocalizeErrorMessage($language, $expectedLanguage)
     {
         $this->browser->send(Argument::that(function (Request $r) use ($expectedLanguage) {
             assertThat($r->headers['Accept-Language'], is($expectedLanguage));

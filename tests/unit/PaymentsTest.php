@@ -28,7 +28,7 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
         $this->api = new Payments($this->gopay->reveal(), $this->auth->reveal());
     }
 
-    public function testShouldReturnAuthRequestWhenTokenIsNotLoaded()
+    public function testShouldReturnTokenResponseWhenTokenIsNotLoaded()
     {
         $token = $this->givenAccessToken('');
         $token->response = 'irrelevant response (instanceof Response)';
