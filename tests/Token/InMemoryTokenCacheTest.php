@@ -2,6 +2,8 @@
 
 namespace GoPay\Token;
 
+use GoPay\Definition\TokenScope;
+
 class InMemoryTokenCacheTest extends \PHPUnit_Framework_TestCase
 {
     private $cache;

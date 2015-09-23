@@ -4,7 +4,7 @@ namespace GoPay\Token;
 
 abstract class TokenCache
 {
-    /** @var TokenScope */
+    /** @var string */
     protected $scope;
 
     public function setScope($scope)

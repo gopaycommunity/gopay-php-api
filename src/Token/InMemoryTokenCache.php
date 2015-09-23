@@ -5,15 +5,7 @@ namespace GoPay\Token;
 class InMemoryTokenCache extends TokenCache
 {
     /** @var AccessToken[] */
-    private $tokens;
-
-    public function __construct()
-    {
-        $this->tokens = [
-            TokenScope::ALL => new AccessToken(),
-            TokenScope::CREATE_PAYMENT => new AccessToken()
-        ];
-    }
+    private $tokens = [];
 
     public function setAccessToken(AccessToken $t)
     {
@@ -22,6 +14,6 @@ class InMemoryTokenCache extends TokenCache
 
     public function getAccessToken()
     {
-        return $this->tokens[$this->scope];
+        return array_key_exists($this->scope, $this->tokens) ? $this->tokens[$this->scope] : new AccessToken;
     }
 }

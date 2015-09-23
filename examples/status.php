@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use GoPay\Token\TokenScope;
+use GoPay\Definition\TokenScope;
 use GoPay\Definition\Language;
 
 $gopay = GoPay\payments([

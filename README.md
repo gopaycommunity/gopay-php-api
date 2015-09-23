@@ -40,7 +40,7 @@ $gopay = GoPay\payments([
     'clientId' => 'my id',
     'clientSecret' => 'my secret',
     'isProductionMode' => false,
-    'scope' => GoPay\Token\TokenScope::ALL,
+    'scope' => GoPay\Definition\TokenScope::ALL,
     'language' => GoPay\Definition\Language::CZECH
 ]);
 ```
@@ -53,7 +53,7 @@ Required field | Data type | Documentation |
 `clientId` | string | https://doc.gopay.com/en/?shell#oauth |
 `clientSecret` | string | https://doc.gopay.com/en/?shell#oauth |
 `isProductionMode` | boolean | [test or production environment?](https://help.gopay.com/en/s/ey) |
-`scope` | [`GoPay\Token\TokenScope`](src/Token/TokenScope.php) | https://doc.gopay.com/en/?shell#scope |
+`scope` | [`GoPay\Definition\TokenScope`](src/Definition/TokenScope.php) | https://doc.gopay.com/en/?shell#scope |
 `language` | [`GoPay\Definition\Language`](src/Definition/Language.php) | default language used in `createPayment` if `lang` is not specified + used for [localization of errors](https://doc.gopay.com/en/?shell#return-errors)
 
 ### Available methods
@@ -115,7 +115,7 @@ Check using enums in  [create-payment example](/examples/create-payment.php)
 Type | Description |
 ---- | ----------- |
 [Language](/src/Definition/Language.php) | Payment language, localization of error messages |
-[Token scope](/src/Token/TokenScope.php) | Authorization scope for [OAuth2](https://doc.gopay.com/en/?php#oauth) |
+[Token scope](/src/Definition/TokenScope.php) | Authorization scope for [OAuth2](https://doc.gopay.com/en/?php#oauth) |
 [Payment enums](/src/Definition/Payment) | Enums for creating payment |
 [Response enums](/src/Definition/Response) | Result of creating payment, executing payment operations |
 
@@ -164,8 +164,12 @@ class PrimitiveFileCache extends TokenCache
         if (file_exists($this->file)) {
             return unserialize(file_get_contents($this->file));
         }
-        return null; // you can return null, this method is called only if `isExpired` return false
+        return new AccessToken; 
     }
 }
 
 ```
+
+Method `getAccessToken` can return `null`, this method is called only if `isExpired => false`.
+But if you are testing your cache then return `new AccessToken`, so you don't get
+null pointer errors like _Trying to get property of non-object_.

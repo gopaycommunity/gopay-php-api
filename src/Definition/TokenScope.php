@@ -1,6 +1,6 @@
 <?php
 
-namespace GoPay\Token;
+namespace GoPay\Definition;
 
 class TokenScope
 {
