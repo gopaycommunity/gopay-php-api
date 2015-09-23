@@ -179,7 +179,7 @@ But if you are testing your cache then return `new AccessToken`, so you don't ge
 null pointer errors like _Trying to get property of non-object_.
 
 
-### Log communication with API
+### Log HTTP communication
 
 You can log every request and response from communication with API. Check available loggers
 below. Or you can implement your own logger,
@@ -197,3 +197,14 @@ Available logger | Description |
 ---------------- | ----------- |
 [NullLogger](/src/Http/Log/NullLogger.php) | Default logger which does nothing |
 [PrintHttpRequest](/src/Http/Log/PrintHttpRequest.php) | Prints basic information about request and response, used in [remote tests](tests/remote/GivenGoPay.php#GivenGoPay.php-26) |
+
+## Contributing
+
+Contributions from others would be very much appreciated! Send 
+[pull request](https://github.com/gopay/payments-sdk-php/pulls)/
+[issue](https://github.com/gopay/payments-sdk-php/issues). Thanks!
+
+## License
+
+Copyright (c) 2015 Gopay.com. MIT Licensed,
+see [LICENSE](/LICENSE) for details.
