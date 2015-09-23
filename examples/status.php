@@ -2,11 +2,16 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+use GoPay\Token\TokenScope;
+use GoPay\Definition\Language;
+
 $gopay = GoPay\payments([
-    'goid' => 'A',
-    'clientId' => 'B',
-    'clientSecret' => 'C',
-    'isProductionMode' => false
+    'goid' => 'my goid',
+    'clientId' => 'my id',
+    'clientSecret' => 'my secret',
+    'isProductionMode' => false,
+    'scope' => TokenScope::ALL,
+    'language' => Language::CZECH
 ]);
 $response = $gopay->getStatus('payment id');
 

@@ -22,11 +22,6 @@ services:
         factory: ["GoPay\Api", payments]
         arguments:
             - %gopay.config%
-
-    appbundle.controller.gopay:
-        class: GoPayController
-        arguments:
-            - @gopay.payments
 ```
 
 ## Step 2: Call API in controller

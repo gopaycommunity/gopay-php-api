@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+use GoPay\Token\TokenScope;
 use GoPay\Definition\Language;
 use GoPay\Definition\Payment\Currency;
 use GoPay\Definition\Payment\PaymentInstrument;
@@ -9,10 +10,12 @@ use GoPay\Definition\Payment\BankSwiftCode;
 use GoPay\Definition\Payment\Recurrence;
 
 $gopay = GoPay\payments([
-    'goid' => 'A',
-    'clientId' => 'B',
-    'clientSecret' => 'C',
-    'isProductionMode' => false
+    'goid' => 'my goid',
+    'clientId' => 'my id',
+    'clientSecret' => 'my secret',
+    'isProductionMode' => false,
+    'scope' => TokenScope::ALL,
+    'language' => Language::CZECH
 ]);
 
 // recurrent payment must have field ''
