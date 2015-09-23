@@ -14,14 +14,18 @@ class GivenGoPay extends \PHPUnit_Framework_TestCase
 
     protected function givenCustomer(array $userConfig = [])
     {
-         $this->gopay = payments($userConfig + [
+        $config = $userConfig + [
             'goid' => getenv('goid'),
             'clientId' => getenv('clientId'),
             'clientSecret' => getenv('clientSecret'),
             'isProductionMode' => false,
             'scope' => TokenScope::ALL,
             'language' => Language::CZECH
-        ]);
+        ];
+        $services = [
+            'logger' => new Http\Log\PrintHttpRequest
+        ];
+        $this->gopay = payments($config, $services);
     }
 
     protected function whenCustomerCalls()
