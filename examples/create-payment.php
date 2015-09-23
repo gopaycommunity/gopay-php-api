@@ -60,8 +60,10 @@ $response = $gopay->createPayment([
     'additional_params' => [
         array('name' => 'invoicenumber', 'value' => '2015001003')
     ],
-    'return_url' => 'http://www.your-url.tld/return',
-    'notify_url' => 'http://www.your-url.tld/notify',
+    'callback' => [
+        'return_url' => 'http://www.your-url.tld/return',
+        'notification_url' => 'http://www.your-url.tld/notify'
+    ],
     'lang' => Language::CZECH, // if lang is not specified, then default lang is used
 ]);
 

@@ -59,6 +59,26 @@ class RemoteApiTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testCreatePaymentAndGetItsStatus()
+    {
+        $this->givenCustomer();
+        $this->whenCustomerCalls('createPayment', [
+            'amount' => 1,
+            'currency' => Definition\Payment\Currency::CZECH_CROWNS,
+            'order_number' => 'order-test - ' . date('Y-m-d H:i:s'),
+            'order_description' => 'remote test',
+            'callback' => [
+                'return_url' => 'http://www.your-url.tld/return',
+                'notification_url' => 'http://www.your-url.tld/notify'
+            ]
+        ]);
+        $this->apiShouldReturn('gw_url', containsString('.gopay.'));
+        
+        $idOfCreatedPayment = $this->response->json['id'];
+        $this->whenCustomerCalls('getStatus', $idOfCreatedPayment);
+        $this->apiShouldReturn('state', is(Definition\Response\PaymentStatus::CREATED));
+    }
+
     private function givenCustomer(array $userConfig = [])
     {
          $this->gopay = payments($userConfig + [
@@ -74,6 +94,13 @@ class RemoteApiTest extends \PHPUnit_Framework_TestCase
     private function whenCustomerCalls($method, $param)
     {
         $this->response = call_user_func([$this->gopay, $method], $param);
+    }
+
+    private function apiShouldReturn($field, $assert)
+    {
+        assertThat($this->response->hasSucceed(), is(true));
+        assertThat($this->response->statusCode, is(200));
+        assertThat($this->response->json[$field], $assert);
     }
 
     private function apiShouldReturnError($statusCode, $error)
