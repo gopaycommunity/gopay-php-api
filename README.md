@@ -183,7 +183,7 @@ null pointer errors like _Trying to get property of non-object_.
 
 You can log every request and response from communication with API. Check available loggers
 below. Or you can implement your own logger,
-just implement [`GoPay\Http\Log\Logger`](src/Http/Log/Logger.php)) interface.
+just implement [`GoPay\Http\Log\Logger`](src/Http/Log/Logger.php) interface.
 
 ```php
 // register logger in optional service configuration
@@ -196,4 +196,4 @@ $gopay = GoPay\payments(
 Available logger | Description |
 ---------------- | ----------- |
 [NullLogger](/src/Http/Log/NullLogger.php) | Default logger which does nothing |
-[PrintHttpRequest](/src/Http/Log/PrintHttpRequest.php) | Prints basic information about request and response, used in [remote tests](tests/remote/GivenGoPay.php) |
+[PrintHttpRequest](/src/Http/Log/PrintHttpRequest.php) | Prints basic information about request and response, used in [remote tests](tests/remote/GivenGoPay.php#GivenGoPay.php-26) |
