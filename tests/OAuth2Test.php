@@ -8,7 +8,7 @@ use Prophecy\Argument;
 class OAuth2Test extends \PHPUnit_Framework_TestCase
 {
     private $config = [
-        'clientID' => 'user',
+        'clientId' => 'user',
         'clientSecret' => 'pass',
         'scope' => 'irrelevant scope'
     ];
@@ -39,7 +39,7 @@ class OAuth2Test extends \PHPUnit_Framework_TestCase
         $this->gopay->call(
             'oauth2/token',
             GoPay::FORM,
-            [$this->config['clientID'], $this->config['clientSecret']],
+            [$this->config['clientId'], $this->config['clientSecret']],
             ['grant_type' => 'client_credentials', 'scope' => $this->config['scope']]
         )->shouldBeCalled()->willReturn($response);
 
