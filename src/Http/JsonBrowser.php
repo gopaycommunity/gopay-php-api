@@ -3,6 +3,7 @@
 namespace GoPay\Http;
 
 use Unirest\Request as Unirest;
+use GoPay\Http\Log\Logger;
 
 class JsonBrowser
 {

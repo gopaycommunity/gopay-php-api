@@ -1,6 +1,9 @@
 <?php
 
-namespace GoPay\Http;
+namespace GoPay\Http\Log;
+
+use GoPay\Http\Request;
+use GoPay\Http\Response;
 
 interface Logger
 {

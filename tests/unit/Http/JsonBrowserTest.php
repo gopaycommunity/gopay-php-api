@@ -9,7 +9,7 @@ class JsonBrowserTest extends \PHPUnit_Framework_TestCase
     /** @dataProvider provideJson */
     public function testShouldExecuteHttpRequestAndAlwaysReturnResponse($url, $hasSucceed, $expectedJson)
     {
-        $logger = $this->prophesize('GoPay\Http\Logger');
+        $logger = $this->prophesize('GoPay\Http\Log\Logger');
         $logger->logHttpCommunication(Argument::cetera())->shouldBeCalled();
 
         $browser = new JsonBrowser($logger->reveal());
