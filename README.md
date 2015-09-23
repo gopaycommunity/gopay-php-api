@@ -136,7 +136,11 @@ Below you can see example implementation of caching tokens in file (@todo test i
 
 
 ```php
-$gopay = GoPay\payments(['..config...'], new PrimitiveFileCache());
+// register cache in optional service configuration
+$gopay = GoPay\payments(
+    [/* your config */],
+    ['cache' => new PrimitiveFileCache()]
+);
 ```
 
 ```php
@@ -173,3 +177,23 @@ class PrimitiveFileCache extends TokenCache
 Method `getAccessToken` can return `null`, this method is called only if `isExpired => false`.
 But if you are testing your cache then return `new AccessToken`, so you don't get
 null pointer errors like _Trying to get property of non-object_.
+
+
+### Log communication with API
+
+You can log every request and response from communication with API. Check available loggers
+below. Or you can implement your own logger,
+just implement [`GoPay\Http\Log\Logger`](src/Http/Log/Logger.php)) interface.
+
+```php
+// register logger in optional service configuration
+$gopay = GoPay\payments(
+    [/* your config */],
+    ['logger' => new GoPay\Http\Log\PrintHttpRequest()]
+);
+```
+
+Available logger | Description |
+---------------- | ----------- |
+[NullLogger](/src/Http/Log/NullLogger.php) | Default logger which does nothing |
+[PrintHttpRequest](/src/Http/Log/PrintHttpRequest.php) | Prints basic information about request and response, used in [remote tests](tests/remote/GivenGoPay.php) |
