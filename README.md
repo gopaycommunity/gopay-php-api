@@ -45,7 +45,7 @@ $gopay = GoPay\payments([
 
 ### Configuration
 
-### Required fields
+#### Required fields
 
 Required field | Data type | Documentation |
 -------------- | --------- | ----------- |
@@ -60,7 +60,7 @@ Optional field | Data type | Default value | Documentation |
 -------------- | --------- | ------------- | ------------- |
 `scope` | string | [`GoPay\Definition\TokenScope::ALL`](src/Definition/TokenScope.php) | https://doc.gopay.com/en/?shell#scope |
 `language` | string | [`GoPay\Definition\Language::ENGLISH`](src/Definition/Language.php) | language used in `createPayment` if `lang` is not specified + used for [localization of errors](https://doc.gopay.com/en/?shell#return-errors)
-`timeout` | int | 5 | Browser timeout in seconds |
+`timeout` | int | 30 | Browser timeout in seconds |
 
 
 ### Available methods
