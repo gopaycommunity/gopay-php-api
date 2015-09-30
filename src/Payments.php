@@ -69,4 +69,9 @@ class Payments
         }
         return $token->response;
     }
+
+    public function urlToEmbedJs()
+    {
+        return $this->gopay->buildUrl('gp-gw/js/embed.js');
+    }
 }

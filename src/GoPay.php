@@ -28,20 +28,20 @@ class GoPay
 
     public function call($urlPath, $contentType, $authorization, $data = null)
     {
-        $r = new Request("{$this->getBaseApiUrl()}{$urlPath}");
+        $r = new Request($this->buildUrl("api/{$urlPath}"));
         $r->method = is_array($data) ? Method::POST : Method::GET;
         $r->headers = $this->buildHeaders($contentType, $authorization);
         $r->body = $this->encodeData($contentType, $data);
         return $this->browser->send($r);
     }
 
-    private function getBaseApiUrl()
+    public function buildUrl($urlPath)
     {
         static $urls = [
-            true => 'https://gate.gopay.cz/api/',
-            false => 'https://gw.sandbox.gopay.com/api/'
+            true => 'https://gate.gopay.cz/',
+            false => 'https://gw.sandbox.gopay.com/'
         ];
-        return $urls[(bool) $this->getConfig('isProductionMode')];
+        return $urls[(bool) $this->getConfig('isProductionMode')] . $urlPath;
     }
 
     private function encodeData($contentType, $data)

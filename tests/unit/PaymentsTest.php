@@ -133,11 +133,18 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
             ],
         ];
     }
+
     private function givenAccessToken($token)
     {
         $t = new AccessToken;
         $t->token = $token;
         $this->auth->getAccessToken()->shouldBeCalled()->willReturn($t);
         return $t;
+    }
+
+    public function testShouldReturnEmbedJs()
+    {
+        $this->gopay->buildUrl('gp-gw/js/embed.js')->shouldBeCalled();
+        $this->api->urlToEmbedJs();
     }
 }

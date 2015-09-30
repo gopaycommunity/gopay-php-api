@@ -55,6 +55,23 @@ class GoPayController
     }
 
     /**
+     * @SFW\Route("/payment")
+     * @SFW\Template()
+     */
+    public function payAction()
+    {
+        $response = $this->payments->createPayment([/* define your payment  */]);
+        if ($response->hasSucceed()) {
+            return [
+                'gatewayUrl' => $response->json['gw_url'],
+                'embedJs' => $this->payments->urlToEmbedJs()
+            ];
+        } else {
+            throw new NotFoundHttpException((string) $response);
+        } 
+    }
+
+    /**
      * @SFW\Route("/payment/{id}")
      * @SFW\Template()
      */
@@ -62,7 +79,7 @@ class GoPayController
     {
         $response = $this->payments->getStatus($id);
         if ($response->hasSucceed()) {
-            return array('payment' => $response->json);
+            return ['payment' => $response->json];
         } else {
             throw new NotFoundHttpException((string) $response);
         } 

@@ -114,6 +114,38 @@ behavior is well documented in [doc.gopay.com](https://doc.gopay.com/en).
 
 ## Advanced usage
 
+### Initiation of the payment gateway
+
+```php
+// create payment and pass url to template 
+$response = $gopay->createPayment([/* define your payment  */]);
+if ($response->hasSucceed()) {
+    $templateParameters = [
+        'gatewayUrl' => $response->json['gw_url'],
+        'embedJs' => $gopay->urlToEmbedJs()
+    ];
+    // render template
+}
+```
+
+#### [Inline gateway](https://doc.gopay.com/en/#inline-option)
+
+```php
+<form action="<?php echo $gatewayUrl; ?>"
+  method="post" id="gopay-payment-button">
+  <button name="pay" type="submit">Pay</button>
+  <script type="text/javascript" src="<?php echo $embedJs;>"></script>
+</form>
+```
+
+#### [Redirect gateway](https://doc.gopay.com/en/#redirect-option)
+
+```php
+<form action="<?php echo $gatewayUrl; ?>" method="post">
+  <button name="pay" type="submit">Pay</button>
+</form>
+```
+
 ### Enums ([Code lists](https://doc.gopay.com/en/?php#code-lists))
 
 Instead of hardcoding bank codes string you can use predefined enums. 
