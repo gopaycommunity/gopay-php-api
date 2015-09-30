@@ -5,6 +5,8 @@ namespace GoPay;
 function payments(array $userConfig, array $userServices = [])
 {
     $config = $userConfig + [
+        'scope' => Definition\TokenScope::ALL,
+        'language' => Definition\Language::ENGLISH,
         'timeout' => 30
     ];
     $services = $userServices + [

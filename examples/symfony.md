@@ -13,8 +13,10 @@ parameters:
         clientId: my_id
         clientSecret: my_secret
         isProductionMode: false
+        # optional config
         scope: payment-all
         language: CS
+        timeout: 30
 
 services:
     gopay.payments:

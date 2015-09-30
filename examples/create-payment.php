@@ -2,7 +2,6 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use GoPay\Definition\TokenScope;
 use GoPay\Definition\Language;
 use GoPay\Definition\Payment\Currency;
 use GoPay\Definition\Payment\PaymentInstrument;
@@ -14,7 +13,6 @@ $gopay = GoPay\payments([
     'clientId' => 'my id',
     'clientSecret' => 'my secret',
     'isProductionMode' => false,
-    'scope' => TokenScope::ALL,
     'language' => Language::CZECH
 ]);
 

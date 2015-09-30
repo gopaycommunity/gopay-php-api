@@ -23,17 +23,29 @@ of the Composer documentation.
 ## Basic usage
 
 ```php
+// minimal configuration
+$gopay = GoPay\payments([
+    'goid' => 'my goid',
+    'clientId' => 'my id',
+    'clientSecret' => 'my secret',
+    'isProductionMode' => false
+]);
+
+// full configuration
 $gopay = GoPay\payments([
     'goid' => 'my goid',
     'clientId' => 'my id',
     'clientSecret' => 'my secret',
     'isProductionMode' => false,
     'scope' => GoPay\Definition\TokenScope::ALL,
-    'language' => GoPay\Definition\Language::CZECH
+    'language' => GoPay\Definition\Language::CZECH,
+    'timeout' => 30
 ]);
 ```
 
 ### Configuration
+
+### Required fields
 
 Required field | Data type | Documentation |
 -------------- | --------- | ----------- |
@@ -41,8 +53,15 @@ Required field | Data type | Documentation |
 `clientId` | string | https://doc.gopay.com/en/?shell#oauth |
 `clientSecret` | string | https://doc.gopay.com/en/?shell#oauth |
 `isProductionMode` | boolean | [test or production environment?](https://help.gopay.com/en/s/ey) |
-`scope` | [`GoPay\Definition\TokenScope`](src/Definition/TokenScope.php) | https://doc.gopay.com/en/?shell#scope |
-`language` | [`GoPay\Definition\Language`](src/Definition/Language.php) | default language used in `createPayment` if `lang` is not specified + used for [localization of errors](https://doc.gopay.com/en/?shell#return-errors)
+
+#### Optional fields
+
+Optional field | Data type | Default value | Documentation |
+-------------- | --------- | ------------- | ------------- |
+`scope` | string | [`GoPay\Definition\TokenScope::ALL`](src/Definition/TokenScope.php) | https://doc.gopay.com/en/?shell#scope |
+`language` | string | [`GoPay\Definition\Language::ENGLISH`](src/Definition/Language.php) | language used in `createPayment` if `lang` is not specified + used for [localization of errors](https://doc.gopay.com/en/?shell#return-errors)
+`timeout` | int | 5 | Browser timeout in seconds |
+
 
 ### Available methods
 
