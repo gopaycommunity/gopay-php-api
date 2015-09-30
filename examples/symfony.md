@@ -87,6 +87,22 @@ class GoPayController
 }
 ```
 
+```twig
+// src/AppBundle/Resources/views/GoPay/pay.html.twig
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Pay</title>
+    </head>
+    <body>
+        <form action="{{ $gatewayUrl }}" method="post" id="gopay-payment-button">
+          <button name="pay" type="submit">Pay</button>
+          <script type="text/javascript" src="{{ $embedJs }}"></script>
+        </form>
+    </body>
+</html>
+```
+
 ## Optional: Register custom cache and logger
 
 ```yml

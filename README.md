@@ -131,8 +131,7 @@ if ($response->hasSucceed()) {
 #### [Inline gateway](https://doc.gopay.com/en/#inline-option)
 
 ```php
-<form action="<?php echo $gatewayUrl; ?>"
-  method="post" id="gopay-payment-button">
+<form action="<?php echo $gatewayUrl; ?>" method="post" id="gopay-payment-button">
   <button name="pay" type="submit">Pay</button>
   <script type="text/javascript" src="<?php echo $embedJs;>"></script>
 </form>
