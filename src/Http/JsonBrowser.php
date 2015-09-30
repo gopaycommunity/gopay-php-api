@@ -8,15 +8,18 @@ use GoPay\Http\Log\Logger;
 class JsonBrowser
 {
     private $logger;
+    private $timeout;
 
-    public function __construct(Logger $l)
+    public function __construct(Logger $l, $timeoutInSeconds)
     {
         $this->logger = $l;
+        $this->timeout = $timeoutInSeconds;
     }
 
     public function send(Request $r)
     {
         try {
+            Unirest::timeout($this->timeout);
             $http = Unirest::{$r->method}($r->url, $r->headers, $r->body);
             $response = new Response((string) $http->raw_body);
             $response->statusCode = (string) $http->code;

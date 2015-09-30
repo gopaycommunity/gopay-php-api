@@ -11,8 +11,9 @@ class JsonBrowserTest extends \PHPUnit_Framework_TestCase
     {
         $logger = $this->prophesize('GoPay\Http\Log\Logger');
         $logger->logHttpCommunication(Argument::cetera())->shouldBeCalled();
+        $timeout = 1;
 
-        $browser = new JsonBrowser($logger->reveal());
+        $browser = new JsonBrowser($logger->reveal(), $timeout);
         $response = $browser->send(new Request($url));
         assertThat($response->hasSucceed(), is($hasSucceed));
         assertThat((string) $response, is(nonEmptyString()));
