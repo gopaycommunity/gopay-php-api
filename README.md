@@ -239,8 +239,8 @@ Available logger | Description |
 ## Contributing
 
 Contributions from others would be very much appreciated! Send 
-[pull request](https://github.com/gopay/payments-sdk-php/pulls)/
-[issue](https://github.com/gopay/payments-sdk-php/issues). Thanks!
+[pull request](https://github.com/gopaycommunity/payments-sdk-php/pulls)/
+[issue](https://github.com/gopaycommunity/payments-sdk-php/issues). Thanks!
 
 ## License
 
