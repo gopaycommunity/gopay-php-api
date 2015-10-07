@@ -69,14 +69,14 @@ class OAuth2Test extends \PHPUnit_Framework_TestCase
             'isProduction' => false,
             'scope' => 'scope'
         ]);
-        $this->cache->setScope('client-0-scope')->shouldBeCalled();
+        $this->cache->setClient('client-0-scope')->shouldBeCalled();
         $this->auth->loadCurrentClient();
     }
 
     private function getAccessTokenWhenExpirationIs($isExpired)
     {
         $this->givenOAuthClient($this->config);
-        $this->cache->setScope(Argument::any())->willReturn(null);
+        $this->cache->setClient(Argument::any())->willReturn(null);
         $this->cache->isExpired()->willReturn($isExpired);
         return $this->auth->getAccessToken();
     }

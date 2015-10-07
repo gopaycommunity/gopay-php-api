@@ -9,11 +9,11 @@ class InMemoryTokenCache extends TokenCache
 
     public function setAccessToken(AccessToken $t)
     {
-        $this->tokens[$this->scope] = $t;
+        $this->tokens[$this->client] = $t;
     }
 
     public function getAccessToken()
     {
-        return array_key_exists($this->scope, $this->tokens) ? $this->tokens[$this->scope] : new AccessToken;
+        return array_key_exists($this->client, $this->tokens) ? $this->tokens[$this->client] : new AccessToken;
     }
 }

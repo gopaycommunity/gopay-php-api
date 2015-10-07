@@ -34,7 +34,7 @@ class OAuth2
             $this->gopay->getConfig('scope'),
         ];
         $client = implode('-', $ids);
-        $this->cache->setScope($client);
+        $this->cache->setClient($client);
     }
 
     private function authorize()

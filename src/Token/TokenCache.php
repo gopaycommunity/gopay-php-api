@@ -5,11 +5,12 @@ namespace GoPay\Token;
 abstract class TokenCache
 {
     /** @var string */
-    protected $scope;
+    protected $client;
 
-    public function setScope($scope)
+    /** @param string $client unique identifier of current client (client, environment, scope) */
+    public function setClient($client)
     {
-        $this->scope = $scope;
+        $this->client = $client;
     }
 
     public function isExpired()
