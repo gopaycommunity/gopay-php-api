@@ -168,8 +168,9 @@ Unfortunately it's default behavior of [`GoPay\Token\InMemoryTokenCache`](src/To
 But you can implement your cache and store tokens in Memcache, Redis, files, ... It's up to you.
 
 Your cache must implement template methods from [`GoPay\Token\TokenCache`](src/Token/TokenCache.php).
-Be aware that there are two [scopes](https://doc.gopay.com/en/?shell#scope) (`TokenScope`).
-So token must be cached for each scope. 
+Be aware that there are two [scopes](https://doc.gopay.com/en/?shell#scope) (`TokenScope`) and
+SDK can be used for different clients (`clientId`, `isProductionMode`). So `$client` passed to 
+`setClient` method is unique identifier (`string`) that is built for current environment.
 Below you can see example implementation of caching tokens in file:
 
 
