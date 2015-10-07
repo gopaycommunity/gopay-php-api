@@ -11,7 +11,7 @@ class OAuth2Test extends \PHPUnit_Framework_TestCase
         'clientId' => 'user',
         'clientSecret' => 'pass',
         'scope' => 'irrelevant scope',
-        'isProduction' => true,
+        'isProductionMode' => true,
     ];
 
     private $gopay;
@@ -66,7 +66,7 @@ class OAuth2Test extends \PHPUnit_Framework_TestCase
     {
         $this->givenOAuthClient([
             'clientId' => 'client',
-            'isProduction' => false,
+            'isProductionMode' => false,
             'scope' => 'scope'
         ]);
         $this->cache->setClient('client-0-scope')->shouldBeCalled();

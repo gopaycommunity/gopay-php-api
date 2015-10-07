@@ -30,7 +30,7 @@ class OAuth2
     {
         $ids = [
             $this->gopay->getConfig('clientId'),
-            (int) $this->gopay->getConfig('isProduction'),
+            (int) $this->gopay->getConfig('isProductionMode'),
             $this->gopay->getConfig('scope'),
         ];
         $client = implode('-', $ids);
