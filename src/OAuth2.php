@@ -19,21 +19,31 @@ class OAuth2
     /** @return AccessToken */
     public function getAccessToken()
     {
-        $scope = $this->gopay->getConfig('scope');
-        $this->cache->setScope($scope);
+        $this->loadCurrentClient();
         if ($this->cache->isExpired()) {
-            $this->authorize($scope);
+            $this->authorize();
         }
         return $this->cache->getAccessToken();
     }
 
-    private function authorize($scope)
+    public function loadCurrentClient()
+    {
+        $ids = [
+            $this->gopay->getConfig('clientId'),
+            (int) $this->gopay->getConfig('isProduction'),
+            $this->gopay->getConfig('scope'),
+        ];
+        $client = implode('-', $ids);
+        $this->cache->setScope($client);
+    }
+
+    private function authorize()
     {
         $response = $this->gopay->call(
             'oauth2/token',
             GoPay::FORM,
             [$this->gopay->getConfig('clientId'), $this->gopay->getConfig('clientSecret')],
-            ['grant_type' => 'client_credentials', 'scope' => $scope]
+            ['grant_type' => 'client_credentials', 'scope' => $this->gopay->getConfig('scope')]
         );
         $t = new AccessToken;
         $t->response = $response;

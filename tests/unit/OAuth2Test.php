@@ -10,7 +10,8 @@ class OAuth2Test extends \PHPUnit_Framework_TestCase
     private $config = [
         'clientId' => 'user',
         'clientSecret' => 'pass',
-        'scope' => 'irrelevant scope'
+        'scope' => 'irrelevant scope',
+        'isProduction' => true,
     ];
 
     private $gopay;
@@ -61,16 +62,30 @@ class OAuth2Test extends \PHPUnit_Framework_TestCase
         ];
     }
 
+    public function testShouldUniquelyIdentifyCurrentClient()
+    {
+        $this->givenOAuthClient([
+            'clientId' => 'client',
+            'isProduction' => false,
+            'scope' => 'scope'
+        ]);
+        $this->cache->setScope('client-0-scope')->shouldBeCalled();
+        $this->auth->loadCurrentClient();
+    }
+
     private function getAccessTokenWhenExpirationIs($isExpired)
     {
-        foreach ($this->config as $key => $value) {
+        $this->givenOAuthClient($this->config);
+        $this->cache->setScope(Argument::any())->willReturn(null);
+        $this->cache->isExpired()->willReturn($isExpired);
+        return $this->auth->getAccessToken();
+    }
+
+    private function givenOAuthClient(array $config)
+    {
+        foreach ($config as $key => $value) {
             $this->gopay->getConfig($key)->willReturn($value);
         }
-
-        $this->cache->setScope($this->config['scope'])->willReturn(null);
-        $this->cache->isExpired()->willReturn($isExpired);
-
         $this->auth = new OAuth2($this->gopay->reveal(), $this->cache->reveal());
-        return $this->auth->getAccessToken();
     }
 }
