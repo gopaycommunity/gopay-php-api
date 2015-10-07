@@ -191,9 +191,9 @@ class PrimitiveFileCache extends TokenCache
 {
     private $file;
 
-    public function setScope($scope)
+    public function setClient($client)
     {
-        $this->file = __DIR__ . "/{$scope}";
+        $this->file = __DIR__ . "/{$client}";
     }
 
     public function setAccessToken(AccessToken $t)
@@ -206,16 +206,11 @@ class PrimitiveFileCache extends TokenCache
         if (file_exists($this->file)) {
             return unserialize(file_get_contents($this->file));
         }
-        return new AccessToken; 
+        return $this->getEmptyToken(); 
     }
 }
 
 ```
-
-Method `getAccessToken` can return `null`, this method is called only if `isExpired => false`.
-But if you are testing your cache then return `new AccessToken`, so you don't get
-null pointer errors like _Trying to get property of non-object_.
-
 
 ### Log HTTP communication
 
