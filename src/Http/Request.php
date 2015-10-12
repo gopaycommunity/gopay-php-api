@@ -6,7 +6,7 @@ use Unirest\Method;
 
 class Request
 {
-    /** @var \Unirest\Method */
+    /** @var Method */
     public $method = Method::GET;
     /** @var string */
     public $url;
