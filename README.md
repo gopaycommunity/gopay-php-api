@@ -69,13 +69,13 @@ API | SDK method |
 --- | ---------- |
 [Create standard payment](https://doc.gopay.com/en/#standard-payment) | `$gopay->createPayment(array $payment)` |
 [Status of the payment](https://doc.gopay.com/en/#status-of-the-payment) | `$gopay->getStatus($id)` |
-[Refund of the payment](https://doc.gopay.com/en/#refund-of-the-payment-(cancelation)) | `$gopay->refund($id, $amount)` |
+[Refund of the payment](https://doc.gopay.com/en/#refund-of-the-payment-(cancelation)) | `$gopay->refundPayment($id, $amount)` |
 [Create recurring payment](https://doc.gopay.com/en/#recurring-payment) | `$gopay->createPayment(array $payment)` |
-[Recurring payment on demand](https://doc.gopay.com/en/#recurring-payment-on-demand) | `$gopay->recurrenceOnDemand($id, array $payment)` |
-[Cancellation of the recurring payment](https://doc.gopay.com/en/#cancellation-of-the-recurring-payment) | `$gopay->recurrenceVoid($id)` |
+[Recurring payment on demand](https://doc.gopay.com/en/#recurring-payment-on-demand) | `$gopay->createRecurrence($id, array $payment)` |
+[Cancellation of the recurring payment](https://doc.gopay.com/en/#cancellation-of-the-recurring-payment) | `$gopay->voidRecurrence($id)` |
 [Create pre-authorized payment](https://doc.gopay.com/en/#pre-authorized-payment) | `$gopay->createPayment(array $payment)` |
-[Charge of pre-authorized payment](https://doc.gopay.com/en/#charge-of-pre-authorized-payment) | `$gopay->preauthorizedCapture($id)` |
-[Cancellation of the pre-authorized payment](https://doc.gopay.com/en/#cancellation-of-the-pre-authorized-payment) | `$gopay->preauthorizedVoid($id)` |
+[Charge of pre-authorized payment](https://doc.gopay.com/en/#charge-of-pre-authorized-payment) | `$gopay->captureAuthorization($id)` |
+[Cancellation of the pre-authorized payment](https://doc.gopay.com/en/#cancellation-of-the-pre-authorized-payment) | `$gopay->voidAuthorization($id)` |
 
 ### SDK response? Has my call succeed?
 

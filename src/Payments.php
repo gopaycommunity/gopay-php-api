@@ -30,27 +30,27 @@ class Payments
         return $this->api("/{$id}", GoPay::FORM);
     }
 
-    public function refund($id, $amount)
+    public function refundPayment($id, $amount)
     {
         return $this->api("/{$id}/refund", GoPay::FORM, ['amount' => $amount]);
     }
 
-    public function recurrenceOnDemand($id, array $payment)
+    public function createRecurrence($id, array $payment)
     {
         return $this->api("/{$id}/create-recurrence", GoPay::JSON, $payment);
     }
 
-    public function recurrenceVoid($id)
+    public function voidRecurrence($id)
     {
         return $this->api("/{$id}/void-recurrence", GoPay::FORM, array());
     }
 
-    public function preauthorizedCapture($id)
+    public function captureAuthorization($id)
     {
         return $this->api("/{$id}/capture", GoPay::FORM, array());
     }
 
-    public function preauthorizedVoid($id)
+    public function voidAuthorization($id)
     {
         return $this->api("/{$id}/void-authorization", GoPay::FORM, array());
     }

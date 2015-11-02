@@ -87,7 +87,7 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                 ]
             ],
             'https://doc.gopay.com/en/#refund-of-the-payment-(cancelation)' => [
-                'refund',
+                'refundPayment',
                 [$this->id, 'amount'],
                 [
                     "payments/payment/{$this->id}/refund",
@@ -96,7 +96,7 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                 ]
             ],
             'https://doc.gopay.com/en/#recurring-payment-on-demand' => [
-                'recurrenceOnDemand',
+                'createRecurrence',
                 [$this->id, ['irrelevant subsequent payment']],
                 [
                     "payments/payment/{$this->id}/create-recurrence",
@@ -105,7 +105,7 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                 ]
             ],
             'https://doc.gopay.com/en/#cancellation-of-the-recurring-payment' => [
-                'recurrenceVoid',
+                'voidRecurrence',
                 [$this->id],
                 [
                     "payments/payment/{$this->id}/void-recurrence",
@@ -114,7 +114,7 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                 ]
             ],
             'https://doc.gopay.com/en/#charge-of-pre-authorized-payment' => [
-                'preauthorizedCapture',
+                'captureAuthorization',
                 [$this->id],
                 [
                     "payments/payment/{$this->id}/capture",
@@ -123,7 +123,7 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                 ]
             ],
             'https://doc.gopay.com/en/#cancellation-of-the-pre-authorized-payment' => [
-                'preauthorizedVoid',
+                'voidAuthorization',
                 [$this->id],
                 [
                     "payments/payment/{$this->id}/void-authorization",
