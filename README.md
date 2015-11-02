@@ -145,6 +145,8 @@ if ($response->hasSucceed()) {
 </form>
 ```
 
+#### [Asynchronous initialization using JavaScript](/examples/js-initialization.md)
+
 ### Enums ([Code lists](https://doc.gopay.com/en/?php#code-lists))
 
 Instead of hardcoding bank codes string you can use predefined enums. 
