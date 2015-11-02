@@ -207,7 +207,7 @@ class PrimitiveFileCache extends TokenCache
         if (file_exists($this->file)) {
             return unserialize(file_get_contents($this->file));
         }
-        return $this->getEmptyToken(); 
+        return $this->getExpiredToken(); 
     }
 }
 

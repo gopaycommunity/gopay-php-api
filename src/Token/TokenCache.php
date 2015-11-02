@@ -19,7 +19,7 @@ abstract class TokenCache
         return !($token instanceof AccessToken) || $token->isExpired();
     }
 
-    protected function getEmptyToken()
+    protected function getExpiredToken()
     {
         return new AccessToken;
     }
