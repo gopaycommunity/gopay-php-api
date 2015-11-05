@@ -12,13 +12,11 @@
 
 ## Installation
 
-```bash
-composer require gopay/payments-sdk-php --update-no-dev
-```
+The simplest way to install SDK is to use [Composer](https://getcomposer.org/doc/00-intro.md):
 
-This command requires you to have Composer installed globally, as explained
-in the [installation chapter](https://getcomposer.org/doc/00-intro.md)
-of the Composer documentation.
+```bash
+composer require gopay/payments-sdk-php
+```
 
 ## Basic usage
 
