@@ -30,7 +30,7 @@ $gopay = GoPay\payments([
 ]);
 
 // full configuration
-$gopay = GoPay\payments([
+$gopay = GoPay\Api::payments([
     'goid' => 'my goid',
     'clientId' => 'my id',
     'clientSecret' => 'my secret',
