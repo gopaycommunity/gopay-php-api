@@ -1,4 +1,8 @@
 
+v1.0.1
+===================
+* Add phpunit's bootstrap (#1)
+
 v1.0.0
 ===================
 * Call every API method without validation
