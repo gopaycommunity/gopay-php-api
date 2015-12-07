@@ -24,7 +24,7 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
         foreach ($this->config as $key => $value) {
             $this->gopay->getConfig($key)->willReturn($value);
         }
-        $this->auth = $this->prophesize('GoPay\OAuth2');
+        $this->auth = $this->prophesize('GoPay\Auth');
         $this->api = new Payments($this->gopay->reveal(), $this->auth->reveal());
     }
 
@@ -138,7 +138,7 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
     {
         $t = new AccessToken;
         $t->token = $token;
-        $this->auth->getAccessToken()->shouldBeCalled()->willReturn($t);
+        $this->auth->authorize()->shouldBeCalled()->willReturn($t);
         return $t;
     }
 

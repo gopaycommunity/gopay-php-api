@@ -2,12 +2,15 @@
 
 namespace GoPay\Token;
 
-class CachedOAuth
+use GoPay\Auth;
+use GoPay\OAuth2;
+
+class CachedOAuth implements Auth
 {
     private $oauth;
     private $cache;
 
-    public function __construct(\GoPay\OAuth2 $auth, TokenCache $cache)
+    public function __construct(OAuth2 $auth, TokenCache $cache)
     {
         $this->oauth = $auth;
         $this->cache = $cache;

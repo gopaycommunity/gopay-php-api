@@ -4,7 +4,7 @@ namespace GoPay;
 
 use GoPay\Token\AccessToken;
 
-class OAuth2
+class OAuth2 implements Auth
 {
     private $gopay;
 

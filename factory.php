@@ -15,7 +15,7 @@ function payments(array $userConfig, array $userServices = [])
     ];
     $browser = new Http\JsonBrowser($services['logger'], $config['timeout']);
     $gopay = new GoPay($config, $browser);
-    $auth = new OAuth2($gopay, $services['cache']);
+    $auth = new Token\CachedOAuth(new OAuth2($gopay), $services['cache']);
     return new Payments($gopay, $auth);
 }
 

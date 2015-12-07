@@ -7,7 +7,7 @@ class Payments
     private $gopay;
     private $auth;
 
-    public function __construct(GoPay $g, OAuth2 $a)
+    public function __construct(GoPay $g, Auth $a)
     {
         $this->gopay = $g;
         $this->auth = $a;
@@ -58,7 +58,7 @@ class Payments
     /** @return \GoPay\Http\Response */
     private function api($urlPath, $contentType, $data = null)
     {
-        $token = $this->auth->getAccessToken();
+        $token = $this->auth->authorize();
         if ($token->token) {
             return $this->gopay->call(
                 "payments/payment{$urlPath}",
