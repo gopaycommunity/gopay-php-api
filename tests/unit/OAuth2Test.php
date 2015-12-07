@@ -3,7 +3,6 @@
 namespace GoPay;
 
 use GoPay\Http\Response;
-use Prophecy\Argument;
 
 class OAuth2Test extends \PHPUnit_Framework_TestCase
 {
@@ -15,19 +14,15 @@ class OAuth2Test extends \PHPUnit_Framework_TestCase
     ];
 
     private $gopay;
-    private $cache;
     private $auth;
 
     protected function setUp()
     {
         $this->gopay = $this->prophesize('GoPay\GoPay');
-        $this->cache = $this->prophesize('GoPay\Token\TokenCache');
-    }
-
-    public function testNoRequestWhenCachedTokenIsValid()
-    {
-        $this->cache->getAccessToken()->shouldBeCalled();
-        $this->getAccessTokenWhenExpirationIs(false);
+        foreach ($this->config as $key => $value) {
+            $this->gopay->getConfig($key)->willReturn($value);
+        }
+        $this->auth = new OAuth2($this->gopay->reveal());
     }
 
     /** @dataProvider provideAccessToken */
@@ -44,13 +39,7 @@ class OAuth2Test extends \PHPUnit_Framework_TestCase
             ['grant_type' => 'client_credentials', 'scope' => $this->config['scope']]
         )->shouldBeCalled()->willReturn($response);
 
-        $this->cache
-            ->setAccessToken(Argument::type('GoPay\Token\AccessToken'))->shouldBeCalled()
-            ->will(function ($args) {
-                $this->getAccessToken()->willReturn($args[0]);
-            });
-
-        $token = $this->getAccessTokenWhenExpirationIs(true);
+        $token = $this->auth->authorize();
         assertThat($token->isExpired(), is($isExpired));
     }
 
@@ -60,32 +49,5 @@ class OAuth2Test extends \PHPUnit_Framework_TestCase
             'success' => [200, ['access_token' => 'new token', 'expires_in' => 1800], false],
             'failure' => [400, ['error' => 'access_denied'], true]
         ];
-    }
-
-    public function testShouldUniquelyIdentifyCurrentClient()
-    {
-        $this->givenOAuthClient([
-            'clientId' => 'client',
-            'isProductionMode' => false,
-            'scope' => 'scope'
-        ]);
-        $this->cache->setClient('client-0-scope')->shouldBeCalled();
-        $this->auth->loadCurrentClient();
-    }
-
-    private function getAccessTokenWhenExpirationIs($isExpired)
-    {
-        $this->givenOAuthClient($this->config);
-        $this->cache->setClient(Argument::any())->willReturn(null);
-        $this->cache->isExpired()->willReturn($isExpired);
-        return $this->auth->getAccessToken();
-    }
-
-    private function givenOAuthClient(array $config)
-    {
-        foreach ($config as $key => $value) {
-            $this->gopay->getConfig($key)->willReturn($value);
-        }
-        $this->auth = new OAuth2($this->gopay->reveal(), $this->cache->reveal());
     }
 }
