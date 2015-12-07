@@ -12,6 +12,9 @@ class GoPay
     const JSON = 'application/json';
     const FORM = 'application/x-www-form-urlencoded';
 
+    const LOCALE_CZECH = 'cs-CZ';
+    const LOCALE_ENGLISH = 'en-US';
+
     private $config;
     private $browser;
 
@@ -65,7 +68,7 @@ class GoPay
 
     private function getAcceptedLanguage()
     {
-        $language = $this->getConfig('language');
-        return Language::getAcceptedLocale($language);
+        static $czechLike = [Language::CZECH, Language::SLOVAK];
+        return in_array($this->getConfig('language'), $czechLike) ? self::LOCALE_CZECH : self::LOCALE_ENGLISH;
     }
 }

@@ -23,7 +23,7 @@ class GoPayTest extends \PHPUnit_Framework_TestCase
         $expectedRequest->headers = $expectedRequest->headers + [
             'Accept' => 'application/json',
             'Content-Type' => $contentType,
-            'Accept-Language' => Language::LOCALE_CZECH
+            'Accept-Language' => GoPay::LOCALE_CZECH
         ];
         $this->browser->send($expectedRequest)->shouldBeCalled();
         $this->givenGoPay(Language::CZECH, $isProductionMode)->call($this->urlPath, $contentType, $auth, $body);
@@ -83,8 +83,8 @@ class GoPayTest extends \PHPUnit_Framework_TestCase
     public function provideLanguage()
     {
         $languages = [
-            Language::LOCALE_CZECH => [Language::CZECH, Language::SLOVAK],
-            Language::LOCALE_ENGLISH => ['', Language::ENGLISH, Language::RUSSIAN, 'unknown language'],
+            GoPay::LOCALE_CZECH => [Language::CZECH, Language::SLOVAK],
+            GoPay::LOCALE_ENGLISH => ['', Language::ENGLISH, Language::RUSSIAN, 'unknown language'],
         ];
         $params = [];
         foreach ($languages as $locale => $langs) {
