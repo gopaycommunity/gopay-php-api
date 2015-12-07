@@ -11,7 +11,7 @@ class WhenApiSucceedTest extends GivenGoPay
             'amount' => 1,
             'currency' => Definition\Payment\Currency::CZECH_CROWNS,
             'order_number' => 'order-test - ' . date('Y-m-d H:i:s'),
-            'order_description' => 'remote test',
+            'order_description' => 'php test',
             'callback' => [
                 'return_url' => 'http://www.your-url.tld/return',
                 'notification_url' => 'http://www.your-url.tld/notify'
