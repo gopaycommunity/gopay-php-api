@@ -7,7 +7,7 @@
     "authors": [
         {
             "name": "GoPay",
-            "homepage": "https://github.com/gopaycommunity/payments-sdk-php/contributors"
+            "homepage": "https://github.com/gopaycommunity/gopay-php-api/contributors"
         }
     ],
     "config": {
