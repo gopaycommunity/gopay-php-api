@@ -11,7 +11,7 @@ class JsonBrowserTest extends \PHPUnit_Framework_TestCase
     {
         $logger = $this->prophesize('GoPay\Http\Log\Logger');
         $logger->logHttpCommunication(Argument::cetera())->shouldBeCalled();
-        $timeout = 1;
+        $timeout = 5;
 
         $browser = new JsonBrowser($logger->reveal(), $timeout);
         $response = $browser->send(new Request($url));
@@ -23,7 +23,7 @@ class JsonBrowserTest extends \PHPUnit_Framework_TestCase
     public function provideJson()
     {
         return array(
-            'existing json' => array('http://www.rozpisyzapasu.cz/api/', true, nonEmptyArray()),
+            'existing json' => array('https://httpbin.org/get', true, nonEmptyArray()),
             'non existent page' => array('http://www.non-existent-page.cz/', false, emptyArray())
         );
     }
