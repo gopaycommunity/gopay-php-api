@@ -168,10 +168,10 @@ Access token expires after 30 minutes so it's expensive to use new token for eve
 Unfortunately it's default behavior of [`GoPay\Token\InMemoryTokenCache`](src/Token/InMemoryTokenCache.php).
 But you can implement your cache and store tokens in Memcache, Redis, files, ... It's up to you.
 
-Your cache must implement template methods from [`GoPay\Token\TokenCache`](src/Token/TokenCache.php).
+Your cache must implement [`GoPay\Token\TokenCache` interface](src/Token/TokenCache.php).
 Be aware that there are two [scopes](https://doc.gopay.com/en/?shell#scope) (`TokenScope`) and
-SDK can be used for different clients (`clientId`, `isProductionMode`). So `$client` passed to 
-`setClient` method is unique identifier (`string`) that is built for current environment.
+SDK can be used for different clients (`clientId`, `isProductionMode`). So `client` passed to
+methods is unique identifier (`string`) that is built for current environment.
 Below you can see example implementation of caching tokens in file:
 
 
@@ -189,26 +189,20 @@ $gopay = GoPay\payments(
 use GoPay\Token\TokenCache;
 use GoPay\Token\AccessToken;
 
-class PrimitiveFileCache extends TokenCache
+class PrimitiveFileCache implements TokenCache
 {
-    private $file;
-
-    public function setClient($client)
+    public function setAccessToken($client, AccessToken $t)
     {
-        $this->file = __DIR__ . "/{$client}";
+        file_put_contents(__DIR__ . "/{$client}", serialize($t);
     }
 
-    public function setAccessToken(AccessToken $t)
+    public function getAccessToken($client)
     {
-        file_put_contents($this->file, serialize($t);
-    }
-
-    public function getAccessToken()
-    {
-        if (file_exists($this->file)) {
-            return unserialize(file_get_contents($this->file));
+        $file = __DIR__ . "/{$client}";
+        if (file_exists($file)) {
+            return unserialize(file_get_contents($file));
         }
-        return $this->getExpiredToken(); 
+        return null; 
     }
 }
 

@@ -2,18 +2,18 @@
 
 namespace GoPay\Token;
 
-class InMemoryTokenCache extends TokenCache
+class InMemoryTokenCache implements TokenCache
 {
     /** @var AccessToken[] */
     private $tokens = [];
 
-    public function setAccessToken(AccessToken $t)
+    public function setAccessToken($client, AccessToken $t)
     {
-        $this->tokens[$this->client] = $t;
+        $this->tokens[$client] = $t;
     }
 
-    public function getAccessToken()
+    public function getAccessToken($client)
     {
-        return array_key_exists($this->client, $this->tokens) ? $this->tokens[$this->client] : null;
+        return array_key_exists($client, $this->tokens) ? $this->tokens[$client] : null;
     }
 }

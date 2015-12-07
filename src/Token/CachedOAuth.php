@@ -16,10 +16,10 @@ class CachedOAuth
     public function authorize()
     {
         $client = $this->oauth->getClient();
-        $token = $this->cache->getAccessToken();
+        $token = $this->cache->getAccessToken($client);
         if (!($token instanceof AccessToken) || $token->isExpired()) {
             $token = $this->oauth->authorize();
-            $this->cache->setAccessToken($token);
+            $this->cache->setAccessToken($client, $token);
         }
         return $token;
     }
