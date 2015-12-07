@@ -9,7 +9,7 @@ class OAuth2Test extends \PHPUnit_Framework_TestCase
     private $config = [
         'clientId' => 'user',
         'clientSecret' => 'pass',
-        'scope' => 'irrelevant scope',
+        'scope' => 'scope',
         'isProductionMode' => true,
     ];
 
@@ -41,6 +41,11 @@ class OAuth2Test extends \PHPUnit_Framework_TestCase
 
         $token = $this->auth->authorize();
         assertThat($token->isExpired(), is($isExpired));
+    }
+
+    public function testShouldUniquelyIdentifyCurrentClient()
+    {
+        assertThat($this->auth->getClient(), is('user-1-scope'));
     }
 
     public function provideAccessToken()

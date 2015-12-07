@@ -30,4 +30,14 @@ class OAuth2
         }
         return $t;
     }
+
+    public function getClient()
+    {
+        $ids = [
+            $this->gopay->getConfig('clientId'),
+            (int) $this->gopay->getConfig('isProductionMode'),
+            $this->gopay->getConfig('scope'),
+        ];
+        return implode('-', $ids);
+    }
 }
