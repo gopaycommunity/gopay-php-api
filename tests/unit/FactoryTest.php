@@ -4,6 +4,11 @@ namespace GoPay;
 
 class FactoryTest extends \PHPUnit_Framework_TestCase
 {
+    public function testTravisShouldFail()
+    {
+        assertThat(1+1, is(3));
+    }
+
     /** @dataProvider provideFactoryMethod */
     public function testShouldBuildPayments($method)
     {
