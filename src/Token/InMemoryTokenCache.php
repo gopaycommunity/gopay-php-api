@@ -14,6 +14,6 @@ class InMemoryTokenCache extends TokenCache
 
     public function getAccessToken()
     {
-        return array_key_exists($this->client, $this->tokens) ? $this->tokens[$this->client] : $this->getExpiredToken();
+        return array_key_exists($this->client, $this->tokens) ? $this->tokens[$this->client] : null;
     }
 }
