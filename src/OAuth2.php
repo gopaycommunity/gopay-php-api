@@ -15,10 +15,11 @@ class OAuth2
 
     public function authorize()
     {
+        $credentials = "{$this->gopay->getConfig('clientId')}:{$this->gopay->getConfig('clientSecret')}";
         $response = $this->gopay->call(
             'oauth2/token',
             GoPay::FORM,
-            [$this->gopay->getConfig('clientId'), $this->gopay->getConfig('clientSecret')],
+            'Basic ' . base64_encode($credentials),
             ['grant_type' => 'client_credentials', 'scope' => $this->gopay->getConfig('scope')]
         );
         $t = new AccessToken;

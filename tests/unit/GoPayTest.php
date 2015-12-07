@@ -58,12 +58,12 @@ class GoPayTest extends \PHPUnit_Framework_TestCase
             'send json in test' => [
                 false,
                 GoPay::JSON,
-                ['user', 'pass'],
+                'Basic irrelevantCode',
                 ['key' => 'value'],
                 $this->buildRequest(
                     Method::POST,
                     'https://gw.sandbox.gopay.com/api/',
-                    'Basic dXNlcjpwYXNz',
+                    'Basic irrelevantCode',
                     '{"key":"value"}'
                 )
             ]
@@ -103,6 +103,7 @@ class GoPayTest extends \PHPUnit_Framework_TestCase
         $r->body = $body;
         return $r;
     }
+
     private function givenGoPay($language, $isProduction = false)
     {
         return new GoPay(['isProductionMode' => $isProduction, 'language' => $language], $this->browser->reveal());

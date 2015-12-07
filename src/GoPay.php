@@ -59,17 +59,8 @@ class GoPay
             'Accept' => 'application/json',
             'Accept-Language' => $this->getAcceptedLanguage(),
             'Content-Type' => $contentType,
-            'Authorization' => $this->getAuthorization($authorization)
+            'Authorization' => $authorization
         ];
-    }
-
-    private function getAuthorization($authorization)
-    {
-        if (is_array($authorization)) {
-            $credentials = implode(':', $authorization);
-            return 'Basic ' . base64_encode($credentials);
-        }
-        return $authorization;
     }
 
     private function getAcceptedLanguage()
