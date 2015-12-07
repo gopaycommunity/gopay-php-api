@@ -9,7 +9,7 @@ php:
 install:
   - composer install
 script:
-  - bin/phpunit
+  - vendor/phpunit/phpunit/phpunit
 # http://blog.wyrihaximus.net/2015/07/composer-cache-on-travis/
 cache:
   directories:
