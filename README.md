@@ -3,8 +3,10 @@
 
 [![License](https://poser.pugx.org/gopay/payments-sdk-php/license)](https://packagist.org/packages/gopay/payments-sdk-php)
 [![Latest Stable Version](https://poser.pugx.org/gopay/payments-sdk-php/v/stable)](https://packagist.org/packages/gopay/payments-sdk-php)
-[![Dependency Status](https://www.versioneye.com/user/projects/55ff8ef0601dd900150001e5/badge.svg?style=flat)](https://www.versioneye.com/user/projects/55ff8ef0601dd900150001e5)
+[![Dependency Status](https://www.versioneye.com/user/projects/55ff8ef0601dd900150001e5/badge.svg)](https://www.versioneye.com/user/projects/55ff8ef0601dd900150001e5)
 [![Build Status](https://travis-ci.org/gopaycommunity/gopay-php-api.svg)](https://travis-ci.org/gopaycommunity/gopay-php-api)
+[![Total Downloads](https://poser.pugx.org/gopay/payments-sdk-php/downloads)](https://packagist.org/packages/gopay/payments-sdk-php)
+[![Monthly Downloads](https://poser.pugx.org/gopay/payments-sdk-php/d/monthly)](https://packagist.org/packages/gopay/payments-sdk-php)
 
 ## Requirements
 
