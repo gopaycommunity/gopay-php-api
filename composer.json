@@ -20,6 +20,9 @@
         },
         "files": ["factory.php"]
     },
+    "autoload-dev": {
+        "files": ["tests/remote/GivenGoPay.php", "vendor/hamcrest/hamcrest-php/hamcrest/Hamcrest.php"]
+    },
     "require": {
         "mashape/unirest-php": ">2.6"
     },
