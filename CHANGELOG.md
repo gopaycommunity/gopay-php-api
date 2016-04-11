@@ -1,6 +1,12 @@
 
 # Changelog
 
+## v1.1.1
+
+* Fix `GoPay\Definition\Payment\BankSwiftCode::KOMERCNI_BANKA`
+* Composer `autoload-dev`
+* Update badges in readme (#2)
+
 ## v1.1.0
 
 * Add travis-ci
