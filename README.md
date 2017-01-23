@@ -197,7 +197,7 @@ class PrimitiveFileCache implements TokenCache
 {
     public function setAccessToken($client, AccessToken $t)
     {
-        file_put_contents(__DIR__ . "/{$client}", serialize($t);
+        file_put_contents(__DIR__ . "/{$client}", serialize($t));
     }
 
     public function getAccessToken($client)
