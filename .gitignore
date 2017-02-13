@@ -4,3 +4,7 @@
 !/bin/jenkins.sh
 /var/
 /phpunit.xml
+.idea
+/vendor
+composer.phar
+composer.sh

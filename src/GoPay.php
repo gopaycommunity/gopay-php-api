@@ -42,7 +42,7 @@ class GoPay
     {
         static $urls = [
             true => 'https://gate.gopay.cz/',
-            false => 'https://gw.sandbox.gopay.com/'
+            false => 'http://gopay-gw:8180/gp/'
         ];
         return $urls[(bool) $this->getConfig('isProductionMode')] . $urlPath;
     }

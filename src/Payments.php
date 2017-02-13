@@ -13,6 +13,19 @@ class Payments
         $this->auth = $a;
     }
 
+    public function __call($name, $arguments)
+    {
+        if($name == 'refundPayment') {
+            if (count($arguments) > 1) {
+                if (is_integer($arguments[1])) {
+                    return call_user_func_array(array($this,'refundPayment'), $arguments);
+                } else {
+                    return call_user_func_array(array($this,'refundPaymentEET'), $arguments);
+                }
+            }
+        }
+    }
+
     public function createPayment(array $rawPayment)
     {
         $payment = $rawPayment + [
@@ -30,9 +43,14 @@ class Payments
         return $this->api("/{$id}", GoPay::FORM);
     }
 
-    public function refundPayment($id, $amount)
+    private function refundPayment($id, $amount)
     {
         return $this->api("/{$id}/refund", GoPay::FORM, ['amount' => $amount]);
+    }
+
+    private function refundPaymentEET($id, array $payment)
+    {
+        return $this->api("/{$id}/refund", GoPay::JSON, $payment);
     }
 
     public function createRecurrence($id, array $payment)

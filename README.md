@@ -79,7 +79,6 @@ API | SDK method |
 [Create pre-authorized payment](https://doc.gopay.com/en/#pre-authorized-payment) | `$gopay->createPayment(array $payment)` |
 [Charge of pre-authorized payment](https://doc.gopay.com/en/#charge-of-pre-authorized-payment) | `$gopay->captureAuthorization($id)` |
 [Cancellation of the pre-authorized payment](https://doc.gopay.com/en/#cancellation-of-the-pre-authorized-payment) | `$gopay->voidAuthorization($id)` |
-
 ### SDK response? Has my call succeed?
 
 SDK returns wrapped API response. Every method returns
@@ -161,7 +160,8 @@ Type | Description |
 [Token scope](/src/Definition/TokenScope.php) | Authorization scope for [OAuth2](https://doc.gopay.com/en/?php#oauth) |
 [Payment enums](/src/Definition/Payment) | Enums for creating payment |
 [Response enums](/src/Definition/Response) | Result of creating payment, executing payment operations |
-
+[ItemType enums](/src/Definition/Payment/PaymentItemType.php) | Type of an item |
+[VatRate enums](/src/Definition/Payment/VatRate.php) | VatRate of an item |
 ### Framework integration
 
 * [Symfony2](/examples/symfony.md)

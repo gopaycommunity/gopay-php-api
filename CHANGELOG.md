@@ -1,6 +1,10 @@
 
 # Changelog
 
+## v1.2.0
+
+* Added [EET](https://help.gopay.com/cs/tema/propojeni-do-eet/jak-bude-fungovat-napojeni-gopay-do-eet) Support 
+
 ## v1.1.1
 
 * Fix `GoPay\Definition\Payment\BankSwiftCode::KOMERCNI_BANKA`
