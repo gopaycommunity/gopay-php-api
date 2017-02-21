@@ -1,10 +1,10 @@
-/vendor/
+# IDE
 /nbproject/
+.idea
+
+# APP
+/vendor/
 /bin/
 !/bin/jenkins.sh
 /var/
 /phpunit.xml
-.idea
-/vendor
-composer.phar
-composer.sh
