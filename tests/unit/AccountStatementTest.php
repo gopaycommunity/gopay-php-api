@@ -4,16 +4,17 @@ namespace GoPay;
 
 use GoPay\Definition\Account\StatementGeneratingFormat;
 use GoPay\Definition\Payment\Currency;
-use GoPay\Token\AccessToken;
 use GoPay\Definition\Language;
 
 class AccountStatementTest extends \PHPUnit_Framework_TestCase
 {
 
-    private $accessToken = '4sAH6lEyVpSz2lOowRRXpcLWcNRIlebOpC6vjPt+7r7t34QxwNPOb0RzWzuU2ar/vcVq7bCKWlN9lrzI5/cY6tfBbHgz/ZG5K9s5Mq2UvRI=';
+    private $accessToken = 'copy token';
     private $config = [
+            'scope' => Definition\TokenScope::ALL,
             'language' => Language::CZECH,
-            'goid' => '8712700986'
+            'goid' => '8712700986',
+            'timeout' => 30,
     ];
 
     private $gopay;
@@ -22,16 +23,16 @@ class AccountStatementTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->gopay = new GoPay($this->config, new Http\OctetStreamBrowser(new Http\Log\NullLogger, 30));
+        $browser = new Http\OctetStreamBrowser(new Http\Log\NullLogger, $this->config['timeout']);
+        $this->gopay = new GoPay($this->config, $browser);
 
-        $this->auth = $this->prophesize('GoPay\Auth');
-        $this->api = new AccountStatement($this->gopay->reveal(), $this->auth->reveal());
+        $this->auth = new Token\CachedOAuth(new OAuth2($this->gopay), new Token\InMemoryTokenCache);
+
+        $this->api = new AccountStatement($this->gopay, $this->auth);
     }
 
-    public function testGetPaymentInstruments()
+    public function testGetAccountStatement()
     {
-//        $this->givenAccessToken($this->accessToken);
-
         $accountStatement = [
             'date_from' => '2017-01-01',
             'date_to' => '2017-01-27',
@@ -51,16 +52,5 @@ class AccountStatementTest extends \PHPUnit_Framework_TestCase
 
         echo "Byte pole: {$response->rawBody}";
     }
-
-    private function givenAccessToken($token)
-    {
-        $t = new AccessToken;
-        $t->token = $token;
-        $this->auth->authorize()->shouldBeCalled()->willReturn($t);
-        return $t;
-    }
-
-
-
 
 }
