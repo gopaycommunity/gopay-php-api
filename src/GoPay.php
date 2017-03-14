@@ -4,7 +4,7 @@ namespace GoPay;
 
 use Unirest\Method;
 use GoPay\Http\Request;
-use GoPay\Http\JsonBrowser;
+use GoPay\Http\AbstractBrowser;
 use GoPay\Definition\Language;
 
 class GoPay
@@ -18,7 +18,7 @@ class GoPay
     private $config;
     private $browser;
 
-    public function __construct(array $config, JsonBrowser $b)
+    public function __construct(array $config, AbstractBrowser $b)
     {
         $this->config = $config;
         $this->browser = $b;

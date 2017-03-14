@@ -27,7 +27,7 @@ class AccountStatement
      * @param array $accountStatement
      * @return \GoPay\Http\Response
      */
-    public function getPaymentInstruments(array $accountStatement){
+    public function getAccountStatement(array $accountStatement){
         return $this->api('', GoPay::JSON, $accountStatement);
     }
 
