@@ -4,13 +4,28 @@ namespace GoPay;
 
 use GoPay\Definition\Language;
 use GoPay\Definition\Payment\Currency;
+use GoPay\Definition\TokenScope;
+
+use GoPay\Http;
+use GoPay\Token;
+
+/*
+define('__ROOT_', dirname(dirname(dirname(__FILE__))));
+require_once(__ROOT_.'/src/Definition/Payment/Currency.php');
+require_once(__ROOT_.'/src/Definition/Language.php');
+require_once(__ROOT_.'/src/Definition/TokenScope.php');
+require_once(__ROOT_.'/src/Http/JsonBrowser.php');
+require_once(__ROOT_.'/src/Http/Log/NullLogger.php');
+require_once(__ROOT_.'/src/Token/CachedOAuth.php');
+require_once(__ROOT_.'/src/Token/InMemoryTokenCache.php');
+*/
 
 class EshopTest extends \PHPUnit_Framework_TestCase
 {
 
     private $accessToken = 'copy token';
     private $config = [
-            'scope' => Definition\TokenScope::ALL,
+            'scope' => TokenScope::ALL,
             'language' => Language::CZECH,
             'goid' => '8712700986',
             'timeout' => 30,
