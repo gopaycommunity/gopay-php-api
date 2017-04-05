@@ -4,11 +4,12 @@ namespace GoPay;
 
 use Unirest\Method;
 use GoPay\Http\Request;
-use GoPay\Http\AbstractBrowser;
+use GoPay\Http\JsonBrowser;
 use GoPay\Definition\Language;
 
 class GoPay
 {
+
     const JSON = 'application/json';
     const FORM = 'application/x-www-form-urlencoded';
 
@@ -18,7 +19,7 @@ class GoPay
     private $config;
     private $browser;
 
-    public function __construct(array $config, AbstractBrowser $b)
+    public function __construct(array $config, JsonBrowser $b)
     {
         $this->config = $config;
         $this->browser = $b;
@@ -41,10 +42,10 @@ class GoPay
     public function buildUrl($urlPath)
     {
         static $urls = [
-            true => 'https://gate.gopay.cz/',
-            false => 'https://gw.sandbox.gopay.com/'
+                true => 'https://gate.gopay.cz/',
+                false => 'https://gw.sandbox.gopay.com/'
         ];
-        return $urls[(bool) $this->getConfig('isProductionMode')] . $urlPath;
+        return $urls[(bool)$this->getConfig('isProductionMode')] . $urlPath;
     }
 
     private function encodeData($contentType, $data)
@@ -58,12 +59,20 @@ class GoPay
 
     private function buildHeaders($contentType, $authorization)
     {
-        return [
-            'Accept' => 'application/json',
-            'Accept-Language' => $this->getAcceptedLanguage(),
-            'Content-Type' => $contentType,
-            'Authorization' => $authorization
-        ];
+        if (is_null($contentType)) {
+            return [
+                    'Accept' => 'application/json',
+                    'Accept-Language' => $this->getAcceptedLanguage(),
+                    'Authorization' => $authorization
+            ];
+        } else {
+            return [
+                    'Accept' => 'application/json',
+                    'Accept-Language' => $this->getAcceptedLanguage(),
+                    'Content-Type' => $contentType,
+                    'Authorization' => $authorization
+            ];
+        }
     }
 
     private function getAcceptedLanguage()

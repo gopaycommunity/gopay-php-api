@@ -2,13 +2,18 @@
 
 namespace GoPay\Definition\Response;
 
-/**
- * recurrence_state - https://doc.gopay.com/en/?php#additional_params
- * preauthorization.state - https://doc.gopay.com/en/?php#pre-authorized-payment
- */
-class State
+class RecurrenceState
 {
     const REQUESTED = 'REQUESTED';
     const STARTED = 'STARTED';
     const STOPPED = 'STOPPED';
 }
+
+class PreAuthState
+{
+    const REQUESTED = 'REQUESTED';
+    const AUTHORIZED = 'AUTHORIZED';
+    const CAPTURED = 'CAPTURED';
+    const CANCELED = 'CANCELED';
+}
+

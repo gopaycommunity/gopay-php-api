@@ -22,12 +22,12 @@ class Payments
             ],
             'lang' => $this->gopay->getConfig('language')
         ];
-        return $this->api('', GoPay::JSON, $payment);
+        return $this->api('payments/payment', GoPay::JSON, $payment);
     }
 
     public function getStatus($id)
     {
-        return $this->api("/{$id}", GoPay::FORM);
+        return $this->api("payments/payment/{$id}", GoPay::FORM);
     }
 
     /** @see refundPaymentEET */
@@ -36,33 +36,54 @@ class Payments
         if (is_array($data)) {
             return $this->refundPaymentEET($id, $data);
         }
-        return $this->api("/{$id}/refund", GoPay::FORM, ['amount' => $data]);
+        return $this->api("payments/payment/{$id}/refund", GoPay::FORM, ['amount' => $data]);
     }
 
     public function refundPaymentEET($id, array $paymentData)
     {
-        return $this->api("/{$id}/refund", GoPay::JSON, $paymentData);
+        return $this->api("payments/payment/{$id}/refund", GoPay::JSON, $paymentData);
     }
 
     public function createRecurrence($id, array $payment)
     {
-        return $this->api("/{$id}/create-recurrence", GoPay::JSON, $payment);
+        return $this->api("payments/payment/{$id}/create-recurrence", GoPay::JSON, $payment);
     }
 
     public function voidRecurrence($id)
     {
-        return $this->api("/{$id}/void-recurrence", GoPay::FORM, array());
+        return $this->api("payments/payment/{$id}/void-recurrence", GoPay::FORM, array());
     }
 
     public function captureAuthorization($id)
     {
-        return $this->api("/{$id}/capture", GoPay::FORM, array());
+        return $this->api("payments/payment/{$id}/capture", GoPay::FORM, array());
     }
 
     public function voidAuthorization($id)
     {
-        return $this->api("/{$id}/void-authorization", GoPay::FORM, array());
+        return $this->api("payments/payment/{$id}/void-authorization", GoPay::FORM, array());
     }
+
+    public function getPaymentInstruments($goid, $currency)
+    {
+        return $this->api("eshops/eshop/{$goid}/payment-instruments/{$currency}", null);
+    }
+
+    public function getAccountStatement(array $accountStatement)
+    {
+        return $this->api("accounts/account-statement", GoPay::JSON, $accountStatement);
+    }
+
+    public function getEETReceiptByPaymentId($paymentId)
+    {
+        return $this->api("payments/payment/{$paymentId}/eet-receipts", GoPay::JSON);
+    }
+
+    public function findEETReceiptsByFilter(array $filter)
+    {
+        return $this->api("eet-receipts", GoPay::JSON, $filter);
+    }
+
 
     /** @return \GoPay\Http\Response */
     private function api($urlPath, $contentType, $data = null)
@@ -70,7 +91,7 @@ class Payments
         $token = $this->auth->authorize();
         if ($token->token) {
             return $this->gopay->call(
-                "payments/payment{$urlPath}",
+                $urlPath,
                 $contentType,
                 "Bearer {$token->token}",
                 $data
