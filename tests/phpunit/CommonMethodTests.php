@@ -2,13 +2,17 @@
 
 namespace GoPay;
 
-//require_once __DIR__ . '/../../vendor/autoload.php';
 require_once 'TestUtils.php';
 
-use GoPay\Definition\Language;
 use GoPay\Definition\Payment\Currency;
 use GoPay\Definition\Account\StatementGeneratingFormat;
 
+/**
+ * Class CommonMethodTests
+ * @package GoPay
+ *
+ * To execute test for certain method properly it is necessary to add prefix 'test' to its name.
+ */
 class CommonMethodTests extends \PHPUnit_Framework_TestCase
 {
 
@@ -19,9 +23,9 @@ class CommonMethodTests extends \PHPUnit_Framework_TestCase
         $this->gopay = TestUtils::setup();
     }
 
-    public function PaymentStatus()
+    public function testPaymentStatus()
     {
-        $paymentId = 3049525986;
+        $paymentId = 3049604064;
 
         $response = $this->gopay->getStatus($paymentId);
 
@@ -35,14 +39,14 @@ class CommonMethodTests extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function GetPaymentInstruments()
+    public function tGetPaymentInstruments()
     {
         $paymentInstrumentList = $this->gopay->getPaymentInstruments(TestUtils::GO_ID, Currency::CZECH_CROWNS);
 
         echo print_r($paymentInstrumentList->json, true);
     }
 
-    public function testGetAccountStatement()
+    public function tGetAccountStatement()
     {
         $accountStatement = [
                 'date_from' => '2017-01-01',

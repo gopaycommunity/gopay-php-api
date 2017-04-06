@@ -2,7 +2,6 @@
 
 namespace GoPay;
 
-//require_once __DIR__ . '/../../vendor/autoload.php';
 require_once 'TestUtils.php';
 
 use GoPay\Definition\Language;
@@ -10,6 +9,12 @@ use GoPay\Definition\Payment\Currency;
 use GoPay\Definition\Payment\PaymentInstrument;
 use GoPay\Definition\Payment\BankSwiftCode;
 
+/**
+ * Class CreatePaymentTests
+ * @package GoPay
+ *
+ * To execute test for certain method properly it is necessary to add prefix 'test' to its name.
+ */
 class CreatePaymentTests extends \PHPUnit_Framework_TestCase
 {
 
@@ -34,7 +39,7 @@ class CreatePaymentTests extends \PHPUnit_Framework_TestCase
                         ],
                 ],
                 'order_number' => '9876',
-                'amount' => -2300,
+                'amount' => 2300,
                 'currency' => Currency::CZECH_CROWNS,
                 'order_description' => '9876Description',
                 'lang' => Language::CZECH,
