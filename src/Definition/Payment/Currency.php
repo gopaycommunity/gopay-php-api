@@ -6,4 +6,8 @@ class Currency
 {
     const CZECH_CROWNS = 'CZK';
     const EUROS = 'EUR';
+    const POLISH_ZLOTY = 'PLN';
+    const HUNGARIAN_FORINT = 'HUF';
+    const BRITISH_POUND = 'GBP';
+    const US_DOLLAR = 'USD';
 }

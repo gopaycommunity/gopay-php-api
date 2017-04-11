@@ -12,4 +12,5 @@ class PaymentInstrument
     const SUPERCASH = 'SUPERCASH';
     const GOPAY = 'GOPAY';
     const PAYPAL = 'PAYPAL';
+    const BITCOIN = 'BITCOIN';
 }
