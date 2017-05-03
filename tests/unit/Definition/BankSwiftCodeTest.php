@@ -8,7 +8,9 @@ class BankSwiftCodeTest extends \PHPUnit_Framework_TestCase
     {
         $reflection = new \ReflectionClass('GoPay\Definition\Payment\BankSwiftCode');
         foreach ($reflection->getConstants() as $code) {
-            $this->assertSwiftCodeLength($code);
+            if ($code != "OTHERS") {
+                $this->assertSwiftCodeLength($code);
+            }
         }
     }
 
