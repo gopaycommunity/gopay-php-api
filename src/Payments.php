@@ -4,8 +4,8 @@ namespace GoPay;
 
 class Payments
 {
-    private $gopay;
-    private $auth;
+    protected $gopay;
+    protected $auth;
 
     public function __construct(GoPay $g, Auth $a)
     {
@@ -86,7 +86,7 @@ class Payments
 
 
     /** @return \GoPay\Http\Response */
-    private function api($urlPath, $contentType, $data = null)
+    protected function api($urlPath, $contentType, $data = null)
     {
         $token = $this->auth->authorize();
         if ($token->token) {

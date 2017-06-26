@@ -2,12 +2,12 @@
 
 namespace GoPay\Http;
 
-use Unirest\Method;
+use GoPay\Definition\RequestMethods;
 
 class Request
 {
-    /** @var Method */
-    public $method = Method::GET;
+    /** @var RequestMethods */
+    public $method = RequestMethods::GET;
     /** @var string */
     public $url;
     /** @var string[] */

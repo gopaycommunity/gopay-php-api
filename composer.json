@@ -24,7 +24,7 @@
         "files": ["tests/remote/GivenGoPay.php", "vendor/hamcrest/hamcrest-php/hamcrest/Hamcrest.php"]
     },
     "require": {
-        "mashape/unirest-php": ">2.6"
+        "guzzlehttp/guzzle": "~6.0"
     },
     "require-dev": {
         "phpunit/phpunit": "*",

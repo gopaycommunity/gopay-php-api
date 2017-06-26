@@ -42,4 +42,16 @@ class TestUtils
         return $gopay;
     }
 
+    public static function setupSupercash()
+    {
+        $gopay = paymentsSupercash([
+                'goid' => self::GO_ID,
+                'clientId' => self::CLIENT_ID,
+                'clientSecret' => self::CLIENT_SECRET,
+                'isProductionMode' => false,
+                'language' => Language::CZECH
+        ]);
+        return $gopay;
+    }
+
 }
