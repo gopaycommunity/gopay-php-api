@@ -2,8 +2,16 @@
 
 namespace GoPay;
 
-class PaymentsSupercash extends Payments
+class PaymentsSupercash
 {
+    // pridat konstruktor pro udrzovani objektu Payments
+
+    protected $payments;
+
+    public function __construct(GoPay $g, Auth $a)
+    {
+        $this->payments = new Payments($g, $a);
+    }
 
     const SUB_TYPE_PREPAID = 'PREPAID';
     const SUB_TYPE_POSTPAID = 'POSTPAID';
@@ -15,9 +23,9 @@ class PaymentsSupercash extends Payments
      */
     public function createSupercashCoupon(array $supercashCoupon)
     {
-        $coupon = ['go_id' => $this->gopay->getConfig('goid')] + $supercashCoupon;
+        $coupon = ['go_id' => $this->payments->getGopay()->getConfig('goid')] + $supercashCoupon;
 
-        return $this->api('supercash/coupon', GoPay::JSON, $coupon);
+        return $this->payments->post('supercash/coupon', GoPay::JSON, $coupon);
     }
 
 
@@ -28,9 +36,9 @@ class PaymentsSupercash extends Payments
      */
     public function createSupercashCouponBatch(array $supercashCouponBatch)
     {
-        $batch = ["go_id" => $this->gopay->getConfig('goid')] + $supercashCouponBatch;
+        $batch = ["go_id" => $this->payments->getGopay()->getConfig('goid')] + $supercashCouponBatch;
 
-        return $this->api("supercash/coupon/batch", GoPay::JSON, $batch);
+        return $this->payments->post("supercash/coupon/batch", GoPay::JSON, $batch);
     }
 
 
@@ -42,7 +50,7 @@ class PaymentsSupercash extends Payments
      */
     public function getSupercashCouponBatchStatus($batchId)
     {
-        return $this->api("batch/" . $batchId, GoPay::FORM);
+        return $this->payments->get("batch/" . $batchId, GoPay::FORM);
     }
 
 
@@ -54,8 +62,8 @@ class PaymentsSupercash extends Payments
      */
     public function getSupercashCouponBatch($batchId)
     {
-        return $this->api("supercash/coupon/find?batch_request_id=" . $batchId
-                . "&go_id={$this->gopay->getConfig('goid')}", GoPay::FORM);
+        return $this->payments->get("supercash/coupon/find?batch_request_id=" . $batchId
+                . "&go_id={$this->payments->getGopay()->getConfig('goid')}", GoPay::FORM);
     }
 
 
@@ -69,8 +77,8 @@ class PaymentsSupercash extends Payments
     {
         $queryData = is_array($paymentSessionId) ? array_values($paymentSessionId) : [$paymentSessionId];
 
-        return $this->api('supercash/coupon/find?payment_session_id_list=' . implode(",", $queryData)
-                . "&go_id={$this->gopay->getConfig('goid')}", GoPay::FORM);
+        return $this->payments->get('supercash/coupon/find?payment_session_id_list=' . implode(",", $queryData)
+                . "&go_id={$this->payments->getGopay()->getConfig('goid')}", GoPay::FORM);
     }
 
 
@@ -82,7 +90,7 @@ class PaymentsSupercash extends Payments
      */
     public function getSupercashCoupon($couponId)
     {
-        return $this->api("supercash/coupon/{$couponId}", GoPay::FORM);
+        return $this->payments->get("supercash/coupon/{$couponId}", GoPay::FORM);
     }
 
 
