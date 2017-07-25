@@ -3,8 +3,9 @@
 namespace GoPay\Http;
 
 use GoPay\Http\Log\Logger;
-use GuzzleHttp\Psr7\Request as GuzzleReq;
+use GuzzleHttp\Message\Request as GuzzleReq;
 use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Stream\Stream;
 
 class JsonBrowser
 {
@@ -20,8 +21,10 @@ class JsonBrowser
     public function send(Request $r)
     {
         try {
-            $client = new GuzzleClient(['timeout' => $this->timeout]);
-            $guzzRequest = new GuzzleReq($r->method, $r->url, $r->headers, $r->body);
+            $client = new GuzzleClient();
+            $guzzRequest = $client->createRequest($r->method, $r->url);
+            $guzzRequest->setHeaders($r->headers);
+            $guzzRequest->setBody(Stream::factory($r->body));
             $guzzResponse = $client->send($guzzRequest);
             $response = new Response((string) $guzzResponse->getBody());
             $response->statusCode = (string) $guzzResponse->getStatusCode();
