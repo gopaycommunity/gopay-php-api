@@ -2,6 +2,7 @@
 
 namespace GoPay;
 
+use GoPay\Definition\RequestMethods;
 use GoPay\Http\Response;
 
 class OAuth2Test extends \PHPUnit_Framework_TestCase
@@ -36,6 +37,7 @@ class OAuth2Test extends \PHPUnit_Framework_TestCase
             'oauth2/token',
             GoPay::FORM,
             'Basic dXNlcjpwYXNz',
+            RequestMethods::POST,
             ['grant_type' => 'client_credentials', 'scope' => $this->config['scope']]
         )->shouldBeCalled()->willReturn($response);
 

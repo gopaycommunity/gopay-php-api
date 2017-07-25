@@ -2,6 +2,7 @@
 
 namespace GoPay;
 
+use GoPay\Definition\RequestMethods;
 use GoPay\Token\AccessToken;
 
 class OAuth2 implements Auth
@@ -20,6 +21,7 @@ class OAuth2 implements Auth
             'oauth2/token',
             GoPay::FORM,
             'Basic ' . base64_encode($credentials),
+            RequestMethods::POST,
             ['grant_type' => 'client_credentials', 'scope' => $this->gopay->getConfig('scope')]
         );
         $t = new AccessToken;

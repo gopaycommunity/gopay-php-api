@@ -2,7 +2,7 @@
 
 namespace GoPay;
 
-use Unirest\Method;
+use GoPay\Definition\RequestMethods;
 use GoPay\Http\Request;
 use GoPay\Http\JsonBrowser;
 use GoPay\Definition\Language;
@@ -30,10 +30,10 @@ class GoPay
         return $this->config[$key];
     }
 
-    public function call($urlPath, $contentType, $authorization, $data = null)
+    public function call($urlPath, $contentType, $authorization, $method, $data = null)
     {
         $r = new Request($this->buildUrl("api/{$urlPath}"));
-        $r->method = is_array($data) ? Method::POST : Method::GET;
+        $r->method = $method;
         $r->headers = $this->buildHeaders($contentType, $authorization);
         $r->body = $this->encodeData($contentType, $data);
         return $this->browser->send($r);

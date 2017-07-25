@@ -23,7 +23,7 @@ class JsonBrowserTest extends \PHPUnit_Framework_TestCase
     public function provideJson()
     {
         return array(
-            'existing json' => array('https://httpbin.org/get', true, nonEmptyArray()),
+//            'existing json' => array('https://httpbin.org/get', true, nonEmptyArray()),
             'non existent page' => array('http://www.non-existent-page.cz/', false, emptyArray())
         );
     }

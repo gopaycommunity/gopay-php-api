@@ -2,6 +2,7 @@
 
 namespace GoPay;
 
+use GoPay\Definition\RequestMethods;
 use GoPay\Token\AccessToken;
 use GoPay\Definition\Language;
 
@@ -44,7 +45,8 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
             $expectedRequest[0],
             $expectedRequest[1],
             "Bearer {$this->accessToken}",
-            $expectedRequest[2]
+            $expectedRequest[2],
+            $expectedRequest[3]
         )->shouldBeCalled();
         call_user_func_array(array($this->api, $method), $params);
     }
@@ -58,6 +60,7 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                 [
                     'payments/payment',
                     GoPay::JSON,
+                    RequestMethods::POST,
                     [
                         'irrelevant payment',
                         'lang' => $this->config['language'],
@@ -74,6 +77,7 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                 [
                     'payments/payment',
                     GoPay::JSON,
+                    RequestMethods::POST,
                     ['irrelevant payment', 'lang' => 'invalid-lang', 'target' => 'invalid-target']
                 ]
             ],
@@ -83,6 +87,7 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                 [
                     "payments/payment/{$this->id}",
                     GoPay::FORM,
+                    RequestMethods::GET,
                     null
                 ]
             ],
@@ -92,6 +97,7 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                 [
                     "payments/payment/{$this->id}/refund",
                     GoPay::FORM,
+                    RequestMethods::POST,
                     ['amount' => 'amount']
                 ]
             ],
@@ -101,6 +107,7 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                 [
                     "payments/payment/{$this->id}/create-recurrence",
                     GoPay::JSON,
+                    RequestMethods::POST,
                     ['irrelevant subsequent payment']
                 ]
             ],
@@ -110,6 +117,7 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                 [
                     "payments/payment/{$this->id}/void-recurrence",
                     GoPay::FORM,
+                    RequestMethods::POST,
                     []
                 ]
             ],
@@ -119,6 +127,7 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                 [
                     "payments/payment/{$this->id}/capture",
                     GoPay::FORM,
+                    RequestMethods::POST,
                     []
                 ]
             ],
@@ -128,6 +137,7 @@ class PaymentsTest extends \PHPUnit_Framework_TestCase
                 [
                     "payments/payment/{$this->id}/void-authorization",
                     GoPay::FORM,
+                    RequestMethods::POST,
                     []
                 ]
             ],

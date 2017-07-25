@@ -2,7 +2,7 @@
 
 namespace GoPay;
 
-use Unirest\Method;
+use GoPay\Definition\RequestMethods;
 use GoPay\Http\Request;
 use GoPay\Definition\Language;
 use Prophecy\Argument;
@@ -26,7 +26,7 @@ class GoPayTest extends \PHPUnit_Framework_TestCase
             'Accept-Language' => GoPay::LOCALE_CZECH
         ];
         $this->browser->send($expectedRequest)->shouldBeCalled();
-        $this->givenGoPay(Language::CZECH, $isProductionMode)->call($this->urlPath, $contentType, $auth, $body);
+        $this->givenGoPay(Language::CZECH, $isProductionMode)->call($this->urlPath, $contentType, $auth, $expectedRequest->method, $body);
     }
 
     public function provideRequest()
@@ -38,7 +38,7 @@ class GoPayTest extends \PHPUnit_Framework_TestCase
                 'Bearer irrelevantToken',
                 null,
                 $this->buildRequest(
-                    Method::GET,
+                    RequestMethods::GET,
                     'https://gate.gopay.cz/api/',
                     'Bearer irrelevantToken'
                 )
@@ -49,7 +49,7 @@ class GoPayTest extends \PHPUnit_Framework_TestCase
                 'Bearer irrelevantToken',
                 ['key' => 'value'],
                 $this->buildRequest(
-                    Method::POST,
+                    RequestMethods::POST,
                     'https://gate.gopay.cz/api/',
                     'Bearer irrelevantToken',
                     'key=value'
@@ -61,7 +61,7 @@ class GoPayTest extends \PHPUnit_Framework_TestCase
                 'Basic irrelevantCode',
                 ['key' => 'value'],
                 $this->buildRequest(
-                    Method::POST,
+                    RequestMethods::POST,
                     'https://gw.sandbox.gopay.com/api/',
                     'Basic irrelevantCode',
                     '{"key":"value"}'
@@ -77,7 +77,7 @@ class GoPayTest extends \PHPUnit_Framework_TestCase
             assertThat($r->headers['Accept-Language'], is($expectedLanguage));
             return true;
         }))->shouldBeCalled();
-        $this->givenGoPay($language)->call($this->urlPath, 'irrelevant content-type', 'irrelevant auth');
+        $this->givenGoPay($language)->call($this->urlPath, 'irrelevant content-type', 'irrelevant auth', RequestMethods::POST);
     }
 
     public function provideLanguage()

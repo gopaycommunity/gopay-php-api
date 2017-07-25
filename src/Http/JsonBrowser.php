@@ -2,8 +2,10 @@
 
 namespace GoPay\Http;
 
-use Unirest\Request as Unirest;
 use GoPay\Http\Log\Logger;
+use GuzzleHttp\Message\Request as GuzzleReq;
+use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Stream\Stream;
 
 class JsonBrowser
 {
@@ -19,10 +21,13 @@ class JsonBrowser
     public function send(Request $r)
     {
         try {
-            Unirest::timeout($this->timeout);
-            $http = Unirest::{$r->method}($r->url, $r->headers, $r->body);
-            $response = new Response((string) $http->raw_body);
-            $response->statusCode = (string) $http->code;
+            $client = new GuzzleClient();
+            $guzzRequest = $client->createRequest($r->method, $r->url);
+            $guzzRequest->setHeaders($r->headers);
+            $guzzRequest->setBody(Stream::factory($r->body));
+            $guzzResponse = $client->send($guzzRequest);
+            $response = new Response((string) $guzzResponse->getBody());
+            $response->statusCode = (string) $guzzResponse->getStatusCode();
             $response->json = json_decode((string) $response, true);
         } catch (\Exception $e) {
             $response = new Response($e->getMessage());
