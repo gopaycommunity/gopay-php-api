@@ -28,7 +28,7 @@
         "guzzlehttp/guzzle": "^5.3.1|^6.2.1"
     },
     "require-dev": {
-        "phpunit/phpunit": "*",
+        "phpunit/phpunit": "5.*",
         "hamcrest/hamcrest-php": "*"
     }
 }
