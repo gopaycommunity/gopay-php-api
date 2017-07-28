@@ -19,7 +19,7 @@ class JsonBrowser
     public function send(Request $r)
     {
         try {
-            if(class_exists('\GuzzleHttp\Message\Message')) {
+            if(class_exists('\GuzzleHttp\Message\Request')) {
                 $client = new GuzzleClient();
                 $guzzRequest = $client->createRequest($r->method, $r->url);
                 $guzzRequest->setHeaders($r->headers);
