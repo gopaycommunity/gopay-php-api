@@ -12,10 +12,7 @@
     ],
     "config": {
         "bin-dir": "bin",
-        "optimize-autoloader": true,
-        "platform": {
-            "php": "5.4"
-        }
+        "optimize-autoloader": true
     },
     "autoload": {
         "psr-4": {
@@ -27,8 +24,8 @@
         "files": ["tests/remote/GivenGoPay.php", "vendor/hamcrest/hamcrest-php/hamcrest/Hamcrest.php"]
     },
     "require": {
-        "guzzlehttp/guzzle": "~5.0"
-        
+        "php": ">=5.4.0",
+        "guzzlehttp/guzzle": "^5.3.1|^6.2.1"
     },
     "require-dev": {
         "phpunit/phpunit": "*",
