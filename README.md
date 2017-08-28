@@ -27,7 +27,7 @@ composer require gopay/payments-sdk-php
 
 ```php
 // minimal configuration
-$gopay = GoPay\payments([
+$gopay = GoPay\Api::payments([
     'goid' => 'my goid',
     'clientId' => 'my id',
     'clientSecret' => 'my secret',
