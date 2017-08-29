@@ -1,5 +1,6 @@
 sudo: false
 language: php
+dist: trusty
 php:
   - 5.4
   - 5.5
@@ -16,4 +17,3 @@ cache:
   directories:
     - vendor
     - $HOME/.composer/cache
-dist: trusty
