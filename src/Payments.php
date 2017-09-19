@@ -61,6 +61,11 @@ class Payments
         return $this->post("payments/payment/{$id}/capture", GoPay::FORM, array());
     }
 
+    public function captureAuthorizationPartial($id, array $capturePayment)
+    {
+        return $this->post("payments/payment/{$id}/capture", GoPay::JSON, $capturePayment);
+    }
+
     public function voidAuthorization($id)
     {
         return $this->post("payments/payment/{$id}/void-authorization", GoPay::FORM, array());
