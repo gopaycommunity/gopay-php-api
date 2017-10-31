@@ -9,4 +9,8 @@ class Language
     const SLOVAK = 'SK';
     const GERMAN = 'DE';
     const RUSSIAN = 'RU';
+    const Polish = 'PL';
+    const Hungarian = 'HU';
+    const French = 'FR';
+    const Romanian = 'RO';
 }
