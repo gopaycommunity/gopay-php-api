@@ -4,6 +4,7 @@ namespace GoPay\Http;
 
 use GoPay\Http\Log\Logger;
 use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Exception\ClientException;
 
 class JsonBrowser
 {
@@ -32,11 +33,23 @@ class JsonBrowser
             $response = new Response((string) $guzzResponse->getBody());
             $response->statusCode = (string) $guzzResponse->getStatusCode();
             $response->json = json_decode((string) $response, true);
-        } catch (\Exception $e) {
-            $response = new Response($e->getMessage());
-            $response->statusCode = 500;
-        }
+            $this->logger->logHttpCommunication($r, $response);
+            return $response;
+      } catch (ClientException $e) {
+          if ($e->hasResponse()) {
+              $response = new Response($e->getResponse()->getBody());
+              $response->json = json_decode($e->getResponse()->getBody());
+              $response->status_code = $e->getCode();
+              $this->logger->logHttpCommunication($r, $response);
+              return $response;
+          }
+      } catch (\Exception $ex) {
+        $response = new Response($e->getMessage());
+        $response->status_code = $e->getCode();
         $this->logger->logHttpCommunication($r, $response);
         return $response;
+      }
+
     }
+    
 }
