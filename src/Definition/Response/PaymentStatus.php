@@ -4,6 +4,7 @@ namespace GoPay\Definition\Response;
 
 class PaymentStatus
 {
+
     const CREATED = 'CREATED';
     const PAYMENT_METHOD_CHOSEN = 'PAYMENT_METHOD_CHOSEN';
     const PAID = 'PAID';

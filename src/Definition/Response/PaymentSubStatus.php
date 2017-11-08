@@ -5,6 +5,7 @@ namespace GoPay\Definition\Response;
 // https://doc.gopay.com/en/?php#payment-substate
 class PaymentSubStatus
 {
+
     const _101 = '_101';
     const _102 = '_102';
     const _3001 = '_3001';

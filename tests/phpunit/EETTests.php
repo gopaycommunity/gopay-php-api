@@ -50,8 +50,12 @@ class EETTests extends \PHPUnit_Framework_TestCase
                         array('name' => 'invoicenumber', 'value' => '2015001003')
                 ],
                 'items' => [
-                        ['name' => 'Pocitac Item1', 'amount' => '119990', 'count' => '1', 'vat_rate' => VatRate::RATE_4, 'type' => PaymentItemType::ITEM, 'ean' => '1234567890123', 'product_url' => 'https://www.eshop123.cz/pocitac'],
-                        ['name' => 'Oprava Item2', 'amount' => '19960', 'count' => '1', 'vat_rate' => VatRate::RATE_3, 'type' => PaymentItemType::ITEM, 'ean' => '1234567890189', 'product_url' => 'https://www.eshop123.cz/pocitac/oprava'],
+                        ['name' => 'Pocitac Item1', 'amount' => '119990', 'count' => '1', 'vat_rate' => VatRate::RATE_4,
+                                'type' => PaymentItemType::ITEM, 'ean' => '1234567890123',
+                                'product_url' => 'https://www.eshop123.cz/pocitac'],
+                        ['name' => 'Oprava Item2', 'amount' => '19960', 'count' => '1', 'vat_rate' => VatRate::RATE_3,
+                                'type' => PaymentItemType::ITEM, 'ean' => '1234567890189',
+                                'product_url' => 'https://www.eshop123.cz/pocitac/oprava'],
                 ],
                 'callback' => [
                         'return_url' => 'https://eshop123.cz/return',
@@ -98,10 +102,10 @@ class EETTests extends \PHPUnit_Framework_TestCase
         $baseEETPayment = $this->createBaseEETPayment();
 
         $baseEETPayment['recurrence'] = [
-            'recurrence_cycle' => Recurrence::WEEKLY,
-            'recurrence_period' => "1",
-            'recurrence_date_to' => '2018-04-01'
-    ];
+                'recurrence_cycle' => Recurrence::WEEKLY,
+                'recurrence_period' => "1",
+                'recurrence_date_to' => '2018-04-01'
+        ];
 
 //        $baseEETPayment['recurrence'] = [
 //                'recurrence_cycle' => Recurrence::ON_DEMAND,
@@ -125,7 +129,10 @@ class EETTests extends \PHPUnit_Framework_TestCase
                 'order_number' => 'EETOnDemand9876',
                 'order_description' => 'EETOnDemand9876Description',
                 'items' => [
-                        ['name'=> 'OnDemand Prodlouzena zaruka', 'amount'=> '2000', 'count' => '1', 'vat_rate' => VatRate::RATE_4, 'type' => PaymentItemType::ITEM, 'ean' => '1234567890123', 'product_url' => 'https://www.eshop123.cz/pocitac/prodlouzena_zaruka'],
+                        ['name' => 'OnDemand Prodlouzena zaruka', 'amount' => '2000', 'count' => '1',
+                                'vat_rate' => VatRate::RATE_4, 'type' => PaymentItemType::ITEM,
+                                'ean' => '1234567890123',
+                                'product_url' => 'https://www.eshop123.cz/pocitac/prodlouzena_zaruka'],
                 ],
                 'eet' => [
                         'celk_trzba' => 2000,
@@ -168,8 +175,12 @@ class EETTests extends \PHPUnit_Framework_TestCase
         $refundObject = [
                 'amount' => 139950,
                 'items' => [
-                        ['name' => 'Pocitac Item1', 'amount' => '119990', 'count' => '1', 'vat_rate' => VatRate::RATE_4, 'type' => PaymentItemType::ITEM, 'ean' => '1234567890123', 'product_url' => 'https://www.eshop123.cz/pocitac'],
-                        ['name' => 'Oprava Item2', 'amount' => '19960', 'count' => '1', 'vat_rate' => VatRate::RATE_3, 'type' => PaymentItemType::ITEM, 'ean' => '1234567890189', 'product_url' => 'https://www.eshop123.cz/pocitac/oprava'],
+                        ['name' => 'Pocitac Item1', 'amount' => '119990', 'count' => '1', 'vat_rate' => VatRate::RATE_4,
+                                'type' => PaymentItemType::ITEM, 'ean' => '1234567890123',
+                                'product_url' => 'https://www.eshop123.cz/pocitac'],
+                        ['name' => 'Oprava Item2', 'amount' => '19960', 'count' => '1', 'vat_rate' => VatRate::RATE_3,
+                                'type' => PaymentItemType::ITEM, 'ean' => '1234567890189',
+                                'product_url' => 'https://www.eshop123.cz/pocitac/oprava'],
                 ],
                 'eet' => [
                         'celk_trzba' => 139950,

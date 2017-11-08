@@ -8,6 +8,7 @@ use GuzzleHttp\Exception\ClientException;
 
 class JsonBrowser
 {
+
     private $logger;
     private $timeout;
 
@@ -20,35 +21,35 @@ class JsonBrowser
     public function send(Request $r)
     {
         try {
-            if(class_exists('\GuzzleHttp\Message\Request')) {
+            if (class_exists('\GuzzleHttp\Message\Request')) {
                 $client = new GuzzleClient();
                 $guzzRequest = $client->createRequest($r->method, $r->url);
                 $guzzRequest->setHeaders($r->headers);
                 $guzzRequest->setBody(\GuzzleHttp\Stream\Stream::factory($r->body));
-            }else {
+            } else {
                 $client = new GuzzleClient(['timeout' => $this->timeout]);
                 $guzzRequest = new \GuzzleHttp\Psr7\Request($r->method, $r->url, $r->headers, $r->body);
             }
             $guzzResponse = $client->send($guzzRequest);
-            $response = new Response((string) $guzzResponse->getBody());
-            $response->statusCode = (string) $guzzResponse->getStatusCode();
-            $response->json = json_decode((string) $response, true);
+            $response = new Response((string)$guzzResponse->getBody());
+            $response->statusCode = (string)$guzzResponse->getStatusCode();
+            $response->json = json_decode((string)$response, true);
             $this->logger->logHttpCommunication($r, $response);
             return $response;
-      } catch (ClientException $e) {
-          if ($e->hasResponse()) {
-              $response = new Response($e->getResponse()->getBody());
-              $response->json = json_decode($e->getResponse()->getBody());
-              $response->status_code = $e->getCode();
-              $this->logger->logHttpCommunication($r, $response);
-              return $response;
-          }
-      } catch (\Exception $ex) {
-        $response = new Response($ex->getMessage());
-        $response->status_code = 500;
-        $this->logger->logHttpCommunication($r, $response);
-        return $response;
-      }
+        } catch (ClientException $e) {
+            if ($e->hasResponse()) {
+                $response = new Response($e->getResponse()->getBody());
+                $response->json = json_decode($e->getResponse()->getBody());
+                $response->status_code = $e->getCode();
+                $this->logger->logHttpCommunication($r, $response);
+                return $response;
+            }
+        } catch (\Exception $ex) {
+            $response = new Response($ex->getMessage());
+            $response->status_code = 500;
+            $this->logger->logHttpCommunication($r, $response);
+            return $response;
+        }
 
     }
 

@@ -116,11 +116,11 @@ class Payments
         $token = $this->auth->authorize();
         if ($token->token) {
             return $this->gopay->call(
-                    $urlPath,
-                    $contentType,
-                    "Bearer {$token->token}",
-                    RequestMethods::POST,
-                    $data
+                $urlPath,
+                $contentType,
+                "Bearer {$token->token}",
+                RequestMethods::POST,
+                $data
             );
         }
         return $token->response;
