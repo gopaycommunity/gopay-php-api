@@ -11,6 +11,7 @@ class BankSwiftCode
     const FIO_BANKA = 'FIOBCZPP';
     const CSOB = 'CEKOCZPP';
     const ERA = 'CEKOCZPP-ERA';
+    const UNICREDIT_BANK_CZ = 'BACXCZPP';
     const VSEOBECNA_VEROVA_BANKA_BANKA = 'SUBASKBX';
     const TATRA_BANKA = 'TATRSKBX';
     const UNICREDIT_BANK_SK = 'UNCRSKBX';
