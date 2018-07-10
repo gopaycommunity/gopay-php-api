@@ -40,13 +40,13 @@ class JsonBrowser
             if ($e->hasResponse()) {
                 $response = new Response($e->getResponse()->getBody());
                 $response->json = json_decode($e->getResponse()->getBody());
-                $response->status_code = $e->getCode();
+                $response->statusCode = $e->getCode();
                 $this->logger->logHttpCommunication($r, $response);
                 return $response;
             }
         } catch (\Exception $ex) {
             $response = new Response($ex->getMessage());
-            $response->status_code = 500;
+            $response->statusCode = 500;
             $this->logger->logHttpCommunication($r, $response);
             return $response;
         }
