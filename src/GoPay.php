@@ -51,8 +51,10 @@ class GoPay
     private function encodeData($contentType, $data)
     {
         if ($data) {
-            $encoder = $contentType == GoPay::FORM ? 'http_build_query' : 'json_encode';
-            return $encoder($data);
+            if ($contentType === GoPay::FORM) {
+                return http_build_query($data, null, '&');
+            }
+            return json_encode($data);
         }
         return '';
     }
