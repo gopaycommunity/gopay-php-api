@@ -29,6 +29,19 @@ class GoPayTest extends \PHPUnit_Framework_TestCase
         $this->givenGoPay(Language::CZECH, $isProductionMode)->call($this->urlPath, $contentType, $auth, $expectedRequest->method, $body);
     }
 
+    /** @dataProvider provideRequest */
+    public function testShouldBuildRequestWithDifferentArgSeparator($isProductionMode, $contentType, $auth, $body, Request $expectedRequest)
+    {
+        $this->iniSet('arg_separator.output', '&amp;');
+        $expectedRequest->headers = $expectedRequest->headers + [
+                'Accept' => 'application/json',
+                'Content-Type' => $contentType,
+                'Accept-Language' => GoPay::LOCALE_CZECH
+            ];
+        $this->browser->send($expectedRequest)->shouldBeCalled();
+        $this->givenGoPay(Language::CZECH, $isProductionMode)->call($this->urlPath, $contentType, $auth, $expectedRequest->method, $body);
+    }
+
     public function provideRequest()
     {
         return [
@@ -55,6 +68,21 @@ class GoPayTest extends \PHPUnit_Framework_TestCase
                     'key=value'
                 )
             ],
+            'send form with more arguments' => [
+                false,
+                GoPay::FORM,
+                'Basic irrelevantCode',
+                [
+                    'grant_type' => 'client_credentials',
+                    'scope' => 'payment-all',
+                ],
+                $this->buildRequest(
+                    RequestMethods::POST,
+                    'https://gw.sandbox.gopay.com/api/',
+                    'Basic irrelevantCode',
+                    'grant_type=client_credentials&scope=payment-all'
+                )
+            ],
             'send json in test' => [
                 false,
                 GoPay::JSON,
@@ -65,6 +93,18 @@ class GoPayTest extends \PHPUnit_Framework_TestCase
                     'https://gw.sandbox.gopay.com/api/',
                     'Basic irrelevantCode',
                     '{"key":"value"}'
+                )
+            ],
+            'send json in test with more arguments' => [
+                false,
+                GoPay::JSON,
+                'Basic irrelevantCode',
+                ['key' => 'value', 'key2' => 'value2'],
+                $this->buildRequest(
+                    RequestMethods::POST,
+                    'https://gw.sandbox.gopay.com/api/',
+                    'Basic irrelevantCode',
+                    '{"key":"value","key2":"value2"}'
                 )
             ]
         ];
