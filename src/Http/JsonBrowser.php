@@ -39,7 +39,7 @@ class JsonBrowser
         } catch (ClientException $e) {
             if ($e->hasResponse()) {
                 $response = new Response($e->getResponse()->getBody());
-                $response->json = json_decode($e->getResponse()->getBody());
+                $response->json = json_decode($e->getResponse()->getBody(), true);
                 $response->statusCode = $e->getCode();
                 $this->logger->logHttpCommunication($r, $response);
                 return $response;
@@ -47,6 +47,7 @@ class JsonBrowser
         } catch (\Exception $ex) {
             $response = new Response($ex->getMessage());
             $response->statusCode = 500;
+            $response->json = json_decode("{}", true);
             $this->logger->logHttpCommunication($r, $response);
             return $response;
         }
