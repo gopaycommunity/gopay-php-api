@@ -11,6 +11,7 @@ class PaymentSubStatus
     const _3001 = '_3001';
     const _3002 = '_3002';
     const _3003 = '_3003';
+    const _5001 = '_5001';
     const _5002 = '_5002';
     const _5003 = '_5003';
     const _5004 = '_5004';
@@ -29,6 +30,7 @@ class PaymentSubStatus
     const _5017 = '_5017';
     const _5018 = '_5018';
     const _5019 = '_5019';
+    const _5020 = '_5020';
     const _5021 = '_5021';
     const _5022 = '_5022';
     const _5023 = '_5023';
@@ -46,6 +48,8 @@ class PaymentSubStatus
     const _5037 = '_5037';
     const _5038 = '_5038';
     const _5039 = '_5039';
+    const _5040 = '_5040';
+    const _5041 = '_5041';
     const _5042 = '_5042';
     const _5043 = '_5043';
     const _5044 = '_5044';

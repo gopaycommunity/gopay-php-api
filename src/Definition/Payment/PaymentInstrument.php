@@ -13,4 +13,6 @@ class PaymentInstrument
     const GOPAY = 'GOPAY';
     const PAYPAL = 'PAYPAL';
     const BITCOIN = 'BITCOIN';
+    const ACCOUNT = 'ACCOUNT';
+    const GPAY = 'GPAY';
 }
