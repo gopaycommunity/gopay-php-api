@@ -8,7 +8,7 @@ class Response
     private $rawBody;
     /** @var int */
     public $statusCode;
-    /** @var object response json */
+    /** @var array response json */
     public $json;
 
     public function __construct($rawBody = '')
