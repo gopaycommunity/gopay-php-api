@@ -10,4 +10,7 @@ class Currency
     const HUNGARIAN_FORINT = 'HUF';
     const BRITISH_POUND = 'GBP';
     const US_DOLLAR = 'USD';
+    const ROMANIAN_LEU = 'RON';
+    const CROATIAN_KUNA = 'HRK';
+    const BULGARIAN_LEV = 'BGN';
 }

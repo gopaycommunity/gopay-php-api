@@ -13,4 +13,8 @@ class Language
     const HUNGARIAN = 'HU';
     const FRENCH = 'FR';
     const ROMANIAN = 'RO';
+    const BULGARIAN = 'BG';
+    const CROATIAN = 'HR';
+    const ITALIAN = 'IT';
+    const SPANISH = 'ES';
 }

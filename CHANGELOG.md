@@ -1,6 +1,10 @@
 
 # Changelog
 
+## v1.4.1
+
+* Added new languages and currencies
+
 ## v1.2.0
 
 * Added [EET](https://help.gopay.com/cs/tema/propojeni-do-eet/jak-bude-fungovat-napojeni-gopay-do-eet) Support 
