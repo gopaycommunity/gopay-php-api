@@ -15,4 +15,5 @@ class PaymentInstrument
     const BITCOIN = 'BITCOIN';
     const ACCOUNT = 'ACCOUNT';
     const GPAY = 'GPAY';
+    const APPLE_PAY = 'APPLE_PAY';
 }
