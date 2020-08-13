@@ -3,11 +3,13 @@ namespace GoPay;
 
 use PHPUnit\Framework\TestCase;
 use function PHPUnit\Framework\assertEquals;
+use function PHPUnit\Framework\assertStringContainsString;
 
 class ProductionModeConfigurationTests extends TestCase
 {
     /** @dataProvider provideConfig */
-    public function testProductionConfigResolve($value, $expectedResult) {
+    public function testProductionConfigResolve($value, $expectedResult)
+    {
 
         $browser = $this->getMockBuilder('GoPay\Http\JsonBrowser')
                 ->disableOriginalConstructor()
@@ -16,6 +18,26 @@ class ProductionModeConfigurationTests extends TestCase
         $gopay = new GoPay(['isProductionMode' => $value], $browser);
         $actualResult = $gopay->isProductionMode();
         assertEquals($expectedResult, $actualResult);
+    }
+
+    /** @dataProvider provideConfig2 */
+    public function testProductionUrls($value, $url)
+    {
+        $browser = $this->getMockBuilder('GoPay\Http\JsonBrowser')
+                ->disableOriginalConstructor()
+                ->getMock();
+
+        $gopay = new GoPay(['isProductionMode' => $value], $browser);
+        $apiurl = $gopay->buildUrl("/");
+        assertStringContainsString($url, $apiurl);
+    }
+
+    public function provideConfig2()
+    {
+        return [
+            'prodUrl' => [ 'true', 'https://gate.gopay.cz/' ],
+            'testUrl' => [ 'false', 'https://gw.sandbox.gopay.com/']
+        ];
     }
 
     public function provideConfig()
