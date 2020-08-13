@@ -7,19 +7,22 @@ require_once 'TestUtils.php';
 use GoPay\Definition\Language;
 use GoPay\Definition\Payment\Currency;
 use GoPay\Definition\Payment\PaymentInstrument;
+use PHPUnit\Framework\TestCase;
 
+use function PHPUnit\Framework\assertNotEmpty;
+use function PHPUnit\Framework\assertNotNull;
 /**
  * Class CardTokenTests
  * @package GoPay
  *
  * To execute test for certain method properly it is necessary to add prefix 'test' to its name.
  */
-class CardTokenTests extends \PHPUnit_Framework_TestCase
+class CardTokenTests extends TestCase
 {
 
     private $gopay;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->gopay = TestUtils::setup();
     }
@@ -66,6 +69,9 @@ class CardTokenTests extends \PHPUnit_Framework_TestCase
         $basePayment = self::createBaseCardTokenPayment();
         $payment = $this->gopay->createPayment($basePayment);
 
+        assertNotEmpty($payment->json);
+        assertNotNull($payment->json['id']);
+
         echo print_r($payment->json, true);
         $st = json_encode($payment->json);
 
@@ -79,10 +85,13 @@ class CardTokenTests extends \PHPUnit_Framework_TestCase
     /*
      * After payment completion the used card-token can be found in created payment.
      * */
-    public function tCardTokenPaymentStatus()
+    public function testCardTokenPaymentStatus()
     {
         $paymentId = 3052266581;
         $response = $this->gopay->getStatus($paymentId);
+
+        assertNotEmpty($response->json);
+        assertNotNull($response->json['id']);
 
         echo print_r($response->json, true);
         $st = json_encode($response->json);

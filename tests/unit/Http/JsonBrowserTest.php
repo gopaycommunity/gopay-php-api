@@ -2,29 +2,37 @@
 
 namespace GoPay\Http;
 
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\Prophet;
 
-class JsonBrowserTest extends \PHPUnit_Framework_TestCase
+use function PHPUnit\Framework\assertEquals;
+use function PHPUnit\Framework\assertNotEmpty;
+
+class JsonBrowserTest extends TestCase
 {
     /** @dataProvider provideJson */
     public function testShouldExecuteHttpRequestAndAlwaysReturnResponse($url, $hasSucceed, $expectedJson)
     {
-        $logger = $this->prophesize('GoPay\Http\Log\Logger');
-        $logger->logHttpCommunication(Argument::cetera())->shouldBeCalled();
-        $timeout = 5;
+        $mock = $this->getMockBuilder('GoPay\Http\Log\Logger')
+                ->onlyMethods(array('logHttpCommunication'))
+                ->getMock();
+        $mock->expects($this->atLeastOnce())->method('logHttpCommunication');
 
-        $browser = new JsonBrowser($logger->reveal(), $timeout);
+        $timeout = 5;
+        $browser = new JsonBrowser($mock, $timeout);
         $response = $browser->send(new Request($url));
-        assertThat($response->hasSucceed(), is($hasSucceed));
-        assertThat((string) $response, is(nonEmptyString()));
-        assertThat($response->json, is($expectedJson));
+        echo $response;
+        assertEquals($response->hasSucceed(), $hasSucceed);
+        assertNotEmpty((string) $response);
+        assertEquals($response->json, $expectedJson);
     }
 
     public function provideJson()
     {
         return array(
-//            'existing json' => array('https://httpbin.org/get', true, nonEmptyArray()),
-            'non existent page' => array('http://www.non-existent-page.cz/', false, emptyArray())
+            'existing json' => array('https://gopay.com/', true, emptyArray()),
+            'non existent page' => array('https://gw.sandboxx.gopay.com/api', false, nonEmptyArray())
         );
     }
 }

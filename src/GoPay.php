@@ -2,7 +2,6 @@
 
 namespace GoPay;
 
-use GoPay\Definition\RequestMethods;
 use GoPay\Http\Request;
 use GoPay\Http\JsonBrowser;
 use GoPay\Definition\Language;
@@ -45,7 +44,12 @@ class GoPay
                 true => 'https://gate.gopay.cz/',
                 false => 'https://gw.sandbox.gopay.com/'
         ];
-        return $urls[(bool)$this->getConfig('isProductionMode')] . $urlPath;
+        return $urls[$this->isProductionMode()] . $urlPath;
+    }
+
+    public function isProductionMode() {
+        $productionMode = $this->getConfig('isProductionMode');
+        return filter_var($productionMode, FILTER_VALIDATE_BOOLEAN);
     }
 
     private function encodeData($contentType, $data)

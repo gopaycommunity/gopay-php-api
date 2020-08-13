@@ -7,6 +7,10 @@ require_once 'CreatePaymentTests.php';
 
 use GoPay\Definition\Payment\Recurrence;
 use GoPay\Definition\Payment\Currency;
+use PHPUnit\Framework\TestCase;
+
+use function PHPUnit\Framework\assertNotEmpty;
+use function PHPUnit\Framework\assertNotNull;
 
 /**
  * Class OnDemandPaymentTests
@@ -14,27 +18,28 @@ use GoPay\Definition\Payment\Currency;
  *
  * To execute test for certain method properly it is necessary to add prefix 'test' to its name.
  */
-class OnDemandPaymentTests extends \PHPUnit_Framework_TestCase
+class OnDemandPaymentTests extends TestCase
 {
 
     private $gopay;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->gopay = TestUtils::setup();
     }
 
-    public function tCreateOnDemandPayment()
+    public function testCreateOnDemandPayment()
     {
         $basePayment = CreatePaymentTests::createBasePayment();
 
         $basePayment['recurrence'] = [
                 'recurrence_cycle' => Recurrence::ON_DEMAND,
-                'recurrence_date_to' => '2018-04-01'
+                'recurrence_date_to' => '2100-04-01'
         ];
 
         $payment = $this->gopay->createPayment($basePayment);
-
+        assertNotEmpty($payment->json);
+        assertNotNull($payment->json['id']);
         echo print_r($payment->json, true);
         $st = json_encode($payment->json);
 
@@ -46,6 +51,7 @@ class OnDemandPaymentTests extends \PHPUnit_Framework_TestCase
             echo print_r($payment->json['recurrence'], true);
         }
     }
+
 
     public function testCreateNextOnDemandPayment()
     {
@@ -60,7 +66,7 @@ class OnDemandPaymentTests extends \PHPUnit_Framework_TestCase
         ];
 
         $onDemandPayment = $this->gopay->createRecurrence(3049603895, $nextPayment);
-
+        assertNotEmpty($onDemandPayment->json);
         echo print_r($onDemandPayment->json, true);
         $st = json_encode($onDemandPayment->json);
 

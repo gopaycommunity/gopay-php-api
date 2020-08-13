@@ -8,6 +8,10 @@ use GoPay\Definition\Language;
 use GoPay\Definition\Payment\Currency;
 use GoPay\Definition\Payment\PaymentInstrument;
 use GoPay\Definition\Payment\BankSwiftCode;
+use PHPUnit\Framework\TestCase;
+
+use function PHPUnit\Framework\assertNotEmpty;
+use function PHPUnit\Framework\assertNotNull;
 
 /**
  * Class CreatePaymentTests
@@ -15,12 +19,12 @@ use GoPay\Definition\Payment\BankSwiftCode;
  *
  * To execute test for certain method properly it is necessary to add prefix 'test' to its name.
  */
-class CreatePaymentTests extends \PHPUnit_Framework_TestCase
+class CreatePaymentTests extends TestCase
 {
 
     private $gopay;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->gopay = TestUtils::setup();
     }
@@ -62,7 +66,8 @@ class CreatePaymentTests extends \PHPUnit_Framework_TestCase
     {
         $basePayment = self::createBasePayment();
         $payment = $this->gopay->createPayment($basePayment);
-
+        assertNotEmpty($payment->json);
+        assertNotNull($payment->json['id']);
         echo print_r($payment->json, true);
         $st = json_encode($payment->json);
 

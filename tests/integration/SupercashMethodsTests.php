@@ -4,20 +4,22 @@ namespace GoPay;
 
 require_once 'TestUtils.php';
 
-use GoPay\PaymentsSupercash;
+use PHPUnit\Framework\TestCase;
 
+use function PHPUnit\Framework\assertNotEmpty;
 /**
  * Class SupercashMethodsTests
  * @package GoPay
  *
  * To execute test for certain method properly it is necessary to add prefix 'test' to its name.
+ *
  */
-class SupercashMethodsTests extends \PHPUnit_Framework_TestCase
+class SupercashMethodsTests extends TestCase
 {
 
     private $gopay;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->gopay = TestUtils::setupSupercash();
     }
@@ -38,6 +40,7 @@ class SupercashMethodsTests extends \PHPUnit_Framework_TestCase
 
         $response = $this->gopay->createSupercashCoupon($supercashCoupon);
 
+        assertNotEmpty($response->json);
         echo print_r($response->json, true);
         $st = json_encode($response->json);
 
@@ -47,7 +50,7 @@ class SupercashMethodsTests extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function tCreateSupercashCouponBatch()
+    public function testCreateSupercashCouponBatch()
     {
         $supercashCouponBatch = [
                 'batch_completed_notification_url' => 'http://www.notify.cz/super',
@@ -80,42 +83,44 @@ class SupercashMethodsTests extends \PHPUnit_Framework_TestCase
 
         $response = $this->gopay->createSupercashCouponBatch($supercashCouponBatch);
 
+        assertNotEmpty($response->json['batch_request_id']);
+
         echo print_r($response->json, true);
     }
 
-    public function tGetSupercashCouponBatchStatus()
+    public function testGetSupercashCouponBatchStatus()
     {
         $batchId = 961667719;
 
         $response = $this->gopay->getSupercashCouponBatchStatus($batchId);
-
+        assertNotEmpty($response->json);
         echo print_r($response->json, true);
     }
 
-    public function tGetSupercashCouponBatch()
+    public function testGetSupercashCouponBatch()
     {
         $batchId = 961667719;
 
         $response = $this->gopay->getSupercashCouponBatch($batchId);
-
+        assertNotEmpty($response->json);
         echo print_r($response->json, true);
     }
 
-    public function tFindSupercashCoupons()
+    public function testFindSupercashCoupons()
     {
         $paymentSessionId = [3050857992, 3050858018];
 
         $response = $this->gopay->findSupercashCoupons($paymentSessionId);
-
+        assertNotEmpty($response->json);
         echo print_r($response->json, true);
     }
 
-    public function tGetSupercashCoupon()
+    public function testGetSupercashCoupon()
     {
         $couponId = 100154175;
 
         $response = $this->gopay->getSupercashCoupon($couponId);
-
+        assertNotEmpty($response->json);
         echo print_r($response->json, true);
     }
 

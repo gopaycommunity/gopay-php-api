@@ -229,7 +229,7 @@ $gopay = GoPay\payments(
 Available logger | Description |
 ---------------- | ----------- |
 [NullLogger](/src/Http/Log/NullLogger.php) | Default logger which does nothing |
-[PrintHttpRequest](/src/Http/Log/PrintHttpRequest.php) | Prints basic information about request and response, used in [remote tests](tests/remote/GivenGoPay.php#GivenGoPay.php-26) |
+[PrintHttpRequest](/src/Http/Log/PrintHttpRequest.php) | Prints basic information about request and response, used in [remote tests](tests/integration/GivenGoPay.php#GivenGoPay.php-26) |
 
 ## Contributing
 
