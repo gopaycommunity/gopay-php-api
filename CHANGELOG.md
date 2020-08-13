@@ -1,6 +1,10 @@
 
 # Changelog
 
+## v1.4.3
+
+- `isProductionMode` may now take anything that can be resolved as a boolean via filter_var ("yes", "true", true ...)  
+
 ## v1.2.0
 
 * Added [EET](https://help.gopay.com/cs/tema/propojeni-do-eet/jak-bude-fungovat-napojeni-gopay-do-eet) Support 
