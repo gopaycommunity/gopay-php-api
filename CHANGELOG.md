@@ -1,6 +1,12 @@
 
 # Changelog
 
+## v1.4.4
+
+ - Dropped support for Guzzle 5 depedency
+ - Added Guzzle 7 support
+
+
 ## v1.4.3
 
 - `isProductionMode` may now take anything that can be resolved as a boolean via filter_var ("yes", "true", true ...)  
