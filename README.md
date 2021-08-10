@@ -28,7 +28,7 @@ $gopay = GoPay\Api::payments([
     'goid' => 'my goid',
     'clientId' => 'my id',
     'clientSecret' => 'my secret',
-    'isProductionMode' => false
+    'gatewayUrl' => 'gateway url'
 ]);
 
 // full configuration
@@ -36,7 +36,7 @@ $gopay = GoPay\Api::payments([
     'goid' => 'my goid',
     'clientId' => 'my id',
     'clientSecret' => 'my secret',
-    'isProductionMode' => false,
+    'gatewayUrl' => 'gateway url',
     'scope' => GoPay\Definition\TokenScope::ALL,
     'language' => GoPay\Definition\Language::CZECH,
     'timeout' => 30
