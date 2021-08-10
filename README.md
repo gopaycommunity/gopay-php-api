@@ -9,12 +9,12 @@
 
 [![PHP runtimes](http://php-eye.com/badge/gopay/payments-sdk-php/tested.svg)](http://php-eye.com/package/gopay/payments-sdk-php)
 
-## Requirements
+## Requirements
 
 - PHP >= 7.4
 - enabled extension `curl`, `json`
 
-## Installation
+## Installation
 
 The simplest way to install SDK is to use [Composer](https://getcomposer.org/doc/00-intro.md):
 
@@ -65,7 +65,7 @@ Optional field | Data type | Default value | Documentation |
 `timeout` | int | 30 | Browser timeout in seconds |
 
 
-### Available methods
+### Available methods
 
 API | SDK method |
 --- | ---------- |
@@ -104,7 +104,7 @@ Method | Description |
 `$response->statusCode` | HTTP status code |
 `$response->__toString()` | raw body from HTTP response |
 
-### Are required fields and allowed values validated?
+### Are required fields and allowed values validated?
 
 **No.** API [validates fields](https://doc.gopay.com/#error) pretty extensively
 so there is no need to duplicate validation in SDK. It would only introduce new type of error.
