@@ -7,8 +7,6 @@
 [![Monthly Downloads](https://poser.pugx.org/gopay/payments-sdk-php/d/monthly)](https://packagist.org/packages/gopay/payments-sdk-php)
 [![Dependency Status](https://www.versioneye.com/user/projects/570b383e2aca6b000e0dea95/badge.svg)](https://www.versioneye.com/user/projects/570b383e2aca6b000e0dea95)
 
-[![PHP runtimes](http://php-eye.com/badge/gopay/payments-sdk-php/tested.svg)](http://php-eye.com/package/gopay/payments-sdk-php)
-
 ## Requirements
 
 - PHP >= 7.4
