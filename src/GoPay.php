@@ -8,7 +8,6 @@ use GoPay\Definition\Language;
 
 class GoPay
 {
-
     const JSON = 'application/json';
     const FORM = 'application/x-www-form-urlencoded';
 
@@ -44,10 +43,21 @@ class GoPay
                 true => 'https://gate.gopay.cz/',
                 false => 'https://gw.sandbox.gopay.com/'
         ];
+
+        if ($this->isCustomGatewayUrl()) {
+            return $this->config['gatewayUrl'] . $urlPath;
+        }
+
         return $urls[$this->isProductionMode()] . $urlPath;
     }
 
-    public function isProductionMode() {
+    public function isCustomGatewayUrl()
+    {
+        return array_key_exists('gatewayUrl', $this->config);
+    }
+
+    public function isProductionMode()
+    {
         $productionMode = $this->getConfig('isProductionMode');
         return filter_var($productionMode, FILTER_VALIDATE_BOOLEAN);
     }
