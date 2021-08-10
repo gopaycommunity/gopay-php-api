@@ -7,12 +7,11 @@
 [![Monthly Downloads](https://poser.pugx.org/gopay/payments-sdk-php/d/monthly)](https://packagist.org/packages/gopay/payments-sdk-php)
 [![Dependency Status](https://www.versioneye.com/user/projects/570b383e2aca6b000e0dea95/badge.svg)](https://www.versioneye.com/user/projects/570b383e2aca6b000e0dea95)
 
-[![Build Status](https://travis-ci.org/gopaycommunity/gopay-php-api.svg)](https://travis-ci.org/gopaycommunity/gopay-php-api)
 [![PHP runtimes](http://php-eye.com/badge/gopay/payments-sdk-php/tested.svg)](http://php-eye.com/package/gopay/payments-sdk-php)
 
 ## Requirements
 
-- PHP >= 5.4.0
+- PHP >= 7.4
 - enabled extension `curl`, `json`
 
 ## Installation
