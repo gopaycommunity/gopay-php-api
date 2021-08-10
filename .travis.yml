@@ -7,8 +7,7 @@ php:
 install:
   - composer install
 script:
-  - vendor/phpunit/phpunit/phpunit --no-configuration testas/integration
-# http://blog.wyrihaximus.net/2015/07/composer-cache-on-travis/
+  - vendor/phpunit/phpunit/phpunit --no-configuration tests/integration
 cache:
   directories:
     - vendor
