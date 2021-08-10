@@ -9,6 +9,12 @@ class PrintHttpRequest implements Logger
 {
     public function logHttpCommunication(Request $request, Response $response)
     {
-        echo "{$request->method} {$request->url} -> {$response->statusCode}\n";
+        $msg = "{$request->method} {$request->url} -> {$response->statusCode}";
+        $this->log($msg);
+    }
+
+    public function log(string $message)
+    {
+        echo "$message\n";
     }
 }

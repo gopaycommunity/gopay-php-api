@@ -12,7 +12,7 @@ require_once 'TestUtils.php';
  *
  * To execute test for certain method properly it is necessary to add prefix 'test' to its name.
  */
-class RefundTests extends TestCase
+class RefundTest extends TestCase
 {
 
     private $gopay;

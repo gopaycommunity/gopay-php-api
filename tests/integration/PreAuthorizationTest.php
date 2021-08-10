@@ -5,7 +5,7 @@ namespace GoPay;
 use PHPUnit\Framework\TestCase;
 
 require_once 'TestUtils.php';
-require_once 'CreatePaymentTests.php';
+require_once 'CreatePaymentTest.php';
 
 use function PHPUnit\Framework\assertNotEmpty;
 use function PHPUnit\Framework\assertNotNull;
@@ -16,7 +16,7 @@ use function PHPUnit\Framework\assertNotNull;
  *
  * To execute test for certain method properly it is necessary to add prefix 'test' to its name.
  */
-class PreAuthorizationTests extends TestCase
+class PreAuthorizationTest extends TestCase
 {
 
     private $gopay;
@@ -28,7 +28,7 @@ class PreAuthorizationTests extends TestCase
 
     public function testCreatePreAuthorizedPayment()
     {
-        $basePayment = CreatePaymentTests::createBasePayment();
+        $basePayment = CreatePaymentTest::createBasePayment();
 
         $basePayment['preauthorization'] = true;
 

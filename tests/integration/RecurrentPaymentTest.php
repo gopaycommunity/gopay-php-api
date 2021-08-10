@@ -3,7 +3,7 @@
 namespace GoPay;
 
 require_once 'TestUtils.php';
-require_once 'CreatePaymentTests.php';
+require_once 'CreatePaymentTest.php';
 
 use GoPay\Definition\Payment\Recurrence;
 use PHPUnit\Framework\TestCase;
@@ -17,7 +17,7 @@ use function PHPUnit\Framework\assertNotNull;
  *
  * To execute test for certain method properly it is necessary to add prefix 'test' to its name.
  */
-class RecurrentPaymentTests extends TestCase
+class RecurrentPaymentTest extends TestCase
 {
 
     private $gopay;
@@ -29,7 +29,7 @@ class RecurrentPaymentTests extends TestCase
 
     public function testCreateRecurrentPayment()
     {
-        $basePayment = CreatePaymentTests::createBasePayment();
+        $basePayment = CreatePaymentTest::createBasePayment();
 
         $basePayment['recurrence'] = [
             'recurrence_cycle' => Recurrence::WEEKLY,

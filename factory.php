@@ -19,6 +19,12 @@ function payments(array $userConfig, array $userServices = [])
     return new Payments($gopay, $auth);
 }
 
+/**
+ * @deprecated Supercash payments are no longer supported
+ * @param array $userConfig
+ * @param array $userServices
+ * @return PaymentsSupercash
+ */
 function paymentsSupercash(array $userConfig, array $userServices = [])
 {
     $config = $userConfig + [

@@ -54,4 +54,11 @@ class JsonBrowser
 
     }
 
+    /**
+     * @return Logger
+     */
+    public function getLogger(): Logger
+    {
+        return $this->logger;
+    }
 }

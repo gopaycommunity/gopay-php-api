@@ -19,7 +19,7 @@ use function PHPUnit\Framework\assertNotNull;
  *
  * To execute test for certain method properly it is necessary to add prefix 'test' to its name.
  */
-class CreatePaymentTests extends TestCase
+class CreatePaymentTest extends TestCase
 {
 
     private $gopay;

@@ -10,4 +10,8 @@ class NullLogger implements Logger
     public function logHttpCommunication(Request $request, Response $response)
     {
     }
+
+    public function log(string $message)
+    {
+    }
 }

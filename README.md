@@ -53,16 +53,16 @@ $gopay = GoPay\Api::payments([
 Required field | Data type | Documentation |
 -------------- | --------- | ----------- |
 `goid` | string | default GoPay account used in `createPayment` if `target` is not specified
-`clientId` | string | https://doc.gopay.com/en/?shell#oauth |
-`clientSecret` | string | https://doc.gopay.com/en/?shell#oauth |
-`isProductionMode` | boolean | [test or production environment?](https://help.gopay.com/en/s/ey) |
+`clientId` | string | https://doc.gopay.com/#access-token |
+`clientSecret` | string | https://doc.gopay.com/#access-token |
+`gatewayUrl` | string | [test or production environment?](https://help.gopay.com/en/s/uY) |
 
 #### Optional fields
 
 Optional field | Data type | Default value | Documentation |
 -------------- | --------- | ------------- | ------------- |
-`scope` | string | [`GoPay\Definition\TokenScope::ALL`](src/Definition/TokenScope.php) | https://doc.gopay.com/en/?shell#scope |
-`language` | string | [`GoPay\Definition\Language::ENGLISH`](src/Definition/Language.php) | language used in `createPayment` if `lang` is not specified + used for [localization of errors](https://doc.gopay.com/en/?shell#return-errors)
+`scope` | string | [`GoPay\Definition\TokenScope::ALL`](src/Definition/TokenScope.php) | https://doc.gopay.com/#access-token |
+`language` | string | [`GoPay\Definition\Language::ENGLISH`](src/Definition/Language.php) | language used in `createPayment` if `lang` is not specified + used for [localization of errors](https://doc.gopay.com/#errors)
 `timeout` | int | 30 | Browser timeout in seconds |
 
 
@@ -70,15 +70,15 @@ Optional field | Data type | Default value | Documentation |
 
 API | SDK method |
 --- | ---------- |
-[Create standard payment](https://doc.gopay.com/en/#standard-payment) | `$gopay->createPayment(array $payment)` |
-[Status of the payment](https://doc.gopay.com/en/#status-of-the-payment) | `$gopay->getStatus($id)` |
-[Refund of the payment](https://doc.gopay.com/en/#refund-of-the-payment-(cancelation)) | `$gopay->refundPayment($id, $amount)` |
-[Create recurring payment](https://doc.gopay.com/en/#recurring-payment) | `$gopay->createPayment(array $payment)` |
-[Recurring payment on demand](https://doc.gopay.com/en/#recurring-payment-on-demand) | `$gopay->createRecurrence($id, array $payment)` |
-[Cancellation of the recurring payment](https://doc.gopay.com/en/#cancellation-of-the-recurring-payment) | `$gopay->voidRecurrence($id)` |
-[Create pre-authorized payment](https://doc.gopay.com/en/#pre-authorized-payment) | `$gopay->createPayment(array $payment)` |
-[Charge of pre-authorized payment](https://doc.gopay.com/en/#charge-of-pre-authorized-payment) | `$gopay->captureAuthorization($id)` |
-[Cancellation of the pre-authorized payment](https://doc.gopay.com/en/#cancellation-of-the-pre-authorized-payment) | `$gopay->voidAuthorization($id)` |
+[Create standard payment](https://doc.gopay.com/#payment-creation) | `$gopay->createPayment(array $payment)` |
+[Status of the payment](https://doc.gopay.com/#payment-status) | `$gopay->getStatus($id)` |
+[Refund of the payment](https://doc.gopay.com/#payment-refund) | `$gopay->refundPayment($id, $amount)` |
+[Create recurring payment](https://doc.gopay.com/#recurring-payments) | `$gopay->createPayment(array $payment)` |
+[Recurring payment on demand](https://doc.gopay.com/#recurring-on-demand) | `$gopay->createRecurrence($id, array $payment)` |
+[Cancellation of the recurring payment](https://doc.gopay.com/#recurring-payment-cancellation) | `$gopay->voidRecurrence($id)` |
+[Create pre-authorized payment](https://doc.gopay.com/#preauthorized-payments) | `$gopay->createPayment(array $payment)` |
+[Charge of pre-authorized payment](https://doc.gopay.com/#capturing-a-preauthorized-payment) | `$gopay->captureAuthorization($id)` |
+[Cancellation of the pre-authorized payment](https://doc.gopay.com/#cancelling-a-preauthorized-payment) | `$gopay->voidAuthorization($id)` |
 ### SDK response? Has my call succeed?
 
 SDK returns wrapped API response. Every method returns
@@ -107,10 +107,10 @@ Method | Description |
 
 ### Are required fields and allowed values validated?
 
-**No.** API [validates fields](https://doc.gopay.com/en/?shell#return-errors) pretty extensively
+**No.** API [validates fields](https://doc.gopay.com/#error) pretty extensively
 so there is no need to duplicate validation in SDK. It would only introduce new type of error.
 Or we would have to perfectly simulate API error messages. That's why SDK just calls API which
-behavior is well documented in [doc.gopay.com](https://doc.gopay.com/en).
+behavior is well documented in [doc.gopay.com](https://doc.gopay.com).
 
 *****
 
@@ -130,7 +130,7 @@ if ($response->hasSucceed()) {
 }
 ```
 
-#### [Inline gateway](https://doc.gopay.com/en/#inline-option)
+#### [Inline gateway](https://doc.gopay.com/#inline)
 
 ```php
 <form action="<?php echo $gatewayUrl; ?>" method="post" id="gopay-payment-button">
@@ -139,7 +139,7 @@ if ($response->hasSucceed()) {
 </form>
 ```
 
-#### [Redirect gateway](https://doc.gopay.com/en/#redirect-option)
+#### [Redirect gateway](https://doc.gopay.com/#redirect)
 
 ```php
 <form action="<?php echo $gatewayUrl; ?>" method="post">
@@ -149,7 +149,7 @@ if ($response->hasSucceed()) {
 
 #### [Asynchronous initialization using JavaScript](/examples/js-initialization.md)
 
-### Enums ([Code lists](https://doc.gopay.com/en/?php#code-lists))
+### Enums ([Code lists](https://doc.gopay.com/#ciselniky)
 
 Instead of hardcoding bank codes string you can use predefined enums. 
 Check using enums in  [create-payment example](/examples/create-payment.php)
@@ -157,7 +157,7 @@ Check using enums in  [create-payment example](/examples/create-payment.php)
 Type | Description |
 ---- | ----------- |
 [Language](/src/Definition/Language.php) | Payment language, localization of error messages |
-[Token scope](/src/Definition/TokenScope.php) | Authorization scope for [OAuth2](https://doc.gopay.com/en/?php#oauth) |
+[Token scope](/src/Definition/TokenScope.php) | Authorization scope for [OAuth2](https://doc.gopay.com/#access-token) |
 [Payment enums](/src/Definition/Payment) | Enums for creating payment |
 [Response enums](/src/Definition/Response) | Result of creating payment, executing payment operations |
 [ItemType enums](/src/Definition/Payment/PaymentItemType.php) | Type of an item |
@@ -173,8 +173,8 @@ Unfortunately it's default behavior of [`GoPay\Token\InMemoryTokenCache`](src/To
 But you can implement your cache and store tokens in Memcache, Redis, files, ... It's up to you.
 
 Your cache must implement [`GoPay\Token\TokenCache` interface](src/Token/TokenCache.php).
-Be aware that there are two [scopes](https://doc.gopay.com/en/?shell#scope) (`TokenScope`) and
-SDK can be used for different clients (`clientId`, `isProductionMode`). So `client` passed to
+Be aware that there are two [scopes](https://doc.gopay.com/#scope) (`TokenScope`) and
+SDK can be used for different clients (`clientId`, `gatewayUrl`). So `client` passed to
 methods is unique identifier (`string`) that is built for current environment.
 Below you can see example implementation of caching tokens in file:
 

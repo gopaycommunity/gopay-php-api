@@ -8,4 +8,6 @@ use GoPay\Http\Response;
 interface Logger
 {
     public function logHttpCommunication(Request $request, Response $response);
+
+    public function log(string $message);
 }

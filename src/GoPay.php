@@ -21,6 +21,9 @@ class GoPay
     {
         $this->config = $config;
         $this->browser = $b;
+        if (array_key_exists('isProductionMode', $this->config)) {
+            $this->browser->getLogger()->log("isProductionMode is deprecated and will be removed, please use gatewayUrl instead");
+        }
     }
 
     public function getConfig($key)
@@ -56,6 +59,9 @@ class GoPay
         return array_key_exists('gatewayUrl', $this->config);
     }
 
+    /**
+     * @deprecated use gatewayUrl
+     */
     public function isProductionMode()
     {
         $productionMode = $this->getConfig('isProductionMode');

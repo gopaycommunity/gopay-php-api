@@ -22,7 +22,7 @@ class TestUtils
                 'goid' => self::GO_ID,
                 'clientId' => self::CLIENT_ID,
                 'clientSecret' => self::CLIENT_SECRET,
-                'isProductionMode' => false,
+                'gatewayUrl' => 'https://gw.sandbox.gopay.com/',
                 'language' => Language::CZECH
         ]);
         return $gopay;

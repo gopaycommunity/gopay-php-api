@@ -2,6 +2,9 @@
 
 namespace GoPay;
 
+/**
+ * @deprecated Supercash payments are no longer supported
+ */
 class PaymentsSupercash
 {
     // pridat konstruktor pro udrzovani objektu Payments
