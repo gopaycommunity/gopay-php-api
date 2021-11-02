@@ -1,6 +1,9 @@
 
 # Changelog
 
+## v1.4.6
+- `isProductionMode`
+
 ## v1.4.5
 - `isProductionMode` is now deprecated and will be removed
 - `gatewayUrl` parameter is preferred way to set gateway url
