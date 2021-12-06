@@ -12,7 +12,7 @@ $gopay = GoPay\payments([
     'goid' => 'my goid',
     'clientId' => 'my id',
     'clientSecret' => 'my secret',
-    'isProductionMode' => false,
+    'gatewayUrl' => 'https://gw.sandbox.gopay.com/api',
     'language' => Language::CZECH
 ]);
 
