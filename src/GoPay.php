@@ -72,7 +72,7 @@ class GoPay
     {
         if ($data) {
             if ($contentType === GoPay::FORM) {
-                return http_build_query($data, null, '&');
+                return http_build_query($data, "", '&');
             }
             return json_encode($data);
         }
