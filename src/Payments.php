@@ -128,7 +128,7 @@ class Payments
 
     public function urlToEmbedJs()
     {
-        return $this->gopay->buildUrl('gp-gw/js/embed.js');
+        return $this->gopay->buildEmbedUrl();
     }
 
     public function getGopay()
