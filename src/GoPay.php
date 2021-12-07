@@ -33,7 +33,7 @@ class GoPay
 
     public function call($urlPath, $contentType, $authorization, $method, $data = null)
     {
-        $r = new Request($this->buildUrl("api/{$urlPath}"));
+        $r = new Request($this->buildUrl("/{$urlPath}"));
         $r->method = $method;
         $r->headers = $this->buildHeaders($contentType, $authorization);
         $r->body = $this->encodeData($contentType, $data);
@@ -43,16 +43,39 @@ class GoPay
     public function buildUrl($urlPath)
     {
         static $urls = [
-                true => 'https://gate.gopay.cz/',
-                false => 'https://gw.sandbox.gopay.com/'
+            true => 'https://gate.gopay.cz/api',
+            false => 'https://gw.sandbox.gopay.com/api'
         ];
 
         if ($this->isCustomGatewayUrl()) {
-            return $this->config['gatewayUrl'] . $urlPath;
+            $apiRoot = $this->config['gatewayUrl'];
+            if (!str_ends_with($apiRoot, 'api')) {
+                $apiRoot = $apiRoot . 'api';
+            }
+            return $apiRoot . $urlPath;
         }
 
         return $urls[$this->isProductionMode()] . $urlPath;
     }
+
+    public function buildEmbedUrl()
+    {
+        static $urls = [
+            true => 'https://gate.gopay.cz/',
+            false => 'https://gw.sandbox.gopay.com/'
+        ];
+
+        if ($this->isCustomGatewayUrl()) {
+            $urlBase = $this->config['gatewayUrl'];
+            if (str_ends_with($urlBase, 'api')) {
+                $urlBase = substr($urlBase, 0, -3);
+            }
+            return $urlBase . 'gp-gw/js/embed.js';
+        }
+
+        return $urls[$this->isProductionMode()] . 'gp-gw/js/embed.js';
+    }
+
 
     public function isCustomGatewayUrl()
     {
@@ -83,16 +106,16 @@ class GoPay
     {
         if (is_null($contentType)) {
             return [
-                    'Accept' => 'application/json',
-                    'Accept-Language' => $this->getAcceptedLanguage(),
-                    'Authorization' => $authorization
+                'Accept' => 'application/json',
+                'Accept-Language' => $this->getAcceptedLanguage(),
+                'Authorization' => $authorization
             ];
         } else {
             return [
-                    'Accept' => 'application/json',
-                    'Accept-Language' => $this->getAcceptedLanguage(),
-                    'Content-Type' => $contentType,
-                    'Authorization' => $authorization
+                'Accept' => 'application/json',
+                'Accept-Language' => $this->getAcceptedLanguage(),
+                'Content-Type' => $contentType,
+                'Authorization' => $authorization
             ];
         }
     }
