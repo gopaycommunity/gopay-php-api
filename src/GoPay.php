@@ -49,7 +49,7 @@ class GoPay
 
         if ($this->isCustomGatewayUrl()) {
             $apiRoot = $this->config['gatewayUrl'];
-            if (!str_ends_with($apiRoot, 'api')) {
+            if (!$this->strEndsWith($apiRoot, 'api')) {
                 $apiRoot = $apiRoot . 'api';
             }
             return $apiRoot . $urlPath;
@@ -67,7 +67,7 @@ class GoPay
 
         if ($this->isCustomGatewayUrl()) {
             $urlBase = $this->config['gatewayUrl'];
-            if (str_ends_with($urlBase, 'api')) {
+            if (strEndsWith($urlBase, 'api')) {
                 $urlBase = substr($urlBase, 0, -3);
             }
             return $urlBase . 'gp-gw/js/embed.js';
@@ -124,5 +124,10 @@ class GoPay
     {
         static $czechLike = [Language::CZECH, Language::SLOVAK];
         return in_array($this->getConfig('language'), $czechLike) ? self::LOCALE_CZECH : self::LOCALE_ENGLISH;
+    }
+
+    private function strEndsWith($str, string $end)
+    {
+        return substr($str, -strlen($end))===$end;
     }
 }
