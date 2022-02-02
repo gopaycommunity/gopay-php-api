@@ -16,4 +16,5 @@ class PaymentInstrument
     const ACCOUNT = 'ACCOUNT';
     const GPAY = 'GPAY';
     const APPLE_PAY = 'APPLE_PAY';
+    const CLICK_TO_PAY = 'CLICK_TO_PAY';
 }
