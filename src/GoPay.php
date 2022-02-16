@@ -67,7 +67,7 @@ class GoPay
 
         if ($this->isCustomGatewayUrl()) {
             $urlBase = $this->config['gatewayUrl'];
-            if (strEndsWith($urlBase, 'api')) {
+            if ($this->strEndsWith($urlBase, 'api')) {
                 $urlBase = substr($urlBase, 0, -3);
             }
             return $urlBase . 'gp-gw/js/embed.js';
@@ -128,6 +128,6 @@ class GoPay
 
     private function strEndsWith($str, string $end)
     {
-        return substr($str, -strlen($end))===$end;
+        return substr($str, -strlen($end)) === $end;
     }
 }
