@@ -17,4 +17,5 @@ class Language
  	const CROATIAN = 'HR';
  	const ITALIAN = 'IT';
  	const SPANISH = 'ES';
+    const UKRAINIAN = 'UK';
 }
