@@ -57,6 +57,7 @@ class PaymentSubStatus
     const _5046 = '_5046';
     const _5047 = '_5047';
     const _5048 = '_5048';
+    const _5049 = '_5049';
     const _6502 = '_6502';
     const _6504 = '_6504';
 }
