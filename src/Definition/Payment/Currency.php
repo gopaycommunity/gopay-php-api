@@ -11,6 +11,5 @@ class Currency
     const BRITISH_POUND = 'GBP';
     const US_DOLLAR = 'USD';
     const ROMANIAN_LEU = 'RON';
-    const KUNA = 'HRK';
     const BULGARIAN_LEV = 'BGN';
 }
