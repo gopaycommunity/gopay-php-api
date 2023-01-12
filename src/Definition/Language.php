@@ -18,9 +18,9 @@ class Language
     const ITALIAN = 'IT';
     const SPANISH = 'ES';
     const UKRAINIAN = 'UK';
-    const ESTONIA = 'EE';
-    const LITHUANIA = 'LT';
-    const LATVIA = 'LV';
-    const SLOVENIA = 'SI';
-    const PORTUGAL = 'PT';
+    const ESTONIAN = "EE";
+    const LITHUANIAN = "LT";
+    const LATVIAN = "LV";
+    const SLOVENIAN = "SI";
+    const PORTUGUESE = "PT";
 }
