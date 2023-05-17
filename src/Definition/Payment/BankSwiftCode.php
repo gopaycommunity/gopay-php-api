@@ -4,21 +4,43 @@ namespace GoPay\Definition\Payment;
 
 class BankSwiftCode
 {
+    // CZ
     const CESKA_SPORITELNA = 'GIBACZPX';
     const KOMERCNI_BANKA = 'KOMBCZPP';
-    const RAIFFEISENBANK = 'RZBCCZPP';
-    const MBANK = 'BREXCZPP';
-    const FIO_BANKA = 'FIOBCZPP';
     const CSOB = 'CEKOCZPP';
+    const RAIFFEISENBANK = 'RZBCCZPP';
     const UNICREDIT_BANK_CZ = 'BACXCZPP';
-    const VSEOBECNA_UVEROVA_BANKA = 'SUBASKBX';
+    const MONETA_MONEY_BANK = 'AGBACZPP';
+    const FIO_BANKA = 'FIOBCZPP';
+    const MBANK = 'BREXCZPP';
+    const AIRBANK = 'AIRACZPP';
+    const ING_BANK = 'INGBCZPP';
+    const OBERBANK = 'OBKLCZ2X';
+    const VUB_PRAHA = 'SUBACZPP';
+    const HELLO_BANK = 'BPPFCZP1';
+    const CREDITAS = 'CTASCZ22';
+    const MAX_BANKA = 'EXPNCZPP';
+    const JT_BANKA = 'JTBPCZPP';
+    //SK
     const TATRA_BANKA = 'TATRSKBX';
+    const VSEOBECNA_UVEROVA_BANKA = 'SUBASKBX';
     const UNICREDIT_BANK_SK = 'UNCRSKBX';
     const SLOVENSKA_SPORITELNA = 'GIBASKBX';
-    const POSTOVA_BANKA = 'POBNSKBA';
     const CSOB_SK = 'CEKOSKBX';
-    const SBERBANK_SLOVENSKO = 'LUBASKBX';
-    const SPECIAL = 'OTHERS';
+    const POSTOVA_BANKA = 'POBNSKBA';
+    const OTP_BANKA_SLOVENSKO = 'OTPVSKBX';
+    const PRIMA_BANKA_SLOVENSKO = 'KOMASK2X';
+    const CITIBANK_EUROPE = 'CITISKBA';
+    const FIO_BANKA_SK = 'FIOZSKBA';
+    const MBANK_SK = 'BREXSKBX';
+    const ING_BANK_SK = 'INGBSKBX';
+    const JT_BANKA_SK = 'JTBPSKBA';
+    const OBERBANK_SK = 'OBKLSKBA';
+    const PRIVATBANKA = 'BSLOSK22';
+    const BKS_BANK = 'BFKKSKBB';
+    const RAIFFEISENBANK_SK = 'TATRSKBXXXX';
+    const KOMERCNI_BANKA_SK = 'KOMBSKBA';
+    // PL
     const MBANK1 = 'BREXPLPW';
     const CITI_HANDLOWY = 'CITIPLPX';
     const IKO = 'BPKOPLPW-IKO';
@@ -52,4 +74,6 @@ class BankSwiftCode
     const E_SKOK = 'NBPLPLPW';
     const EUROBANK = 'SOGEPLPW';
     const POLSKI_BANK_PRZEDSIEBIORCZOSCI_SPOLKA_AKCYJNA = 'PBPBPLPW';
+    // Others
+    const SPECIAL = 'OTHERS';
 }
