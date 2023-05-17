@@ -28,7 +28,7 @@ class PaymentsSupercash
     {
         $coupon = ['go_id' => $this->payments->getGopay()->getConfig('goid')] + $supercashCoupon;
 
-        return $this->payments->post('supercash/coupon', GoPay::JSON, $coupon);
+        return $this->payments->post('/supercash/coupon', GoPay::JSON, $coupon);
     }
 
 
@@ -41,7 +41,7 @@ class PaymentsSupercash
     {
         $batch = ["go_id" => $this->payments->getGopay()->getConfig('goid')] + $supercashCouponBatch;
 
-        return $this->payments->post("supercash/coupon/batch", GoPay::JSON, $batch);
+        return $this->payments->post("/supercash/coupon/batch", GoPay::JSON, $batch);
     }
 
 
@@ -53,7 +53,7 @@ class PaymentsSupercash
      */
     public function getSupercashCouponBatchStatus($batchId)
     {
-        return $this->payments->get("batch/" . $batchId, GoPay::FORM);
+        return $this->payments->get('/batch/' . $batchId, GoPay::FORM);
     }
 
 
@@ -65,8 +65,8 @@ class PaymentsSupercash
      */
     public function getSupercashCouponBatch($batchId)
     {
-        return $this->payments->get("supercash/coupon/find?batch_request_id=" . $batchId
-                . "&go_id={$this->payments->getGopay()->getConfig('goid')}", GoPay::FORM);
+        return $this->payments->get("/supercash/coupon/find?batch_request_id=" . $batchId
+            . "&go_id={$this->payments->getGopay()->getConfig('goid')}", GoPay::FORM);
     }
 
 
@@ -80,8 +80,8 @@ class PaymentsSupercash
     {
         $queryData = is_array($paymentSessionId) ? array_values($paymentSessionId) : [$paymentSessionId];
 
-        return $this->payments->get('supercash/coupon/find?payment_session_id_list=' . implode(",", $queryData)
-                . "&go_id={$this->payments->getGopay()->getConfig('goid')}", GoPay::FORM);
+        return $this->payments->get('/supercash/coupon/find?payment_session_id_list=' . implode(",", $queryData)
+            . "&go_id={$this->payments->getGopay()->getConfig('goid')}", GoPay::FORM);
     }
 
 
@@ -93,8 +93,6 @@ class PaymentsSupercash
      */
     public function getSupercashCoupon($couponId)
     {
-        return $this->payments->get("supercash/coupon/{$couponId}", GoPay::FORM);
+        return $this->payments->get("/supercash/coupon/{$couponId}", GoPay::FORM);
     }
-
-
 }

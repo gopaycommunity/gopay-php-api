@@ -33,7 +33,7 @@ class GoPay
 
     public function call($urlPath, $contentType, $authorization, $method, $data = null)
     {
-        $r = new Request($this->buildUrl("/{$urlPath}"));
+        $r = new Request($this->buildUrl($urlPath));
         $r->method = $method;
         $r->headers = $this->buildHeaders($contentType, $authorization);
         $r->body = $this->encodeData($contentType, $data);
@@ -48,9 +48,9 @@ class GoPay
         ];
 
         if ($this->isCustomGatewayUrl()) {
-            $apiRoot = $this->config['gatewayUrl'];
+            $apiRoot = rtrim($this->config['gatewayUrl'], '/');
             if (!$this->strEndsWith($apiRoot, 'api')) {
-                $apiRoot = $apiRoot . 'api';
+                $apiRoot = $apiRoot . '/api';
             }
             return $apiRoot . $urlPath;
         }
@@ -70,10 +70,10 @@ class GoPay
             if ($this->strEndsWith($urlBase, 'api')) {
                 $urlBase = substr($urlBase, 0, -3);
             }
-            return $urlBase . 'gp-gw/js/embed.js';
+            return $urlBase . '/gp-gw/js/embed.js';
         }
 
-        return $urls[$this->isProductionMode()] . 'gp-gw/js/embed.js';
+        return $urls[$this->isProductionMode()] . '/gp-gw/js/embed.js';
     }
 
 
