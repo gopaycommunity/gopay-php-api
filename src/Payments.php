@@ -81,6 +81,10 @@ class Payments
     {
         return $this->get("/eshops/eshop/{$goid}/payment-instruments/{$currency}");
     }
+    public function getPaymentInstrumentsAll($goid)
+    {
+        return $this->get("/eshops/eshop/{$goid}/payment-instruments");
+    }
 
     public function getAccountStatement(array $accountStatement)
     {

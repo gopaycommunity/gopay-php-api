@@ -22,7 +22,7 @@ if ($response->hasSucceed()) {
 }
 ```
 
-## Client-side
+##  Client-side
 
 ```html
 <?php
