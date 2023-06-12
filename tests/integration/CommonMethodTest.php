@@ -10,6 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 use function PHPUnit\Framework\assertNotEmpty;
 use function PHPUnit\Framework\assertNotNull;
+
 /**
  * Class CommonMethodTests
  * @package GoPay
@@ -54,11 +55,11 @@ class CommonMethodTest extends TestCase
     public function testGetAccountStatement()
     {
         $accountStatement = [
-                'date_from' => '2017-01-01',
-                'date_to' => '2017-02-27',
-                'goid' => TestUtils::GO_ID,
-                'currency' => Currency::CZECH_CROWNS,
-                'format' => StatementGeneratingFormat::CSV_A,
+            'date_from' => '2017-01-01',
+            'date_to' => '2017-02-27',
+            'goid' => TestUtils::GO_ID,
+            'currency' => Currency::CZECH_CROWNS,
+            'format' => StatementGeneratingFormat::CSV_A,
         ];
 
         $statement = $this->gopay->getAccountStatement($accountStatement);
@@ -74,5 +75,4 @@ class CommonMethodTest extends TestCase
             echo print_r($statement->json, true);
         }
     }
-
 }

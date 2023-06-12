@@ -33,8 +33,8 @@ class OnDemandPaymentTest extends TestCase
         $basePayment = CreatePaymentTest::createBasePayment();
 
         $basePayment['recurrence'] = [
-                'recurrence_cycle' => Recurrence::ON_DEMAND,
-                'recurrence_date_to' => '2100-04-01'
+            'recurrence_cycle' => Recurrence::ON_DEMAND,
+            'recurrence_date_to' => '2100-04-01'
         ];
 
         $payment = $this->gopay->createPayment($basePayment);
@@ -56,13 +56,13 @@ class OnDemandPaymentTest extends TestCase
     public function testCreateNextOnDemandPayment()
     {
         $nextPayment = [
-                'amount' => 4000,
-                'currency' => Currency::CZECH_CROWNS,
-                'order_number' => 'OnDemand9876',
-                'order_description' => 'OnDemand9876Description',
-                'items' => [
-                        ['name' => 'item01', 'amount' => 2000, 'count' => 1],
-                ],
+            'amount' => 4000,
+            'currency' => Currency::CZECH_CROWNS,
+            'order_number' => 'OnDemand9876',
+            'order_description' => 'OnDemand9876Description',
+            'items' => [
+                ['name' => 'item01', 'amount' => 2000, 'count' => 1],
+            ],
         ];
 
         $onDemandPayment = $this->gopay->createRecurrence(3049603895, $nextPayment);
@@ -74,8 +74,6 @@ class OnDemandPaymentTest extends TestCase
             print_r("OnDemand Payment ID: " . $onDemandPayment->json['id'] . "\n");
             print_r("OnDemand Payment gwUrl: " . $onDemandPayment->json['gw_url'] . "\n");
             print_r("OnDemand Payment state: " . $onDemandPayment->json['state'] . "\n");
-
         }
     }
-
 }

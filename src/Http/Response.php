@@ -5,7 +5,7 @@ namespace GoPay\Http;
 class Response
 {
     /** @var string */
-    private $rawBody;
+    public $rawBody;
     /** @var int */
     public $statusCode;
     /** @var array response json */

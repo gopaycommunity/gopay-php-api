@@ -63,5 +63,4 @@ class RecurrentPaymentTest extends TestCase
         assertNotEmpty($response->json);
         echo print_r($response->json, true);
     }
-
 }

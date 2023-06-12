@@ -51,7 +51,6 @@ class JsonBrowser
             $this->logger->logHttpCommunication($r, $response);
             return $response;
         }
-
     }
 
     /**

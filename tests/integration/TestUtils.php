@@ -19,11 +19,11 @@ class TestUtils
     public static function setup()
     {
         $gopay = payments([
-                'goid' => self::GO_ID,
-                'clientId' => self::CLIENT_ID,
-                'clientSecret' => self::CLIENT_SECRET,
-                'gatewayUrl' => 'https://gw.sandbox.gopay.com/',
-                'language' => Language::CZECH
+            'goid' => self::GO_ID,
+            'clientId' => self::CLIENT_ID,
+            'clientSecret' => self::CLIENT_SECRET,
+            'gatewayUrl' => 'https://gw.sandbox.gopay.com/api',
+            'language' => Language::CZECH
         ]);
         return $gopay;
     }
@@ -31,11 +31,11 @@ class TestUtils
     public static function setupEET()
     {
         $gopay = payments([
-                'goid' => self::GO_ID_EET,
-                'clientId' => self::CLIENT_ID_EET,
-                'clientSecret' => self::CLIENT_SECRET_EET,
-                'isProductionMode' => false,
-                'language' => Language::CZECH
+            'goid' => self::GO_ID_EET,
+            'clientId' => self::CLIENT_ID_EET,
+            'clientSecret' => self::CLIENT_SECRET_EET,
+            'gatewayUrl' => 'https://gw.sandbox.gopay.com/api',
+            'language' => Language::CZECH
         ]);
         return $gopay;
     }
@@ -43,13 +43,12 @@ class TestUtils
     public static function setupSupercash()
     {
         $gopay = paymentsSupercash([
-                'goid' => self::GO_ID,
-                'clientId' => self::CLIENT_ID,
-                'clientSecret' => self::CLIENT_SECRET,
-                'isProductionMode' => false,
-                'language' => Language::CZECH
+            'goid' => self::GO_ID,
+            'clientId' => self::CLIENT_ID,
+            'clientSecret' => self::CLIENT_SECRET,
+            'gatewayUrl' => 'https://gw.sandbox.gopay.com/api',
+            'language' => Language::CZECH
         ]);
         return $gopay;
     }
-
 }

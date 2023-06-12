@@ -19,7 +19,7 @@ class GivenGoPay extends TestCase
             'goid' => getenv('goid'),
             'clientId' => getenv('clientId'),
             'clientSecret' => getenv('clientSecret'),
-            'isProductionMode' => false,
+            'gatewayUrl' => 'https://gw.sandbox.gopay.com/api',
             'scope' => TokenScope::ALL,
             'language' => Language::CZECH
         ];

@@ -32,5 +32,4 @@ class RefundTest extends TestCase
         echo print_r($response->json, true);
         self::assertNotEmpty($response->json);
     }
-
 }

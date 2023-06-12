@@ -37,7 +37,7 @@ class OAuth2 implements Auth
     {
         $ids = [
             $this->gopay->getConfig('clientId'),
-            $this->gopay->isCustomGatewayUrl() ? 2 : (int) $this->gopay->getConfig('isProductionMode'),
+            $this->gopay->getConfig('gatewayUrl'),
             $this->gopay->getConfig('scope'),
         ];
         return implode('-', $ids);
