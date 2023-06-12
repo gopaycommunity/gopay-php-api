@@ -5,7 +5,7 @@ namespace GoPay\Http;
 class Response
 {
     /** @var string */
-    private $rawBody;
+    public $rawBody;
     /** @var int */
     public $statusCode;
     /** @var array response json */
@@ -18,7 +18,7 @@ class Response
 
     public function hasSucceed()
     {
-        return $this->statusCode == 200;
+        return $this->statusCode < 400;
     }
 
     public function __toString()

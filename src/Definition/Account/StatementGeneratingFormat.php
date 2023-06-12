@@ -11,5 +11,8 @@ class StatementGeneratingFormat
     const CSV_B = 'CSV_B';
     const CSV_C = 'CSV_C';
     const CSV_D = 'CSV_D';
+    const CSV_E = 'CSV_E';
     const ABO_A = 'ABO_A';
+    const ABO_B = 'ABO_B';
+    const PDF_A = 'PDF_A';
 }

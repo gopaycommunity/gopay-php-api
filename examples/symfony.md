@@ -1,7 +1,7 @@
 
 # Symfony integration
 
-Example integration with basic configuration and 
+Example integration with basic configuration and
 [controller defined as service](http://symfony.com/doc/current/cookbook/controller/service.html).
 
 ## Step 1: Define parameters, service
@@ -12,7 +12,7 @@ parameters:
         goid: my_goid
         clientId: my_id
         clientSecret: my_secret
-        isProductionMode: false
+        gatewayUrl: 'https://gw.sandbox.gopay.com/api'
         # optional config
         scope: payment-all
         language: CS

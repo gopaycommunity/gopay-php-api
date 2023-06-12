@@ -10,6 +10,9 @@ use PHPUnit\Framework\TestCase;
 
 use function PHPUnit\Framework\assertNotEmpty;
 use function PHPUnit\Framework\assertNotNull;
+use function PHPUnit\Framework\assertEquals;
+use function PHPUnit\Framework\assertArrayNotHasKey;
+use function PHPUnit\Framework\assertArrayHasKey;
 
 /**
  * Class RecurrentPaymentTests
@@ -37,31 +40,38 @@ class RecurrentPaymentTest extends TestCase
             'recurrence_date_to' => '2100-04-01'
         ];
 
-        $payment = $this->gopay->createPayment($basePayment);
+        $response = $this->gopay->createPayment($basePayment);
+        $responseBody = $response->json;
 
-        assertNotEmpty($payment->json);
-        assertNotNull($payment->json['id']);
+        assertNotEmpty($responseBody);
+        assertArrayNotHasKey('errors', $responseBody);
 
-        echo print_r($payment->json, true);
-        $st = json_encode($payment->json);
+        assertNotNull($responseBody['id']);
+        echo print_r($response->json, true);
 
-        if (strpos($st, 'error_code') === false) {
-            print_r("Payment ID: " . $payment->json['id'] . "\n");
-            print_r("Payment gwUrl: " . $payment->json['gw_url'] . "\n");
-            print_r("Payment state: " . $payment->json['state'] . "\n");
+        if ($response->hasSucceed()) {
+            print_r("Payment ID: " . $responseBody['id'] . "\n");
+            print_r("Payment gwUrl: " . $responseBody['gw_url'] . "\n");
+            print_r("Payment state: " . $responseBody['state'] . "\n");
             print_r("Recurrence: ");
-            echo print_r($payment->json['recurrence'], true);
+            echo print_r($responseBody['recurrence'], true);
         }
     }
 
     /* Returns an error, as the recurrence for the payment id '3049603544' has been already stopped. */
     public function testVoidRecurrence()
     {
-        $authorizedPaymentId = 3049603544;
+        $authorizedPaymentId = 3049520773;
 
         $response = $this->gopay->voidRecurrence($authorizedPaymentId);
-        assertNotEmpty($response->json);
-        echo print_r($response->json, true);
-    }
+        $responseBody = $response->json;
 
+        assertNotEmpty($responseBody);
+
+        assertArrayHasKey("errors", $responseBody);
+        $message = $responseBody['errors'][0]['error_name'];
+        assertEquals($message, 'PAYMENT_RECURRENCE_STOPPED');
+
+        echo print_r($responseBody, true);
+    }
 }

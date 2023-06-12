@@ -21,9 +21,6 @@ class GoPay
     {
         $this->config = $config;
         $this->browser = $b;
-        if (array_key_exists('isProductionMode', $this->config)) {
-            $this->browser->getLogger()->log("isProductionMode is deprecated and will be removed, please use gatewayUrl instead");
-        }
     }
 
     public function getConfig($key)
@@ -31,7 +28,7 @@ class GoPay
         return $this->config[$key];
     }
 
-    public function call($urlPath, $contentType, $authorization, $method, $data = null)
+    public function call($urlPath, $authorization, $method, $contentType = null, $data = null)
     {
         $r = new Request($this->buildUrl($urlPath));
         $r->method = $method;
@@ -42,54 +39,24 @@ class GoPay
 
     public function buildUrl($urlPath)
     {
-        static $urls = [
-            true => 'https://gate.gopay.cz/api',
-            false => 'https://gw.sandbox.gopay.com/api'
-        ];
-
-        if ($this->isCustomGatewayUrl()) {
-            $apiRoot = rtrim($this->config['gatewayUrl'], '/');
-            if (!$this->strEndsWith($apiRoot, 'api')) {
-                $apiRoot = $apiRoot . '/api';
-            }
-            return $apiRoot . $urlPath;
+        $urlBase = rtrim($this->config['gatewayUrl'], '/');
+        if (substr($urlBase, -4) !== '/api') {
+            $urlBase .= '/api';
         }
 
-        return $urls[$this->isProductionMode()] . $urlPath;
+        return $urlBase . $urlPath;
     }
 
     public function buildEmbedUrl()
     {
-        static $urls = [
-            true => 'https://gate.gopay.cz/',
-            false => 'https://gw.sandbox.gopay.com/'
-        ];
-
-        if ($this->isCustomGatewayUrl()) {
-            $urlBase = $this->config['gatewayUrl'];
-            if ($this->strEndsWith($urlBase, 'api')) {
-                $urlBase = substr($urlBase, 0, -3);
-            }
-            return $urlBase . '/gp-gw/js/embed.js';
+        $urlBase = rtrim($this->config['gatewayUrl'], '/');
+        if (substr($urlBase, -4) !== '/api') {
+            $urlBase = substr($urlBase, 0, -4);
         }
 
-        return $urls[$this->isProductionMode()] . '/gp-gw/js/embed.js';
+        return $urlBase . '/gp-gw/js/embed.js';
     }
 
-
-    public function isCustomGatewayUrl()
-    {
-        return array_key_exists('gatewayUrl', $this->config);
-    }
-
-    /**
-     * @deprecated use gatewayUrl
-     */
-    public function isProductionMode()
-    {
-        $productionMode = $this->getConfig('isProductionMode');
-        return filter_var($productionMode, FILTER_VALIDATE_BOOLEAN);
-    }
 
     private function encodeData($contentType, $data)
     {
@@ -124,10 +91,5 @@ class GoPay
     {
         static $czechLike = [Language::CZECH, Language::SLOVAK];
         return in_array($this->getConfig('language'), $czechLike) ? self::LOCALE_CZECH : self::LOCALE_ENGLISH;
-    }
-
-    private function strEndsWith($str, string $end)
-    {
-        return substr($str, -strlen($end)) === $end;
     }
 }

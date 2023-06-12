@@ -10,6 +10,10 @@ use PHPUnit\Framework\TestCase;
 
 use function PHPUnit\Framework\assertNotEmpty;
 use function PHPUnit\Framework\assertNotNull;
+use function PHPUnit\Framework\assertArrayNotHasKey;
+use function PHPUnit\Framework\assertArrayHasKey;
+use function PHPUnit\Framework\assertTrue;
+
 /**
  * Class CommonMethodTests
  * @package GoPay
@@ -28,51 +32,49 @@ class CommonMethodTest extends TestCase
 
     public function testPaymentStatus()
     {
-        $paymentId = 3049604064;
+        $paymentId = 3178283550;
 
         $response = $this->gopay->getStatus($paymentId);
+        $responseBody = $response->json;
 
-        assertNotEmpty($response->json);
-        assertNotNull($response->json['id']);
-        echo print_r($response->json, true);
-        $st = json_encode($response->json);
+        assertNotEmpty($responseBody);
+        assertArrayNotHasKey('errors', $responseBody);
 
-        if (strpos($st, 'error_code') === false) {
-            print_r("Payment ID: " . $response->json['id'] . "\n");
-            print_r("Payment gwUrl: " . $response->json['gw_url'] . "\n");
-            print_r("Payment state: " . $response->json['state'] . "\n");
+        assertNotNull($responseBody['id']);
+        echo print_r($responseBody, true);
+
+        if ($response->hasSucceed()) {
+            print_r("Payment ID: " . $responseBody['id'] . "\n");
+            print_r("Payment gwUrl: " . $responseBody['gw_url'] . "\n");
+            print_r("Payment state: " . $responseBody['state'] . "\n");
         }
     }
 
-    public function tGetPaymentInstruments()
+    public function testGetPaymentInstruments()
     {
-        $paymentInstrumentList = $this->gopay->getPaymentInstruments(TestUtils::GO_ID, Currency::CZECH_CROWNS);
+        $response = $this->gopay->getPaymentInstruments(TestUtils::GO_ID, Currency::CZECH_CROWNS);
+        $responseBody = $response->json;
 
-        echo print_r($paymentInstrumentList->json, true);
+        assertNotEmpty($responseBody);
+        assertArrayNotHasKey('errors', $responseBody);
+        assertArrayHasKey('enabledPaymentInstruments', $responseBody);
+
+        echo print_r($responseBody, true);
     }
 
     public function testGetAccountStatement()
     {
         $accountStatement = [
-                'date_from' => '2017-01-01',
-                'date_to' => '2017-02-27',
-                'goid' => TestUtils::GO_ID,
-                'currency' => Currency::CZECH_CROWNS,
-                'format' => StatementGeneratingFormat::CSV_A,
+            'date_from' => '2023-01-01',
+            'date_to' => '2023-02-27',
+            'goid' => TestUtils::GO_ID,
+            'currency' => Currency::CZECH_CROWNS,
+            'format' => StatementGeneratingFormat::CSV_A,
         ];
 
-        $statement = $this->gopay->getAccountStatement($accountStatement);
+        $response = $this->gopay->getAccountStatement($accountStatement);
 
-        assertNotEmpty($statement);
-
-
-        $st = json_encode($statement->json);
-
-        if (strpos($st, 'error_code') === false) {
-            echo $statement;
-        } else {
-            echo print_r($statement->json, true);
-        }
+        assertTrue($response->hasSucceed());
+        assertNotEmpty($response);
     }
-
 }

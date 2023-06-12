@@ -9,7 +9,7 @@
 
 ## Requirements
 
-- PHP >= 7.4
+- PHP >= 8.1
 - enabled extension `curl`, `json`
 
 ## Installation
@@ -50,38 +50,42 @@ $gopay = GoPay\Api::payments([
 Required field | Data type | Documentation |
 -------------- | --------- | ----------- |
 `goid` | string | default GoPay account used in `createPayment` if `target` is not specified
-`clientId` | string | https://doc.gopay.com/#access-token |
-`clientSecret` | string | https://doc.gopay.com/#access-token |
+`clientId` | string | <https://doc.gopay.com/#access-token> |
+`clientSecret` | string | <https://doc.gopay.com/#access-token> |
 `gatewayUrl` | string | [test or production environment?](https://help.gopay.com/en/s/uY) |
 
 #### Optional fields
 
 Optional field | Data type | Default value | Documentation |
 -------------- | --------- | ------------- | ------------- |
-`scope` | string | [`GoPay\Definition\TokenScope::ALL`](src/Definition/TokenScope.php) | https://doc.gopay.com/#access-token |
+`scope` | string | [`GoPay\Definition\TokenScope::ALL`](src/Definition/TokenScope.php) | <https://doc.gopay.com/#access-token> |
 `language` | string | [`GoPay\Definition\Language::ENGLISH`](src/Definition/Language.php) | language used in `createPayment` if `lang` is not specified + used for [localization of errors](https://doc.gopay.com/#errors)
 `timeout` | int | 30 | Browser timeout in seconds |
-
 
 ### Available methods
 
 API | SDK method |
 --- | ---------- |
-[Create standard payment](https://doc.gopay.com/#payment-creation) | `$gopay->createPayment(array $payment)` |
-[Status of the payment](https://doc.gopay.com/#payment-status) | `$gopay->getStatus($id)` |
-[Refund of the payment](https://doc.gopay.com/#payment-refund) | `$gopay->refundPayment($id, $amount)` |
-[Create recurring payment](https://doc.gopay.com/#recurring-payments) | `$gopay->createPayment(array $payment)` |
-[Recurring payment on demand](https://doc.gopay.com/#recurring-on-demand) | `$gopay->createRecurrence($id, array $payment)` |
-[Cancellation of the recurring payment](https://doc.gopay.com/#recurring-payment-cancellation) | `$gopay->voidRecurrence($id)` |
-[Create pre-authorized payment](https://doc.gopay.com/#preauthorized-payments) | `$gopay->createPayment(array $payment)` |
-[Charge of pre-authorized payment](https://doc.gopay.com/#capturing-a-preauthorized-payment) | `$gopay->captureAuthorization($id)` |
-[Cancellation of the pre-authorized payment](https://doc.gopay.com/#cancelling-a-preauthorized-payment) | `$gopay->voidAuthorization($id)` |
+[Create a payment](https://doc.gopay.com#payment-creation) | `$gopay->createPayment(array $payment)` |
+[Get status of a payment](https://doc.gopay.com#payment-inquiry) | `$gopay->getStatus($id)` |
+[Refund a payment](https://doc.gopay.com#payment-refund) | `$gopay->refundPayment($id, $amount)` |
+[Create a recurring payment](https://doc.gopay.com#creating-a-recurrence) | `$gopay->createRecurrence($id, array $payment)` |
+[Cancel a recurring payment](https://doc.gopay.com#void-a-recurring-payment) | `$gopay->voidRecurrence($id)` |
+[Capture a preauthorized payment](https://doc.gopay.com#capturing-a-preauthorized-payment) | `$gopay->captureAuthorization($id)` |
+[Capture a preauthorized payment partially](https://doc.gopay.com#partially-capturing-a-preauthorized-payment) | `$gopay->captureAuthorizationPartial($id, array $capturePayment)` |
+[Void a preauthorized payment](https://doc.gopay.com#voiding-a-preauthorized-payment) | `$gopay->voidAuthorization($id)` |
+[Get payment card details](https://doc.gopay.com#payment-card-inquiry) | `$gopay->getCardDetails($cardId)` |
+[Delete a saved card](https://doc.gopay.com#payment-card-deletion) | `$gopay->deleteCard($cardId)` |
+[Get allowed payment methods for a currency](https://doc.gopay.com#available-payment-methods-for-a-currency) | `$gopay->getPaymentInstruments($goid, $currency)` |
+[Get all allowed payment methods](https://doc.gopay.com#all-available-payment-methods) | `$gopay->getPaymentInstrumentsAll($goid)` |
+[Generate an account statement](https://doc.gopay.com#account-statement) | `$gopay->getAccountStatement(array $accountStatement)`
+
 ### SDK response? Has my call succeed?
 
 SDK returns wrapped API response. Every method returns
 [`GoPay\Http\Response` object](src/Http/Response.php). Structure of `json/__toString`
 should be same as in [documentation](https://doc.gopay.com/en).
-SDK throws no exception. Please create an issue if you catch one. 
+SDK throws no exception. Please create an issue if you catch one.
 
 ```php
 $response = $gopay->createPayment([/* define your payment  */]);
@@ -100,7 +104,7 @@ Method | Description |
 `$response->hasSucceed()` | checks if API returns status code _200_ |
 `$response->json` | decoded response, returned objects are converted into associative arrays |
 `$response->statusCode` | HTTP status code |
-`$response->__toString()` | raw body from HTTP response |
+`$response->rawBody` | raw body from HTTP response |
 
 ### Are required fields and allowed values validated?
 
@@ -119,36 +123,35 @@ behavior is well documented in [doc.gopay.com](https://doc.gopay.com).
 // create payment and pass url to template 
 $response = $gopay->createPayment([/* define your payment  */]);
 if ($response->hasSucceed()) {
-    $templateParameters = [
-        'gatewayUrl' => $response->json['gw_url'],
-        'embedJs' => $gopay->urlToEmbedJs()
-    ];
-    // render template
+
+        $gatewayUrl => $response->json['gw_url'],
+        $embedJs => $gopay->urlToEmbedJs()
+        // render template
 }
 ```
 
 #### [Inline gateway](https://doc.gopay.com/#inline)
 
 ```php
-<form action="<?php echo $gatewayUrl; ?>" method="post" id="gopay-payment-button">
+<form action="<?= $gatewayUrl ?>" method="post" id="gopay-payment-button">
   <button name="pay" type="submit">Pay</button>
-  <script type="text/javascript" src="<?php echo $embedJs;>"></script>
+  <script type="text/javascript" src="<?= $embedJs ?>"></script>
 </form>
 ```
 
 #### [Redirect gateway](https://doc.gopay.com/#redirect)
 
 ```php
-<form action="<?php echo $gatewayUrl; ?>" method="post">
+<form action="<?= $gatewayUrl ?>" method="post">
   <button name="pay" type="submit">Pay</button>
 </form>
 ```
 
 #### [Asynchronous initialization using JavaScript](/examples/js-initialization.md)
 
-### Enums ([Code lists](https://doc.gopay.com/#ciselniky)
+### Enums ([Code lists](https://doc.gopay.com/#ciselniky))
 
-Instead of hardcoding bank codes string you can use predefined enums. 
+Instead of hardcoding bank codes string you can use predefined enums.
 Check using enums in  [create-payment example](/examples/create-payment.php)
 
 Type | Description |
@@ -159,9 +162,10 @@ Type | Description |
 [Response enums](/src/Definition/Response) | Result of creating payment, executing payment operations |
 [ItemType enums](/src/Definition/Payment/PaymentItemType.php) | Type of an item |
 [VatRate enums](/src/Definition/Payment/VatRate.php) | VatRate of an item |
+
 ### Framework integration
 
-* [Symfony2](/examples/symfony.md)
+- [Symfony2](/examples/symfony.md)
 
 ### Cache access token
 
@@ -174,7 +178,6 @@ Be aware that there are two [scopes](https://doc.gopay.com/#scope) (`TokenScope`
 SDK can be used for different clients (`clientId`, `gatewayUrl`). So `client` passed to
 methods is unique identifier (`string`) that is built for current environment.
 Below you can see example implementation of caching tokens in file:
-
 
 ```php
 // register cache in optional service configuration
@@ -230,7 +233,7 @@ Available logger | Description |
 
 ## Contributing
 
-Contributions from others would be very much appreciated! Send 
+Contributions from others would be very much appreciated! Send
 [pull request](https://github.com/gopaycommunity/gopay-php-api/pulls)/
 [issue](https://github.com/gopaycommunity/gopay-php-api/issues). Thanks!
 
