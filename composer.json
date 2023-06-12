@@ -1,43 +1,51 @@
 {
-    "name": "gopay/payments-sdk-php",
-    "description": "GoPay's PHP SDK for Payments REST API",
-    "keywords": ["gopay", "payments", "sdk", "rest", "api"],
-    "type": "library",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "GoPay",
-            "homepage": "https://github.com/gopaycommunity/gopay-php-api/contributors"
-        }
-    ],
-    "config": {
-        "bin-dir": "bin",
-        "optimize-autoloader": true
-    },
-    "autoload": {
-        "psr-4": {
-            "GoPay\\": "src/"
-        },
-        "files": ["factory.php"],
-        "classmap": [
-            "src/"
-        ]
-    },
-    "autoload-dev": {
-        "files": [
-		  "tests/integration/GivenGoPay.php",
-          "vendor/hamcrest/hamcrest-php/hamcrest/Hamcrest.php"
-        ]
-    },
-    "require": {
-        "php": ">=7.4",
-        "guzzlehttp/guzzle": "^6.2.1|7.*",
-        "symfony/deprecation-contracts": "^3.0"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "9.3.7",
-        "hamcrest/hamcrest-php": "*",
-        "phpspec/prophecy": "~1.0",
-        "phpspec/prophecy-phpunit": "^2.0"
+  "name": "gopay/payments-sdk-php",
+  "description": "GoPay's PHP SDK for Payments REST API",
+  "keywords": [
+    "gopay",
+    "payments",
+    "sdk",
+    "rest",
+    "api"
+  ],
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "GoPay",
+      "homepage": "https://github.com/gopaycommunity/gopay-php-api/contributors"
     }
+  ],
+  "config": {
+    "bin-dir": "bin",
+    "optimize-autoloader": true
+  },
+  "autoload": {
+    "psr-4": {
+      "GoPay\\": "src/"
+    },
+    "files": [
+      "factory.php"
+    ],
+    "classmap": [
+      "src/"
+    ]
+  },
+  "autoload-dev": {
+    "files": [
+      "tests/integration/GivenGoPay.php",
+      "vendor/hamcrest/hamcrest-php/hamcrest/Hamcrest.php"
+    ]
+  },
+  "require": {
+    "php": ">=8.1",
+    "guzzlehttp/guzzle": "^7.7.0",
+    "symfony/deprecation-contracts": "^3.3.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "9.3.7",
+    "hamcrest/hamcrest-php": "*",
+    "phpspec/prophecy": "~1.0",
+    "phpspec/prophecy-phpunit": "^2.0"
+  }
 }
