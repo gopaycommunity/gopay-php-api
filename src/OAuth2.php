@@ -19,9 +19,9 @@ class OAuth2 implements Auth
         $credentials = "{$this->gopay->getConfig('clientId')}:{$this->gopay->getConfig('clientSecret')}";
         $response = $this->gopay->call(
             '/oauth2/token',
-            GoPay::FORM,
             'Basic ' . base64_encode($credentials),
             RequestMethods::POST,
+            GoPay::FORM,
             ['grant_type' => 'client_credentials', 'scope' => $this->gopay->getConfig('scope')]
         );
         $t = new AccessToken;

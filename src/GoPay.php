@@ -28,7 +28,7 @@ class GoPay
         return $this->config[$key];
     }
 
-    public function call($urlPath, $contentType, $authorization, $method, $data = null)
+    public function call($urlPath, $authorization, $method, $contentType = null, $data = null)
     {
         $r = new Request($this->buildUrl($urlPath));
         $r->method = $method;
