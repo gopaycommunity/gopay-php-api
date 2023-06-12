@@ -18,7 +18,7 @@ class Response
 
     public function hasSucceed()
     {
-        return $this->statusCode == 200;
+        return $this->statusCode < 400;
     }
 
     public function __toString()

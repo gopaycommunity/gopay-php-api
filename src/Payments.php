@@ -41,10 +41,6 @@ class Payments
         return $this->post("/payments/payment/{$id}/refund", GoPay::FORM, ['amount' => $data]);
     }
 
-    public function refundPaymentEET($id, array $paymentData)
-    {
-        return $this->post("/payments/payment/{$id}/refund", GoPay::JSON, $paymentData);
-    }
 
     public function createRecurrence($id, array $payment)
     {
@@ -71,6 +67,16 @@ class Payments
         return $this->post("/payments/payment/{$id}/void-authorization", GoPay::FORM, array());
     }
 
+    public function getCardDetails($cardId)
+    {
+        return $this->get("/payments/cards/{$cardId}");
+    }
+
+    public function deleteCard($cardId)
+    {
+        return $this->delete("/payments/cards/{$cardId}");
+    }
+
     public function getPaymentInstruments($goid, $currency)
     {
         return $this->get("/eshops/eshop/{$goid}/payment-instruments/{$currency}");
@@ -81,6 +87,10 @@ class Payments
         return $this->post("/accounts/account-statement", GoPay::JSON, $accountStatement);
     }
 
+    public function refundPaymentEET($id, array $paymentData)
+    {
+        return $this->post("/payments/payment/{$id}/refund", GoPay::JSON, $paymentData);
+    }
     public function getEETReceiptByPaymentId($paymentId)
     {
         return $this->get("/payments/payment/{$paymentId}/eet-receipts");

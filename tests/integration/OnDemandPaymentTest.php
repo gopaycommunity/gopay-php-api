@@ -11,6 +11,9 @@ use PHPUnit\Framework\TestCase;
 
 use function PHPUnit\Framework\assertNotEmpty;
 use function PHPUnit\Framework\assertNotNull;
+use function PHPUnit\Framework\assertEquals;
+use function PHPUnit\Framework\assertArrayNotHasKey;
+use function PHPUnit\Framework\assertArrayHasKey;
 
 /**
  * Class OnDemandPaymentTests
@@ -37,18 +40,21 @@ class OnDemandPaymentTest extends TestCase
             'recurrence_date_to' => '2100-04-01'
         ];
 
-        $payment = $this->gopay->createPayment($basePayment);
-        assertNotEmpty($payment->json);
-        assertNotNull($payment->json['id']);
-        echo print_r($payment->json, true);
-        $st = json_encode($payment->json);
+        $response = $this->gopay->createPayment($basePayment);
+        $responseBody = $response->json;
 
-        if (strpos($st, 'error_code') === false) {
-            print_r("OnDemand Payment ID: " . $payment->json['id'] . "\n");
-            print_r("OnDemand Payment gwUrl: " . $payment->json['gw_url'] . "\n");
-            print_r("OnDemand Payment state: " . $payment->json['state'] . "\n");
+        assertNotEmpty($responseBody);
+        assertArrayNotHasKey('errors', $responseBody);
+
+        assertNotNull($responseBody['id']);
+        echo print_r($responseBody, true);
+
+        if ($response->hasSucceed()) {
+            print_r("OnDemand Payment ID: " . $responseBody['id'] . "\n");
+            print_r("OnDemand Payment gwUrl: " . $responseBody['gw_url'] . "\n");
+            print_r("OnDemand Payment state: " . $responseBody['state'] . "\n");
             print_r("Recurrence: ");
-            echo print_r($payment->json['recurrence'], true);
+            echo print_r($responseBody['recurrence'], true);
         }
     }
 
@@ -65,15 +71,21 @@ class OnDemandPaymentTest extends TestCase
             ],
         ];
 
-        $onDemandPayment = $this->gopay->createRecurrence(3049603895, $nextPayment);
-        assertNotEmpty($onDemandPayment->json);
-        echo print_r($onDemandPayment->json, true);
-        $st = json_encode($onDemandPayment->json);
+        $response = $this->gopay->createRecurrence(3049520708, $nextPayment);
+        $responseBody = $response->json;
 
-        if (strpos($st, 'error_code') === false) {
-            print_r("OnDemand Payment ID: " . $onDemandPayment->json['id'] . "\n");
-            print_r("OnDemand Payment gwUrl: " . $onDemandPayment->json['gw_url'] . "\n");
-            print_r("OnDemand Payment state: " . $onDemandPayment->json['state'] . "\n");
+        assertNotEmpty($responseBody);
+
+        assertArrayHasKey("errors", $responseBody);
+        $message = $responseBody['errors'][0]['error_name'];
+        assertEquals($message, 'PAYMENT_RECURRENCE_STOPPED');
+
+        echo print_r($responseBody, true);
+
+        if ($response->hasSucceed()) {
+            print_r("OnDemand Payment ID: " . $responseBody['id'] . "\n");
+            print_r("OnDemand Payment gwUrl: " . $responseBody['gw_url'] . "\n");
+            print_r("OnDemand Payment state: " . $responseBody['state'] . "\n");
         }
     }
 }

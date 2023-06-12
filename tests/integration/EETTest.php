@@ -9,7 +9,6 @@ use GoPay\Definition\Payment\Currency;
 use GoPay\Definition\Payment\PaymentInstrument;
 use GoPay\Definition\Payment\BankSwiftCode;
 use GoPay\Definition\Payment\Recurrence;
-use GoPay\Definition\Payment\VatRate;
 use GoPay\Definition\Payment\PaymentItemType;
 use PHPUnit\Framework\TestCase;
 

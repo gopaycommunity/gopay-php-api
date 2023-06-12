@@ -9,6 +9,9 @@ require_once 'CreatePaymentTest.php';
 
 use function PHPUnit\Framework\assertNotEmpty;
 use function PHPUnit\Framework\assertNotNull;
+use function PHPUnit\Framework\assertEquals;
+use function PHPUnit\Framework\assertArrayNotHasKey;
+use function PHPUnit\Framework\assertArrayHasKey;
 
 /**
  * Class PreAuthorizationTests
@@ -32,19 +35,22 @@ class PreAuthorizationTest extends TestCase
 
         $basePayment['preauthorization'] = true;
 
-        $payment = $this->gopay->createPayment($basePayment);
+        $response = $this->gopay->createPayment($basePayment);
+        $responseBody = $response->json;
 
-        assertNotEmpty($payment->json);
-        assertNotNull($payment->json['id']);
-        echo print_r($payment->json, true);
-        $st = json_encode($payment->json);
+        assertNotEmpty($responseBody);
+        assertArrayNotHasKey('errors', $responseBody);
 
-        if (strpos($st, 'error_code') === false) {
-            print_r("Payment ID: " . $payment->json['id'] . "\n");
-            print_r("Payment gwUrl: " . $payment->json['gw_url'] . "\n");
-            print_r("Payment state: " . $payment->json['state'] . "\n");
+        assertNotNull($responseBody['id']);
+        echo print_r($responseBody, true);
+        $st = json_encode($responseBody);
+
+        if ($response->hasSucceed()) {
+            print_r("Payment ID: " . $responseBody['id'] . "\n");
+            print_r("Payment gwUrl: " . $responseBody['gw_url'] . "\n");
+            print_r("Payment state: " . $responseBody['state'] . "\n");
             print_r("PreAuthorization: ");
-            echo print_r($payment->json['preauthorization'], true);
+            echo print_r($responseBody['preauthorization'], true);
         }
     }
 
@@ -53,12 +59,18 @@ class PreAuthorizationTest extends TestCase
      */
     public function testVoidAuthorization()
     {
-        $authorizedPaymentId = 3049602803;
+        $authorizedPaymentId = 3192064499;
 
         $response = $this->gopay->voidAuthorization($authorizedPaymentId);
-        assertNotEmpty($response->json);
+        $responseBody = $response->json;
 
-        echo print_r($response->json, true);
+        assertNotEmpty($responseBody);
+
+        assertArrayHasKey("errors", $responseBody);
+        $message = $responseBody['errors'][0]['error_name'];
+        assertEquals($message, 'PAYMENT_AUTH_VOID_FAILED');
+
+        echo print_r($responseBody, true);
     }
 
     /**
@@ -66,11 +78,17 @@ class PreAuthorizationTest extends TestCase
      */
     public function testCapturePayment()
     {
-        $authorizedPaymentId = 3049603050;
+        $authorizedPaymentId = 3192064499;
 
         $response = $this->gopay->captureAuthorization($authorizedPaymentId);
-        assertNotEmpty($response->json);
+        $responseBody = $response->json;
 
-        echo print_r($response->json, true);
+        assertNotEmpty($responseBody);
+
+        assertArrayHasKey("errors", $responseBody);
+        $message = $responseBody['errors'][0]['error_name'];
+        assertEquals($message, 'PAYMENT_CAPTURE_DONE');
+
+        echo print_r($responseBody, true);
     }
 }

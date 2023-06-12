@@ -12,6 +12,8 @@ use PHPUnit\Framework\TestCase;
 
 use function PHPUnit\Framework\assertNotEmpty;
 use function PHPUnit\Framework\assertNotNull;
+use function PHPUnit\Framework\assertArrayNotHasKey;
+use function PHPUnit\Framework\assertArrayHasKey;
 
 /**
  * Class CreatePaymentTests
@@ -67,16 +69,20 @@ class CreatePaymentTest extends TestCase
     public function testCreatePayment()
     {
         $basePayment = self::createBasePayment();
-        $payment = $this->gopay->createPayment($basePayment);
-        assertNotEmpty($payment->json);
-        assertNotNull($payment->json['id']);
-        echo print_r($payment->json, true);
-        $st = json_encode($payment->json);
 
-        if (strpos($st, 'error_code') === false) {
-            print_r("Payment ID: " . $payment->json['id'] . "\n");
-            print_r("Payment gwUrl: " . $payment->json['gw_url'] . "\n");
-            print_r("Payment state: " . $payment->json['state'] . "\n");
+        $response = $this->gopay->createPayment($basePayment);
+        $responseBody = $response->json;
+
+        assertNotEmpty($responseBody);
+        assertArrayNotHasKey('errors', $responseBody);
+        assertNotNull($responseBody['id']);
+
+        echo print_r($responseBody, true);
+
+        if ($response->hasSucceed()) {
+            print_r("Payment ID: " . $responseBody['id'] . "\n");
+            print_r("Payment gwUrl: " . $responseBody['gw_url'] . "\n");
+            print_r("Payment state: " . $responseBody['state'] . "\n");
         }
     }
 }
