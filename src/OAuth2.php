@@ -28,7 +28,11 @@ class OAuth2 implements Auth
         $t->response = $response;
         if ($response->hasSucceed()) {
             $t->token = $response->json['access_token'];
-            $t->expirationDate = new \DateTime("now + {$response->json['expires_in']} seconds");
+            $expSuffix = "";
+            if ($response->json['expires_in'] > 0) {
+                $expSuffix .= " + {$response->json['expires_in']} seconds";
+            }
+            $t->expirationDate = new \DateTime("now {$expSuffix}");
         }
         return $t;
     }

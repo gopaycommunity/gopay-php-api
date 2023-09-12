@@ -50,7 +50,7 @@ class GoPay
     public function buildEmbedUrl()
     {
         $urlBase = rtrim($this->config['gatewayUrl'], '/');
-        if (substr($urlBase, -4) !== '/api') {
+        if (substr($urlBase, -4) === '/api') {
             $urlBase = substr($urlBase, 0, -4);
         }
 
