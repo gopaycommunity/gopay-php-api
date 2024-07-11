@@ -17,4 +17,6 @@ class PaymentInstrument
     const GPAY = 'GPAY';
     const APPLE_PAY = 'APPLE_PAY';
     const CLICK_TO_PAY = 'CLICK_TO_PAY';
+    const TWISTO = 'TWISTO';
+    const SKIPPAY = 'SKIPPAY';
 }
