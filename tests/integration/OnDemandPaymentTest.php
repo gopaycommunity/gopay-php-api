@@ -71,7 +71,7 @@ class OnDemandPaymentTest extends TestCase
             ],
         ];
 
-        $response = $this->gopay->createRecurrence(3049520708, $nextPayment);
+        $response = $this->gopay->createRecurrence(3252157272, $nextPayment);
         $responseBody = $response->json;
 
         assertNotEmpty($responseBody);

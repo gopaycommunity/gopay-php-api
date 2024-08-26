@@ -37,7 +37,7 @@ class RefundTest extends TestCase
 
         assertArrayHasKey('errors', $responseBody);
         $message = $responseBody['errors'][0]['error_name'];
-        assertEquals($message, 'PAYMENT_WRONG_STATE');
+        assertEquals($message, 'PAYMENT_REFUND_NOT_SUPPORTED');
 
         echo print_r($response->json, true);
     }
