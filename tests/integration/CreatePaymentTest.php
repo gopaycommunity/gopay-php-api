@@ -5,6 +5,7 @@ namespace GoPay;
 require_once 'TestUtils.php';
 
 use GoPay\Definition\Language;
+use GoPay\Definition\Payment\BnplType;
 use GoPay\Definition\Payment\Currency;
 use GoPay\Definition\Payment\PaymentInstrument;
 use GoPay\Definition\Payment\BankSwiftCode;
@@ -42,15 +43,14 @@ class CreatePaymentTest extends TestCase
                             #       PaymentInstrument::SKIPPAY
                         ],
                     #   'allowed_bnpl_types' => [
-                    #           'LATER',
-                    #           'THIRDS'
+                    #           BnplType::DEFERRED_PAYMENT,
+                    #           BnplType::PAY_IN_THREE
                     #   ],
-                    #   'default_bnpl_type' => 'LATER',
+                    #   'default_bnpl_type' => BnplType::DEFERRED_PAYMENT,
                     #   'default_payment_instrument' => PaymentInstrument::TWISTO
                         'allowed_swifts' => [BankSwiftCode::RAIFFEISENBANK, BankSwiftCode::CESKA_SPORITELNA],
                     #   'default_swift' => BankSwiftCode::FIO_BANKA,
                     #   'default_payment_instrument' => PaymentInstrument::BANK_ACCOUNT,
-                    #    'default_payment_instrument' => PaymentInstrument::TWISTO,
                         'contact' => [
                                 'email' => 'test.test@gopay.cz',
                         ],
