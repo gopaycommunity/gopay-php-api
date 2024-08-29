@@ -1,6 +1,7 @@
 # IDE
 /nbproject/
 .idea
+/gopay-php-api.iml
 
 # APP
 /vendor/
