@@ -3,6 +3,7 @@
 namespace GoPay;
 
 use PHPUnit\Framework\TestCase;
+use function PHPUnit\Framework\assertArrayNotHasKey;
 use function PHPUnit\Framework\assertNotEmpty;
 use function PHPUnit\Framework\assertArrayHasKey;
 use function PHPUnit\Framework\assertEquals;
@@ -40,5 +41,22 @@ class RefundTest extends TestCase
         assertEquals($message, 'PAYMENT_REFUND_NOT_SUPPORTED');
 
         echo print_r($response->json, true);
+    }
+
+    public function testHistoryOfRefunds()
+    {
+        {
+            $cardId = 3178283550;
+
+            $response = $this->gopay->getHistoryRefunds($cardId);
+            $responseBody = $response->json;
+
+            echo print_r($responseBody, true);
+
+            assertNotEmpty($responseBody);
+            assertArrayNotHasKey('errors', $responseBody);
+
+            echo print_r($responseBody, true);
+        }
     }
 }
