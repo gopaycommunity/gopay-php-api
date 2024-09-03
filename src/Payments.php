@@ -77,6 +77,11 @@ class Payments
         return $this->delete("/payments/cards/{$cardId}");
     }
 
+    public function getHistoryRefunds($id)
+    {
+        return $this->get("/payments/payment/{$id}/refunds");
+    }
+
     public function getPaymentInstruments($goid, $currency)
     {
         return $this->get("/eshops/eshop/{$goid}/payment-instruments/{$currency}");
