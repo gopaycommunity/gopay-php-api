@@ -17,9 +17,9 @@ class GoPay
     private $config;
     private $browser;
 
-    public function __construct(array $config, JsonBrowser $b)
+    public function __construct(array|Config $config, JsonBrowser $b)
     {
-        $this->config = $config;
+        $this->config = Config::parseUserConfig($config, false);
         $this->browser = $b;
     }
 
