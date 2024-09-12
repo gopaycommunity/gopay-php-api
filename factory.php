@@ -2,13 +2,9 @@
 
 namespace GoPay;
 
-function payments(array $userConfig, array $userServices = [])
+function payments(array|Config $userConfig, array $userServices = [])
 {
-    $config = $userConfig + [
-        'scope' => Definition\TokenScope::ALL,
-        'language' => Definition\Language::ENGLISH,
-        'timeout' => 30
-    ];
+    $config = Config::parseUserConfig($userConfig);
     $services = $userServices + [
         'cache' => new Token\InMemoryTokenCache,
         'logger' => new Http\Log\NullLogger
@@ -21,17 +17,13 @@ function payments(array $userConfig, array $userServices = [])
 
 /**
  * @deprecated Supercash payments are no longer supported
- * @param array $userConfig
+ * @param array|Config $userConfig
  * @param array $userServices
  * @return PaymentsSupercash
  */
-function paymentsSupercash(array $userConfig, array $userServices = [])
+function paymentsSupercash(array|Config $userConfig, array $userServices = [])
 {
-    $config = $userConfig + [
-                    'scope' => Definition\TokenScope::ALL,
-                    'language' => Definition\Language::ENGLISH,
-                    'timeout' => 30
-            ];
+    $config = Config::parseUserConfig($userConfig);
     $services = $userServices + [
                     'cache' => new Token\InMemoryTokenCache,
                     'logger' => new Http\Log\NullLogger
@@ -45,7 +37,7 @@ function paymentsSupercash(array $userConfig, array $userServices = [])
 /** Symfony container needs class for factory :( */
 class Api
 {
-    public static function payments(array $config, array $services = [])
+    public static function payments(array|Config $config, array $services = [])
     {
         return payments($config, $services);
     }
