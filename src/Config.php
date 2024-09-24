@@ -18,6 +18,7 @@ class Config
         public ?string $clientSecret = null,
         public ?string $goid = null,
         public ?string $gatewayUrl = null,
+        public ?string $customUserAgent = null,
     ) {
     }
 

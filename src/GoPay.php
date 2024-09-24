@@ -14,6 +14,9 @@ class GoPay
     const LOCALE_CZECH = 'cs-CZ';
     const LOCALE_ENGLISH = 'en-US';
 
+    const VERSION = '1.10.1';
+    const DEFAULT_USER_AGENT = 'GoPay PHP ' . self::VERSION;
+
     private $config;
     private $browser;
 
@@ -71,18 +74,21 @@ class GoPay
 
     private function buildHeaders($contentType, $authorization)
     {
+        $customUserAgent = array_key_exists('customUserAgent', $this->config) ? $this->config['customUserAgent'] : null;
         if (is_null($contentType)) {
             return [
                 'Accept' => 'application/json',
                 'Accept-Language' => $this->getAcceptedLanguage(),
-                'Authorization' => $authorization
+                'Authorization' => $authorization,
+                'User-Agent' => is_null($customUserAgent) ? self::DEFAULT_USER_AGENT : $customUserAgent
             ];
         } else {
-            return [
+        return [
                 'Accept' => 'application/json',
                 'Accept-Language' => $this->getAcceptedLanguage(),
                 'Content-Type' => $contentType,
-                'Authorization' => $authorization
+                'Authorization' => $authorization,
+                'User-Agent' => is_null($customUserAgent) ? self::DEFAULT_USER_AGENT : $customUserAgent
             ];
         }
     }
