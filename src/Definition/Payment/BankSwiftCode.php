@@ -21,6 +21,8 @@ class BankSwiftCode
     const CREDITAS = 'CTASCZ22';
     const MAX_BANKA = 'EXPNCZPP';
     const JT_BANKA = 'JTBPCZPP';
+    const PARTNERS_BANK = 'PTBNCZPP';
+
     //SK
     const TATRA_BANKA = 'TATRSKBX';
     const VSEOBECNA_UVEROVA_BANKA = 'SUBASKBX';
