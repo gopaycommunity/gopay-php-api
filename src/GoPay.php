@@ -67,7 +67,7 @@ class GoPay
             if ($contentType === GoPay::FORM) {
                 return http_build_query($data, "", '&');
             }
-            return json_encode($data);
+            return json_encode($data, JSON_UNESCAPED_UNICODE);
         }
         return '';
     }

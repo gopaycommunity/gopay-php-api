@@ -64,7 +64,7 @@ class CreatePaymentTest extends TestCase
                         array('name' => 'invoicenumber', 'value' => '2015001003')
                 ],
                 'items' => [
-                        ['name' => 'item01', 'amount' => 2300, 'count' => 1],
+                        ['name' => 'item01 (ěščřžýáíéóúůťďňĚŠČŘŽÝÁÍÉÓÚŮŤĎŇ)[]/\\"\'<>{}&', 'amount' => 2300, 'count' => 1],
                 ],
                 'callback' => [
                         'return_url' => 'https://eshop123.cz/return',
