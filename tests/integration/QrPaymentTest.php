@@ -1,0 +1,151 @@
+<?php
+
+namespace GoPay;
+
+require_once 'TestUtils.php';
+require_once 'CreatePaymentTest.php';
+
+use PHPUnit\Framework\TestCase;
+
+use function PHPUnit\Framework\assertNotEmpty;
+use function PHPUnit\Framework\assertNotNull;
+use function PHPUnit\Framework\assertArrayNotHasKey;
+use function PHPUnit\Framework\assertArrayHasKey;
+
+/**
+ * Class QrPaymentTest
+ * @package GoPay
+ *
+ * Tests for endpoint GET /payments/payment/{id}/qr-payment
+ * Run: C:\Php\php.exe bin\phpunit --configuration phpunit.xml.dist .\tests\integration\QrPaymentTest.php
+ */
+class QrPaymentTest extends TestCase
+{
+    /** @var Payments */
+    private $gopay;
+
+    protected function setUp(): void
+    {
+        $this->gopay = TestUtils::setup();
+    }
+
+    /**
+     * Helper: creates a base payment and returns its ID.
+     */
+    private function createPaymentAndGetId(): string
+    {
+        $basePayment = CreatePaymentTest::createBasePayment();
+        $response = $this->gopay->createPayment($basePayment);
+        $responseBody = $response->json;
+
+        assertNotEmpty($responseBody);
+        assertArrayNotHasKey('errors', $responseBody);
+        assertNotNull($responseBody['id']);
+
+        return (string) $responseBody['id'];
+    }
+
+    /**
+     * Creates a payment and fetches QR payment info with default format (png).
+     */
+    public function testGetQrPaymentDefaultFormat()
+    {
+        $paymentId = $this->createPaymentAndGetId();
+        echo "\nCreated payment ID: {$paymentId}\n";
+
+        $response = $this->gopay->getQrPayment($paymentId);
+        $responseBody = $response->json;
+
+        echo "QR Payment response:\n";
+        echo print_r($responseBody, true);
+
+        assertNotEmpty($responseBody);
+        assertArrayNotHasKey('errors', $responseBody);
+
+        // Response must contain amount and currency
+        assertArrayHasKey('amount', $responseBody);
+        assertArrayHasKey('currency', $responseBody);
+
+        // Response must contain qr_code block with at least one QR type
+        assertArrayHasKey('qr_code', $responseBody);
+        $qrCode = $responseBody['qr_code'];
+        assertNotEmpty($qrCode);
+
+        // At least one of the known QR code types must be present
+        $knownTypes = ['spayd', 'paybysquare', 'sepa', 'mnb_qr'];
+        $foundAny = false;
+        foreach ($knownTypes as $type) {
+            if (!empty($qrCode[$type])) {
+                $foundAny = true;
+                echo "QR type '{$type}' is present (base64 length: " . strlen($qrCode[$type]) . ")\n";
+            }
+        }
+        $this->assertTrue($foundAny, 'Response qr_code must contain at least one QR code type (spayd, paybysquare, sepa, mnb_qr)');
+
+        echo "HTTP status: {$response->statusCode}\n";
+    }
+
+    /**
+     * Creates a payment and fetches QR payment info explicitly requesting PNG format.
+     */
+    public function testGetQrPaymentPngFormat()
+    {
+        $paymentId = $this->createPaymentAndGetId();
+        echo "\nCreated payment ID: {$paymentId}\n";
+
+        $response = $this->gopay->getQrPayment($paymentId, 'png');
+        $responseBody = $response->json;
+
+        echo "QR Payment (png) response:\n";
+        echo print_r($responseBody, true);
+
+        assertNotEmpty($responseBody);
+        assertArrayNotHasKey('errors', $responseBody);
+        assertArrayHasKey('qr_code', $responseBody);
+
+        echo "HTTP status: {$response->statusCode}\n";
+    }
+
+    /**
+     * Creates a payment and fetches QR payment info requesting SVG format.
+     */
+    public function testGetQrPaymentSvgFormat()
+    {
+        $paymentId = $this->createPaymentAndGetId();
+        echo "\nCreated payment ID: {$paymentId}\n";
+
+        $response = $this->gopay->getQrPayment($paymentId, 'svg');
+        $responseBody = $response->json;
+
+        echo "QR Payment (svg) response:\n";
+        echo print_r($responseBody, true);
+
+        assertNotEmpty($responseBody);
+        assertArrayNotHasKey('errors', $responseBody);
+        assertArrayHasKey('qr_code', $responseBody);
+
+        echo "HTTP status: {$response->statusCode}\n";
+    }
+
+    /**
+     * Verifies that the recipient info is returned in the response.
+     */
+    public function testGetQrPaymentContainsRecipient()
+    {
+        $paymentId = $this->createPaymentAndGetId();
+
+        $response = $this->gopay->getQrPayment($paymentId);
+        $responseBody = $response->json;
+
+        assertNotEmpty($responseBody);
+        assertArrayNotHasKey('errors', $responseBody);
+
+        // Recipient block should be present
+        assertArrayHasKey('recipient', $responseBody);
+        $recipient = $responseBody['recipient'];
+        assertNotEmpty($recipient);
+
+        echo "\nRecipient info:\n";
+        echo print_r($recipient, true);
+    }
+}

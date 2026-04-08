@@ -32,6 +32,22 @@ class Payments
         return $this->get("/payments/payment/{$id}");
     }
 
+    /**
+     * Returns QR payment info for a given payment.
+     *
+     * @param int|string $id     Payment ID
+     * @param string|null $format Image format of the QR code: 'png' (default) or 'svg'
+     * @return \GoPay\Http\Response
+     */
+    public function getQrPayment($id, ?string $format = null)
+    {
+        $urlPath = "/payments/payment/{$id}/qr-payment";
+        if ($format !== null) {
+            $urlPath .= '?format=' . urlencode($format);
+        }
+        return $this->get($urlPath);
+    }
+
     /** @see refundPaymentEET */
     public function refundPayment($id, $data)
     {
