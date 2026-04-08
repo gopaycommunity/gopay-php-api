@@ -7,9 +7,9 @@ use GoPay\Definition\Language;
 class TestUtils
 {
 
-    const GO_ID = '8761908826';
-    const CLIENT_ID = 'app@musicshop.cz';
-    const CLIENT_SECRET = 'VpnJVcTn';
+    const GO_ID = '8583067438';
+    const CLIENT_ID = '1223619925';
+    const CLIENT_SECRET = '6vkhVP8c';
 
     const GO_ID_EET = '8289213768';
     const CLIENT_ID_EET = '1365575992';
@@ -22,7 +22,7 @@ class TestUtils
             'goid' => self::GO_ID,
             'clientId' => self::CLIENT_ID,
             'clientSecret' => self::CLIENT_SECRET,
-            'gatewayUrl' => 'https://gw.pmaryska.dev.gopay.com/api',
+            'gatewayUrl' => 'https://gw.sandbox.gopay.com/api',
             'language' => Language::CZECH
         ]);
         return $gopay;
