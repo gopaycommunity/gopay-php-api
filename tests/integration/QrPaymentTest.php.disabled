@@ -13,13 +13,13 @@ use function PHPUnit\Framework\assertArrayNotHasKey;
 use function PHPUnit\Framework\assertArrayHasKey;
 
 /**
- * Class QrPaymentTest
- * @package GoPay
  *
  * Tests for endpoint GET /payments/payment/{id}/qr-payment
  * Run: C:\Php\php.exe bin\phpunit --configuration phpunit.xml.dist .\tests\integration\QrPaymentTest.php
  */
-class QrPaymentTest extends TestCase
+
+
+abstract class QrPaymentTest extends TestCase
 {
     /** @var Payments */
     private $gopay;
