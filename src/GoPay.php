@@ -14,7 +14,7 @@ class GoPay
     const LOCALE_CZECH = 'cs-CZ';
     const LOCALE_ENGLISH = 'en-US';
 
-    const VERSION = '1.11.0';
+    const VERSION = '1.11.1';
     const DEFAULT_USER_AGENT = 'GoPay PHP ' . self::VERSION;
 
     private $config;
@@ -67,7 +67,11 @@ class GoPay
             if ($contentType === GoPay::FORM) {
                 return http_build_query($data, "", '&');
             }
-            return json_encode($data);
+            // JSON_UNESCAPED_UNICODE ensures non-ASCII characters (e.g. Cyrillic, Bulgarian)
+            // are sent as-is in UTF-8 instead of being \uXXXX-escaped.
+            // Escaped sequences were incorrectly flagged as SQL Injection by the gateway WAF,
+            // causing 403 Forbidden responses for merchants using non-Latin item names.
+            return json_encode($data, JSON_UNESCAPED_UNICODE);
         }
         return '';
     }
