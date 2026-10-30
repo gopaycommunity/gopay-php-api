@@ -24,14 +24,14 @@ use function PHPUnit\Framework\assertArrayHasKey;
 class OnDemandPaymentTest extends TestCase
 {
 
-    private $gopay;
+    private Payments $gopay;
 
     protected function setUp(): void
     {
         $this->gopay = TestUtils::setup();
     }
 
-    public function testCreateOnDemandPayment()
+    public function testCreateOnDemandPayment(): void
     {
         $basePayment = CreatePaymentTest::createBasePayment();
 
@@ -59,7 +59,7 @@ class OnDemandPaymentTest extends TestCase
     }
 
 
-    public function testCreateNextOnDemandPayment()
+    public function testCreateNextOnDemandPayment(): void
     {
         $nextPayment = [
             'amount' => 4000,

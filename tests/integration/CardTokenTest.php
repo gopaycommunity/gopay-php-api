@@ -24,14 +24,17 @@ use function PHPUnit\Framework\assertArrayNotHasKey;
 class CardTokenTest extends TestCase
 {
 
-    private $gopay;
+    private Payments $gopay;
 
     protected function setUp(): void
     {
         $this->gopay = TestUtils::setup();
     }
 
-    public static function createBaseCardTokenPayment()
+    /**
+     * @return array<string, mixed>
+     */
+    public static function createBaseCardTokenPayment(): array
     {
         $basePayment = [
             'payer' => [
@@ -63,7 +66,7 @@ class CardTokenTest extends TestCase
         return $basePayment;
     }
 
-    public function testPaymentWithCardTokenRequest()
+    public function testPaymentWithCardTokenRequest(): void
     {
         $basePayment = self::createBaseCardTokenPayment();
         $basePayment['payer']['request_card_token'] = true;
@@ -141,7 +144,7 @@ class CardTokenTest extends TestCase
     }
     */
 
-    public function testDeletedCardDetails()
+    public function testDeletedCardDetails(): void
     {
         $cardId = 3011480505;
 
@@ -161,7 +164,7 @@ class CardTokenTest extends TestCase
         }
     }
 
-    public function testDeleteCardToken()
+    public function testDeleteCardToken(): void
     {
         $cardId = 3011480505;
 

@@ -16,7 +16,7 @@ class TestUtils
     const CLIENT_SECRET_EET = 'NUVsrv4W';
 
 
-    public static function setup()
+    public static function setup(): Payments
     {
         $gopay = payments([
             'goid' => self::GO_ID,
@@ -28,7 +28,7 @@ class TestUtils
         return $gopay;
     }
 
-    public static function setupEET()
+    public static function setupEET(): Payments
     {
         $gopay = payments([
             'goid' => self::GO_ID_EET,

@@ -23,14 +23,14 @@ use function PHPUnit\Framework\assertTrue;
 class CommonMethodTest extends TestCase
 {
 
-    private $gopay;
+    private Payments $gopay;
 
     protected function setUp(): void
     {
         $this->gopay = TestUtils::setup();
     }
 
-    public function testPaymentStatus()
+    public function testPaymentStatus(): void
     {
         $paymentId = 3178283550;
 
@@ -50,7 +50,7 @@ class CommonMethodTest extends TestCase
         }
     }
 
-    public function testGetPaymentInstruments()
+    public function testGetPaymentInstruments(): void
     {
         $response = $this->gopay->getPaymentInstruments(TestUtils::GO_ID, Currency::CZECH_CROWNS);
         $responseBody = $response->json;
@@ -62,7 +62,7 @@ class CommonMethodTest extends TestCase
         echo print_r($responseBody, true);
     }
 
-    public function testGetAccountStatement()
+    public function testGetAccountStatement(): void
     {
         $accountStatement = [
             'date_from' => '2023-01-01',

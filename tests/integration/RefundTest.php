@@ -19,7 +19,7 @@ require_once 'TestUtils.php';
 class RefundTest extends TestCase
 {
 
-    private $gopay;
+    private Payments $gopay;
 
     protected function setUp(): void
     {
@@ -27,7 +27,7 @@ class RefundTest extends TestCase
     }
 
     /** This test will always return an error, as the payment with id '3049604064' has been already refunded */
-    public function testRefundPayment()
+    public function testRefundPayment(): void
     {
         $paymentId = 3178283550;
 
@@ -43,7 +43,7 @@ class RefundTest extends TestCase
         echo print_r($response->json, true);
     }
 
-    public function testHistoryOfRefunds()
+    public function testHistoryOfRefunds(): void
     {
         {
             $cardId = 3178283550;

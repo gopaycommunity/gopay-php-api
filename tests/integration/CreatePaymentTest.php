@@ -25,14 +25,17 @@ use function PHPUnit\Framework\assertArrayHasKey;
 class CreatePaymentTest extends TestCase
 {
 
-    private $gopay;
+    private Payments $gopay;
 
     protected function setUp(): void
     {
         $this->gopay = TestUtils::setup();
     }
 
-    public static function createBasePayment()
+    /**
+     * @return array<string, mixed>
+     */
+    public static function createBasePayment(): array
     {
         $basePayment = [
                 'payer' => [
@@ -75,7 +78,7 @@ class CreatePaymentTest extends TestCase
         return $basePayment;
     }
 
-    public function testCreatePayment()
+    public function testCreatePayment(): void
     {
         $basePayment = self::createBasePayment();
 

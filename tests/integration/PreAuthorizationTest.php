@@ -22,14 +22,14 @@ use function PHPUnit\Framework\assertArrayHasKey;
 class PreAuthorizationTest extends TestCase
 {
 
-    private $gopay;
+    private Payments $gopay;
 
     protected function setUp(): void
     {
         $this->gopay = TestUtils::setup();
     }
 
-    public function testCreatePreAuthorizedPayment()
+    public function testCreatePreAuthorizedPayment(): void
     {
         $basePayment = CreatePaymentTest::createBasePayment();
 
@@ -57,7 +57,7 @@ class PreAuthorizationTest extends TestCase
     /**
      * returns an error, the preauthorized payment id '3049602803' has been already processed or cancelled
      */
-    public function testVoidAuthorization()
+    public function testVoidAuthorization(): void
     {
         $authorizedPaymentId = 3192064499;
 
@@ -76,7 +76,7 @@ class PreAuthorizationTest extends TestCase
     /**
      * returns an error, the preauthorized payment id '3049602803' has been already processed or cancelled
      */
-    public function testCapturePayment()
+    public function testCapturePayment(): void
     {
         $authorizedPaymentId = 3192064499;
 

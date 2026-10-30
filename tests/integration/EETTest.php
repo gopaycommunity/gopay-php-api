@@ -24,14 +24,17 @@ use function PHPUnit\Framework\assertNotNull;
 class EETTest extends TestCase
 {
 
-    private $gopay;
+    private Payments $gopay;
 
     protected function setUp(): void
     {
         $this->gopay = TestUtils::setupEET();
     }
 
-    private function createBaseEETPayment()
+    /**
+     * @return array<string, mixed>
+     */
+    private function createBaseEETPayment(): array
     {
         $baseEETPayment = [
             'payer' => [
@@ -83,7 +86,10 @@ class EETTest extends TestCase
         return $baseEETPayment;
     }
 
-    private function createEETPaymentObject($baseEETPayment)
+    /**
+     * @param array<string, mixed> $baseEETPayment
+     */
+    private function createEETPaymentObject(array $baseEETPayment): Http\Response
     {
         $payment = $this->gopay->createPayment($baseEETPayment);
 
@@ -91,7 +97,7 @@ class EETTest extends TestCase
         assertNotNull($payment->json['id']);
 
         echo print_r($payment->json, true);
-        $st = json_encode($payment->json);
+        $st = json_encode($payment->json, JSON_THROW_ON_ERROR);
 
         if (strpos($st, 'error_code') === false) {
             print_r("Payment ID: " . $payment->json['id'] . "\n");
@@ -102,7 +108,7 @@ class EETTest extends TestCase
         return $payment;
     }
 
-    public function testCreateEETPayment()
+    public function testCreateEETPayment(): void
     {
         $baseEETPayment = $this->createBaseEETPayment();
         $payment = $this->createEETPaymentObject($baseEETPayment);
@@ -110,7 +116,7 @@ class EETTest extends TestCase
         assertNotNull($payment->json['id']);
     }
 
-    public function testCreateRecurrentEETPayment()
+    public function testCreateRecurrentEETPayment(): void
     {
         $baseEETPayment = $this->createBaseEETPayment();
 
@@ -128,14 +134,14 @@ class EETTest extends TestCase
         $payment = $this->createEETPaymentObject($baseEETPayment);
         assertNotEmpty($payment->json);
         assertNotNull($payment->json['id']);
-        $st = json_encode($payment->json);
+        $st = json_encode($payment->json, JSON_THROW_ON_ERROR);
         if (strpos($st, 'error_code') === false) {
             print_r("Recurrence: ");
             echo print_r($payment->json['recurrence'], true);
         }
     }
 
-    public function testNextOnDemandEET()
+    public function testNextOnDemandEET(): void
     {
         $nextEETPayment = [
             'amount' => 2000,
@@ -161,7 +167,7 @@ class EETTest extends TestCase
         $EETOnDemandPayment = $this->gopay->createRecurrence(3049604610, $nextEETPayment);
         assertNotEmpty($EETOnDemandPayment->json);
         echo print_r($EETOnDemandPayment->json, true);
-        $st = json_encode($EETOnDemandPayment->json);
+        $st = json_encode($EETOnDemandPayment->json, JSON_THROW_ON_ERROR);
 
         if (strpos($st, 'error_code') === false) {
             print_r("Payment ID: " . $EETOnDemandPayment->json['id'] . "\n");
@@ -170,14 +176,14 @@ class EETTest extends TestCase
         }
     }
 
-    public function testEETPaymentStatus()
+    public function testEETPaymentStatus(): void
     {
         $EETPaymentId = 3049604714;
         $response = $this->gopay->getStatus($EETPaymentId);
         assertNotEmpty($response->json);
         assertNotNull($response->json['id']);
         echo print_r($response->json, true);
-        $st = json_encode($response->json);
+        $st = json_encode($response->json, JSON_THROW_ON_ERROR);
 
         if (strpos($st, 'error_code') === false) {
             print_r("Payment ID: " . $response->json['id'] . "\n");
@@ -186,7 +192,7 @@ class EETTest extends TestCase
         }
     }
 
-    public function tEETPaymentRefund()
+    public function tEETPaymentRefund(): void
     {
         $refundObject = [
             'amount' => 139950,
@@ -217,7 +223,7 @@ class EETTest extends TestCase
         echo print_r($response->json, true);
     }
 
-    public function testEETReceiptFindByFilter()
+    public function testEETReceiptFindByFilter(): void
     {
         $receiptFilter = [
             'date_from' => '2017-03-02',
@@ -230,7 +236,7 @@ class EETTest extends TestCase
         echo print_r($receipts->json, true);
     }
 
-    public function testEETReceiptFindByPaymentId()
+    public function testEETReceiptFindByPaymentId(): void
     {
         $receipt = $this->gopay->getEETReceiptByPaymentId(3048429735);
         assertNotEmpty($receipt->json);

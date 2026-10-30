@@ -23,14 +23,14 @@ use function PHPUnit\Framework\assertArrayHasKey;
 class RecurrentPaymentTest extends TestCase
 {
 
-    private $gopay;
+    private Payments $gopay;
 
     protected function setUp(): void
     {
         $this->gopay = TestUtils::setup();
     }
 
-    public function testCreateRecurrentPayment()
+    public function testCreateRecurrentPayment(): void
     {
         $basePayment = CreatePaymentTest::createBasePayment();
 
@@ -59,7 +59,7 @@ class RecurrentPaymentTest extends TestCase
     }
 
     /* Returns an error, as the recurrence for the payment id '3049603544' has been already stopped. */
-    public function testVoidRecurrence()
+    public function testVoidRecurrence(): void
     {
         $authorizedPaymentId = 3252157272;
 

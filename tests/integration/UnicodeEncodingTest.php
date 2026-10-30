@@ -21,7 +21,11 @@ use PHPUnit\Framework\TestCase;
  */
 class UnicodeEncodingTest extends TestCase
 {
-    /** Minimal config sufficient to construct a GoPay instance (no real network needed). */
+    /**
+     * Minimal config sufficient to construct a GoPay instance (no real network needed).
+     *
+     * @return array<string, mixed>
+     */
     private function makeConfig(): array
     {
         return [
@@ -62,6 +66,8 @@ class UnicodeEncodingTest extends TestCase
 
     /**
      * Helper: encode $data through the full call() stack and return the captured body string.
+     *
+     * @param array<mixed> $data
      */
     private function encodeViaCall(array $data, string $contentType = GoPay::JSON): string
     {
