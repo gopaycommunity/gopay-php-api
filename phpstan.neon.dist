@@ -1,0 +1,9 @@
+parameters:
+    level: 0
+    phpVersion: 80100
+    paths:
+        - src
+        - factory.php
+    # PHPDoc types are not enforced at runtime and the SDK keeps defensive checks
+    # (e.g. instanceof in CachedOAuth), so they must not be reported as redundant.
+    treatPhpDocTypesAsCertain: false

@@ -31,7 +31,8 @@ function paymentsSupercash(array|Config $userConfig, array $userServices = [])
     $browser = new Http\JsonBrowser($services['logger'], $config['timeout']);
     $gopay = new GoPay($config, $browser);
     $auth = new Token\CachedOAuth(new OAuth2($gopay), $services['cache']);
-    return new PaymentsSupercash($gopay, $auth);
+    // Class was removed together with Supercash support, function is kept for BC
+    return new PaymentsSupercash($gopay, $auth); // @phpstan-ignore class.notFound
 }
 
 /** Symfony container needs class for factory :( */

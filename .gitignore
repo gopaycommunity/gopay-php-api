@@ -9,4 +9,5 @@
 !/bin/jenkins.sh
 /var/
 /phpunit.xml
+/phpstan.neon
 .phpunit.result.cache

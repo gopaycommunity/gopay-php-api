@@ -46,6 +46,10 @@
     "phpunit/phpunit": "9.6.33",
     "hamcrest/hamcrest-php": "*",
     "phpspec/prophecy": "~1.0",
-    "phpspec/prophecy-phpunit": "^2.0"
+    "phpspec/prophecy-phpunit": "^2.0",
+    "phpstan/phpstan": "^2.1"
+  },
+  "scripts": {
+    "phpstan": "phpstan analyse --no-progress"
   }
 }

@@ -21,11 +21,12 @@ class JsonBrowser
     public function send(Request $r)
     {
         try {
+            // Legacy Guzzle 5 API, unreachable with the required Guzzle 7
             if (class_exists('\GuzzleHttp\Message\Request')) {
                 $client = new GuzzleClient();
                 $guzzRequest = $client->createRequest($r->method, $r->url);
                 $guzzRequest->setHeaders($r->headers);
-                $guzzRequest->setBody(\GuzzleHttp\Stream\Stream::factory($r->body));
+                $guzzRequest->setBody(\GuzzleHttp\Stream\Stream::factory($r->body)); // @phpstan-ignore class.notFound
             } else {
                 $client = new GuzzleClient(['timeout' => $this->timeout]);
                 $guzzRequest = new \GuzzleHttp\Psr7\Request($r->method, $r->url, $r->headers, $r->body);
