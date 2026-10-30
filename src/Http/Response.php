@@ -6,7 +6,11 @@ class Response
 {
     /** @var string */
     public $rawBody;
-    /** @var int */
+    /**
+     * HTTP status code. Successful responses store it as numeric string, error responses as int.
+     *
+     * @var int|string|null
+     */
     public $statusCode;
     /** @var array response json */
     public $json;

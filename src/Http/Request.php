@@ -6,7 +6,7 @@ use GoPay\Definition\RequestMethods;
 
 class Request
 {
-    /** @var RequestMethods */
+    /** @var string one of RequestMethods constants */
     public $method = RequestMethods::GET;
     /** @var string */
     public $url;

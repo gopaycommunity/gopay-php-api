@@ -21,7 +21,7 @@ function payments(array|Config $userConfig, array $userServices = [])
  * @param array $userServices
  * @return PaymentsSupercash
  */
-function paymentsSupercash(array|Config $userConfig, array $userServices = [])
+function paymentsSupercash(array|Config $userConfig, array $userServices = []) // @phpstan-ignore class.notFound
 {
     $config = Config::parseUserConfig($userConfig);
     $services = $userServices + [
