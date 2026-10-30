@@ -10,11 +10,14 @@ class Request
     public $method = RequestMethods::GET;
     /** @var string */
     public $url;
-    /** @var string[] */
+    /** @var array<string, string> */
     public $headers = [];
-    /** @var string */
+    /** @var string|false|null false when JSON encoding of the data fails */
     public $body = null;
 
+    /**
+     * @param string $url
+     */
     public function __construct($url)
     {
         $this->url = $url;

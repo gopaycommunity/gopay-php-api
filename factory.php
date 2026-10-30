@@ -2,6 +2,11 @@
 
 namespace GoPay;
 
+/**
+ * @param array<string, mixed>|Config $userConfig
+ * @param array{cache?: Token\TokenCache, logger?: Http\Log\Logger} $userServices
+ * @return Payments
+ */
 function payments(array|Config $userConfig, array $userServices = [])
 {
     $config = Config::parseUserConfig($userConfig);
@@ -17,8 +22,8 @@ function payments(array|Config $userConfig, array $userServices = [])
 
 /**
  * @deprecated Supercash payments are no longer supported
- * @param array|Config $userConfig
- * @param array $userServices
+ * @param array<string, mixed>|Config $userConfig
+ * @param array{cache?: Token\TokenCache, logger?: Http\Log\Logger} $userServices
  * @return PaymentsSupercash
  */
 function paymentsSupercash(array|Config $userConfig, array $userServices = []) // @phpstan-ignore class.notFound
@@ -38,6 +43,11 @@ function paymentsSupercash(array|Config $userConfig, array $userServices = []) /
 /** Symfony container needs class for factory :( */
 class Api
 {
+    /**
+     * @param array<string, mixed>|Config $config
+     * @param array{cache?: Token\TokenCache, logger?: Http\Log\Logger} $services
+     * @return Payments
+     */
     public static function payments(array|Config $config, array $services = [])
     {
         return payments($config, $services);

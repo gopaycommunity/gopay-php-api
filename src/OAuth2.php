@@ -7,13 +7,16 @@ use GoPay\Token\AccessToken;
 
 class OAuth2 implements Auth
 {
-    private $gopay;
+    private GoPay $gopay;
 
     public function __construct(GoPay $g)
     {
         $this->gopay = $g;
     }
 
+    /**
+     * @return AccessToken
+     */
     public function authorize()
     {
         $credentials = "{$this->gopay->getConfig('clientId')}:{$this->gopay->getConfig('clientSecret')}";
@@ -37,6 +40,11 @@ class OAuth2 implements Auth
         return $t;
     }
 
+    /**
+     * Unique identifier of current client (client, environment, scope) used as token cache key.
+     *
+     * @return string
+     */
     public function getClient()
     {
         $ids = [

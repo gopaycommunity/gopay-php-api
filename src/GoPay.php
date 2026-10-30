@@ -3,6 +3,7 @@
 namespace GoPay;
 
 use GoPay\Http\Request;
+use GoPay\Http\Response;
 use GoPay\Http\JsonBrowser;
 use GoPay\Definition\Language;
 
@@ -17,20 +18,36 @@ class GoPay
     const VERSION = '1.11.1';
     const DEFAULT_USER_AGENT = 'GoPay PHP ' . self::VERSION;
 
-    private $config;
-    private $browser;
+    /** @var array<string, mixed> */
+    private array $config;
+    private JsonBrowser $browser;
 
+    /**
+     * @param array<string, mixed>|Config $config
+     */
     public function __construct(array|Config $config, JsonBrowser $b)
     {
         $this->config = Config::parseUserConfig($config, false);
         $this->browser = $b;
     }
 
+    /**
+     * @param string $key
+     * @return mixed
+     */
     public function getConfig($key)
     {
         return $this->config[$key];
     }
 
+    /**
+     * @param string $urlPath
+     * @param string $authorization
+     * @param string $method one of RequestMethods constants
+     * @param string|null $contentType GoPay::JSON, GoPay::FORM or null for requests without body
+     * @param array<mixed>|null $data
+     * @return Response
+     */
     public function call($urlPath, $authorization, $method, $contentType = null, $data = null)
     {
         $r = new Request($this->buildUrl($urlPath));
@@ -40,6 +57,10 @@ class GoPay
         return $this->browser->send($r);
     }
 
+    /**
+     * @param string $urlPath
+     * @return string
+     */
     public function buildUrl($urlPath)
     {
         $urlBase = rtrim($this->config['gatewayUrl'], '/');
@@ -50,6 +71,9 @@ class GoPay
         return $urlBase . $urlPath;
     }
 
+    /**
+     * @return string
+     */
     public function buildEmbedUrl()
     {
         $urlBase = rtrim($this->config['gatewayUrl'], '/');
@@ -61,7 +85,11 @@ class GoPay
     }
 
 
-    private function encodeData($contentType, $data)
+    /**
+     * @param string|null $contentType
+     * @param array<mixed>|null $data
+     */
+    private function encodeData($contentType, $data): string|false
     {
         if ($data) {
             if ($contentType === GoPay::FORM) {
@@ -76,7 +104,12 @@ class GoPay
         return '';
     }
 
-    private function buildHeaders($contentType, $authorization)
+    /**
+     * @param string|null $contentType
+     * @param string $authorization
+     * @return array<string, string>
+     */
+    private function buildHeaders($contentType, $authorization): array
     {
         $customUserAgent = array_key_exists('customUserAgent', $this->config) ? $this->config['customUserAgent'] : null;
         if (is_null($contentType)) {
@@ -97,7 +130,7 @@ class GoPay
         }
     }
 
-    private function getAcceptedLanguage()
+    private function getAcceptedLanguage(): string
     {
         static $czechLike = [Language::CZECH, Language::SLOVAK];
         return in_array($this->getConfig('language'), $czechLike) ? self::LOCALE_CZECH : self::LOCALE_ENGLISH;

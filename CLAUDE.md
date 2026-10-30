@@ -12,9 +12,10 @@ bin/phpunit tests/integration                      # run all tests (same as CI, 
 bin/phpunit tests/integration/RefundTest.php       # single test file
 bin/phpunit --filter testRefundPayment tests/integration   # single test method
 composer validate --strict                         # CI also runs this
+composer phpstan                                   # PHPStan (config phpstan.neon.dist, level 6), CI also runs this
 ```
 
-There is no linter/static-analysis config in the repo (the Jenkins script [bin/jenkins.sh](bin/jenkins.sh) runs `phpqa` if available). `phpunit.xml.dist` references a `tests/unit/` suite that does not exist — only `tests/integration/` exists.
+PHPStan rules for this repo: public API (public/protected methods, public properties, interfaces) is typed **only via PHPDoc** to keep BC; native types only on private members. Legacy unreachable code is ignored inline with `@phpstan-ignore <identifier>` plus a reason, no baseline. The Jenkins script [bin/jenkins.sh](bin/jenkins.sh) runs `phpqa` if available. `phpunit.xml.dist` references a `tests/unit/` suite that does not exist — only `tests/integration/` exists.
 
 ### Tests hit the real sandbox
 
@@ -35,7 +36,7 @@ Key behaviors spread across files:
 
 - **Adding an endpoint** = one method in [src/Payments.php](src/Payments.php) calling `$this->get/post/delete($path, ...)`. Those helpers obtain a token via `$this->auth->authorize()`; if token acquisition failed they return the OAuth error `Response` instead of calling the endpoint.
 - **Content type matters per endpoint**: `GoPay::FORM` (urlencoded via `http_build_query`) vs `GoPay::JSON`. Simple actions (refund by amount, capture, void) use FORM; payloads use JSON. JSON is encoded with `JSON_UNESCAPED_UNICODE` deliberately — escaped `\uXXXX` sequences trigger the gateway WAF (403). Don't remove it.
-- **No exceptions, no validation**: by design the SDK does not validate input (the API does) and `JsonBrowser` converts all errors (Guzzle `ClientException` → API status/body; anything else → status 500 with the message as body). Callers check `Response::hasSucceed()` (status 200), `->json`, `->statusCode`.
+- **No exceptions, no validation**: by design the SDK does not validate input (the API does) and `JsonBrowser` converts all errors (Guzzle `ClientException` → API status/body; anything else → status 500 with the message as body). Callers check `Response::hasSucceed()` (status < 400), `->json`, `->statusCode` (numeric string on success, int on error).
 - **URL handling**: `gatewayUrl` may or may not end with `/api`; `GoPay::buildUrl` appends it if missing, `buildEmbedUrl` strips it.
 - **Config**: accepts either an array or a [src/Config.php](src/Config.php) object; `Config::parseUserConfig` normalizes to an array and applies defaults (`scope`, `language`, `timeout`). Language CZECH/SLOVAK maps to `Accept-Language: cs-CZ`, everything else `en-US`. Optional `customUserAgent` overrides the User-Agent (note: `Config::toArray()` does not include it, so it only works with array config).
 - **Token cache key** is `clientId-gatewayUrl-scope` (`OAuth2::getClient`). Custom caches implement `Token\TokenCache`; custom loggers implement `Http\Log\Logger` (passed as `$services['cache']` / `$services['logger']`).

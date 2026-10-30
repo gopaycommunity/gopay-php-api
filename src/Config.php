@@ -45,9 +45,9 @@ class Config
     public int $timeout = 30;
 
     /**
-     * @param array|Config $userConfig
+     * @param array<string, mixed>|Config $userConfig
      * @param bool $defaultArrayValues
-     * @return array
+     * @return array<string, mixed>
      */
     public static function parseUserConfig(array|Config $userConfig, bool $defaultArrayValues = true): array
     {
@@ -67,7 +67,7 @@ class Config
     }
 
     /**
-     * @param array $arr
+     * @param array<string, mixed> $arr
      * @return Config
      */
     public static function fromArray(array $arr): Config
@@ -94,7 +94,7 @@ class Config
     }
 
     /**
-     * @return array
+     * @return array{goid: string|null, clientId: string|null, clientSecret: string|null, gatewayUrl: string|null, scope: string, language: string, timeout: int}
      */
     public function toArray(): array
     {

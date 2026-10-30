@@ -9,17 +9,28 @@ use GuzzleHttp\Exception\ClientException;
 class JsonBrowser
 {
 
-    private $logger;
+    private Logger $logger;
+    /** @var int|float passed to Guzzle as is */
     private $timeout;
 
+    /**
+     * @param int|float $timeoutInSeconds
+     */
     public function __construct(Logger $l, $timeoutInSeconds)
     {
         $this->logger = $l;
         $this->timeout = $timeoutInSeconds;
     }
 
+    /**
+     * Never throws, errors are converted to Response (status 500 for non-HTTP errors).
+     *
+     * @return Response
+     */
     public function send(Request $r)
     {
+        // ClientException always has a response in Guzzle 7, so the try block always returns
+        // @phpstan-ignore return.missing
         try {
             // Legacy Guzzle 5 API, unreachable with the required Guzzle 7
             if (class_exists('\GuzzleHttp\Message\Request')) {
