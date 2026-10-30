@@ -12,7 +12,7 @@ bin/phpunit tests/integration                      # run all tests (same as CI, 
 bin/phpunit tests/integration/RefundTest.php       # single test file
 bin/phpunit --filter testRefundPayment tests/integration   # single test method
 composer validate --strict                         # CI also runs this
-composer phpstan                                   # PHPStan (config phpstan.neon.dist, level 6), CI also runs this
+composer phpstan                                   # PHPStan (config phpstan.neon.dist, level 8), CI also runs this
 ```
 
 PHPStan rules for this repo: public API (public/protected methods, public properties, interfaces) is typed **only via PHPDoc** to keep BC; native types only on private members. Legacy unreachable code is ignored inline with `@phpstan-ignore <identifier>` plus a reason, no baseline. The Jenkins script [bin/jenkins.sh](bin/jenkins.sh) runs `phpqa` if available. `phpunit.xml.dist` references a `tests/unit/` suite that does not exist — only `tests/integration/` exists.

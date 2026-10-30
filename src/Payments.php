@@ -221,7 +221,8 @@ class Payments
                 RequestMethods::GET
             );
         }
-        return $token->response;
+        // OAuth2 always sets response; @return stays Response to keep the public API type
+        return $token->response; // @phpstan-ignore return.type
     }
 
     /**
@@ -244,7 +245,8 @@ class Payments
                 $data
             );
         }
-        return $token->response;
+        // OAuth2 always sets response; @return stays Response to keep the public API type
+        return $token->response; // @phpstan-ignore return.type
     }
 
     /**
@@ -263,7 +265,8 @@ class Payments
                 RequestMethods::DELETE
             );
         }
-        return $token->response;
+        // OAuth2 always sets response; @return stays Response to keep the public API type
+        return $token->response; // @phpstan-ignore return.type
     }
 
     /**

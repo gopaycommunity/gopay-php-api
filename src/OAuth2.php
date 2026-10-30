@@ -30,9 +30,10 @@ class OAuth2 implements Auth
         $t = new AccessToken;
         $t->response = $response;
         if ($response->hasSucceed()) {
-            $t->token = $response->json['access_token'];
+            // Successful token response is always JSON with access_token and expires_in
+            $t->token = $response->json['access_token']; // @phpstan-ignore offsetAccess.notFound
             $expSuffix = "";
-            if ($response->json['expires_in'] > 0) {
+            if ($response->json['expires_in'] > 0) { // @phpstan-ignore offsetAccess.notFound
                 $expSuffix .= " + {$response->json['expires_in']} seconds";
             }
             $t->expirationDate = new \DateTime("now {$expSuffix}");

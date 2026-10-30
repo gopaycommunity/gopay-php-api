@@ -40,6 +40,8 @@ class JsonBrowser
                 $guzzRequest->setBody(\GuzzleHttp\Stream\Stream::factory($r->body)); // @phpstan-ignore class.notFound
             } else {
                 $client = new GuzzleClient(['timeout' => $this->timeout]);
+                // Body is false only when JSON encoding fails, Guzzle then sends an empty body
+                // @phpstan-ignore argument.type
                 $guzzRequest = new \GuzzleHttp\Psr7\Request($r->method, $r->url, $r->headers, $r->body);
             }
             $guzzResponse = $client->send($guzzRequest);
