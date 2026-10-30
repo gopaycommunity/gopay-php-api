@@ -6,6 +6,7 @@
 [![Total Downloads](https://poser.pugx.org/gopay/payments-sdk-php/downloads)](https://packagist.org/packages/gopay/payments-sdk-php)
 [![Monthly Downloads](https://poser.pugx.org/gopay/payments-sdk-php/d/monthly)](https://packagist.org/packages/gopay/payments-sdk-php)
 [![Dependency Status](https://www.versioneye.com/user/projects/570b383e2aca6b000e0dea95/badge.svg)](https://www.versioneye.com/user/projects/570b383e2aca6b000e0dea95)
+[![PHPStan](https://img.shields.io/badge/PHPStan-level%208-brightgreen.svg?style=flat)](phpstan.neon.dist)
 
 ## Requirements
 
