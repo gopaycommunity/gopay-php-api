@@ -55,6 +55,8 @@
     "friendsofphp/php-cs-fixer": "^3.95"
   },
   "scripts": {
-    "phpstan": "phpstan analyse --no-progress"
+    "phpstan": "phpstan analyse --no-progress",
+    "cs-check": "php-cs-fixer fix --dry-run --diff",
+    "cs-fix": "php-cs-fixer fix"
   }
 }
