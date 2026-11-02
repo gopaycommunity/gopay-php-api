@@ -27,7 +27,7 @@ class GivenGoPay extends TestCase
             'language' => Language::CZECH
         ];
         $services = [
-            'logger' => new Http\Log\PrintHttpRequest
+            'logger' => new Http\Log\PrintHttpRequest()
         ];
         $this->gopay = payments($config, $services);
     }

@@ -22,7 +22,6 @@ use function PHPUnit\Framework\assertArrayHasKey;
  */
 class RecurrentPaymentTest extends TestCase
 {
-
     private Payments $gopay;
 
     protected function setUp(): void

@@ -23,7 +23,6 @@ use function PHPUnit\Framework\assertArrayHasKey;
  */
 class OnDemandPaymentTest extends TestCase
 {
-
     private Payments $gopay;
 
     protected function setUp(): void

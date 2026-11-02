@@ -23,7 +23,6 @@ use function PHPUnit\Framework\assertNotNull;
  */
 class EETTest extends TestCase
 {
-
     private Payments $gopay;
 
     protected function setUp(): void
@@ -55,7 +54,7 @@ class EETTest extends TestCase
             'order_description' => 'EET9876Description',
             'lang' => Language::CZECH,
             'additional_params' => [
-                array('name' => 'invoicenumber', 'value' => '2015001003')
+                ['name' => 'invoicenumber', 'value' => '2015001003']
             ],
             'items' => [
                 [

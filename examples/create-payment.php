@@ -56,7 +56,7 @@ $response = $gopay->createPayment([
         ['name' => 'item02', 'amount' => 100],
     ],
     'additional_params' => [
-        array('name' => 'invoicenumber', 'value' => '2015001003')
+        ['name' => 'invoicenumber', 'value' => '2015001003']
     ],
     'callback' => [
         'return_url' => 'http://www.your-url.tld/return',

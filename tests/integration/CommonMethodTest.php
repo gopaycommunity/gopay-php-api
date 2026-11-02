@@ -22,7 +22,6 @@ use function PHPUnit\Framework\assertTrue;
  */
 class CommonMethodTest extends TestCase
 {
-
     private Payments $gopay;
 
     protected function setUp(): void

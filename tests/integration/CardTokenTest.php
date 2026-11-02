@@ -23,7 +23,6 @@ use function PHPUnit\Framework\assertArrayNotHasKey;
  */
 class CardTokenTest extends TestCase
 {
-
     private Payments $gopay;
 
     protected function setUp(): void
@@ -52,7 +51,7 @@ class CardTokenTest extends TestCase
             'order_description' => '9876Description',
             'lang' => Language::CZECH,
             'additional_params' => [
-                array('name' => 'invoicenumber', 'value' => '2015001003')
+                ['name' => 'invoicenumber', 'value' => '2015001003']
             ],
             'items' => [
                 ['name' => 'item01', 'amount' => 2000, 'count' => 1],

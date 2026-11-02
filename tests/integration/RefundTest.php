@@ -3,6 +3,7 @@
 namespace GoPay;
 
 use PHPUnit\Framework\TestCase;
+
 use function PHPUnit\Framework\assertArrayNotHasKey;
 use function PHPUnit\Framework\assertNotEmpty;
 use function PHPUnit\Framework\assertArrayHasKey;
@@ -18,7 +19,6 @@ require_once 'TestUtils.php';
  */
 class RefundTest extends TestCase
 {
-
     private Payments $gopay;
 
     protected function setUp(): void

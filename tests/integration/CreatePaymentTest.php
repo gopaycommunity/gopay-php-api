@@ -14,7 +14,6 @@ use PHPUnit\Framework\TestCase;
 use function PHPUnit\Framework\assertNotEmpty;
 use function PHPUnit\Framework\assertNotNull;
 use function PHPUnit\Framework\assertArrayNotHasKey;
-use function PHPUnit\Framework\assertArrayHasKey;
 
 /**
  * Class CreatePaymentTests
@@ -24,7 +23,6 @@ use function PHPUnit\Framework\assertArrayHasKey;
  */
 class CreatePaymentTest extends TestCase
 {
-
     private Payments $gopay;
 
     protected function setUp(): void
@@ -38,41 +36,41 @@ class CreatePaymentTest extends TestCase
     public static function createBasePayment(): array
     {
         $basePayment = [
-                'payer' => [
-                        'allowed_payment_instruments' => [
-                                PaymentInstrument::BANK_ACCOUNT,
-                                PaymentInstrument::PAYMENT_CARD,
-                            #       PaymentInstrument::TWISTO,
-                            #       PaymentInstrument::SKIPPAY
-                        ],
-                    #   'allowed_bnpl_types' => [
-                    #           BnplType::DEFERRED_PAYMENT,
-                    #           BnplType::PAY_IN_THREE
-                    #   ],
-                    #   'default_bnpl_type' => BnplType::DEFERRED_PAYMENT,
-                    #   'default_payment_instrument' => PaymentInstrument::TWISTO
-                        'allowed_swifts' => [BankSwiftCode::RAIFFEISENBANK, BankSwiftCode::CESKA_SPORITELNA],
-                    #   'default_swift' => BankSwiftCode::FIO_BANKA,
-                    #   'default_payment_instrument' => PaymentInstrument::BANK_ACCOUNT,
-                        'contact' => [
-                                'email' => 'test.test@gopay.cz',
-                        ],
+            'payer' => [
+                'allowed_payment_instruments' => [
+                    PaymentInstrument::BANK_ACCOUNT,
+                    PaymentInstrument::PAYMENT_CARD,
+                    #       PaymentInstrument::TWISTO,
+                    #       PaymentInstrument::SKIPPAY
                 ],
-                'order_number' => '9876',
-                'amount' => 2300,
-                'currency' => Currency::CZECH_CROWNS,
-                'order_description' => '9876Description',
-                'lang' => Language::CZECH,
-                'additional_params' => [
-                        array('name' => 'invoicenumber', 'value' => '2015001003')
+                #   'allowed_bnpl_types' => [
+                #           BnplType::DEFERRED_PAYMENT,
+                #           BnplType::PAY_IN_THREE
+                #   ],
+                #   'default_bnpl_type' => BnplType::DEFERRED_PAYMENT,
+                #   'default_payment_instrument' => PaymentInstrument::TWISTO
+                'allowed_swifts' => [BankSwiftCode::RAIFFEISENBANK, BankSwiftCode::CESKA_SPORITELNA],
+                #   'default_swift' => BankSwiftCode::FIO_BANKA,
+                #   'default_payment_instrument' => PaymentInstrument::BANK_ACCOUNT,
+                'contact' => [
+                    'email' => 'test.test@gopay.cz',
                 ],
-                'items' => [
-                        ['name' => 'item01', 'amount' => 2300, 'count' => 1],
-                ],
-                'callback' => [
-                        'return_url' => 'https://eshop123.cz/return',
-                        'notification_url' => 'https://eshop123.cz/notify'
-                ],
+            ],
+            'order_number' => '9876',
+            'amount' => 2300,
+            'currency' => Currency::CZECH_CROWNS,
+            'order_description' => '9876Description',
+            'lang' => Language::CZECH,
+            'additional_params' => [
+                ['name' => 'invoicenumber', 'value' => '2015001003']
+            ],
+            'items' => [
+                ['name' => 'item01', 'amount' => 2300, 'count' => 1],
+            ],
+            'callback' => [
+                'return_url' => 'https://eshop123.cz/return',
+                'notification_url' => 'https://eshop123.cz/notify'
+            ],
         ];
 
         return $basePayment;

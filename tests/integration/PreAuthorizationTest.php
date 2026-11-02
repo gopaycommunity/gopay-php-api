@@ -21,7 +21,6 @@ use function PHPUnit\Framework\assertArrayHasKey;
  */
 class PreAuthorizationTest extends TestCase
 {
-
     private Payments $gopay;
 
     protected function setUp(): void
