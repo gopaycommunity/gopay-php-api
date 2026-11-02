@@ -80,5 +80,5 @@ class BankSwiftCode
     public const POLSKI_BANK_PRZEDSIEBIORCZOSCI_SPOLKA_AKCYJNA = 'PBPBPLPW';
     // Others
     public const SPECIAL = 'OTHERS';
-    public const QR_PAYMENT = "QRPAYMENT";
+    public const QR_PAYMENT = 'QRPAYMENT';
 }

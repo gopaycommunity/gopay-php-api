@@ -44,9 +44,9 @@ class JsonBrowser
                 $guzzRequest = new \GuzzleHttp\Psr7\Request($r->method, $r->url, $r->headers, $r->body);
             }
             $guzzResponse = $client->send($guzzRequest);
-            $response = new Response((string)$guzzResponse->getBody());
-            $response->statusCode = (string)$guzzResponse->getStatusCode();
-            $response->json = json_decode((string)$response, true);
+            $response = new Response((string) $guzzResponse->getBody());
+            $response->statusCode = (string) $guzzResponse->getStatusCode();
+            $response->json = json_decode((string) $response, true);
             $this->logger->logHttpCommunication($r, $response);
             return $response;
         } catch (ClientException $e) {
@@ -60,7 +60,7 @@ class JsonBrowser
         } catch (\Exception $ex) {
             $response = new Response($ex->getMessage());
             $response->statusCode = 500;
-            $response->json = json_decode("{}", true);
+            $response->json = json_decode('{}', true);
             $this->logger->logHttpCommunication($r, $response);
             return $response;
         }

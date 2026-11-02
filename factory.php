@@ -5,6 +5,7 @@ namespace GoPay;
 /**
  * @param array<string, mixed>|Config $userConfig
  * @param array{cache?: Token\TokenCache, logger?: Http\Log\Logger} $userServices
+ *
  * @return Payments
  */
 function payments(array|Config $userConfig, array $userServices = [])
@@ -12,7 +13,7 @@ function payments(array|Config $userConfig, array $userServices = [])
     $config = Config::parseUserConfig($userConfig);
     $services = $userServices + [
         'cache' => new Token\InMemoryTokenCache(),
-        'logger' => new Http\Log\NullLogger()
+        'logger' => new Http\Log\NullLogger(),
     ];
     $browser = new Http\JsonBrowser($services['logger'], $config['timeout']);
     $gopay = new GoPay($config, $browser);
@@ -22,8 +23,10 @@ function payments(array|Config $userConfig, array $userServices = [])
 
 /**
  * @deprecated Supercash payments are no longer supported
+ *
  * @param array<string, mixed>|Config $userConfig
  * @param array{cache?: Token\TokenCache, logger?: Http\Log\Logger} $userServices
+ *
  * @return PaymentsSupercash
  */
 function paymentsSupercash(array|Config $userConfig, array $userServices = []) // @phpstan-ignore class.notFound
@@ -31,7 +34,7 @@ function paymentsSupercash(array|Config $userConfig, array $userServices = []) /
     $config = Config::parseUserConfig($userConfig);
     $services = $userServices + [
         'cache' => new Token\InMemoryTokenCache(),
-        'logger' => new Http\Log\NullLogger()
+        'logger' => new Http\Log\NullLogger(),
     ];
     $browser = new Http\JsonBrowser($services['logger'], $config['timeout']);
     $gopay = new GoPay($config, $browser);
@@ -46,6 +49,7 @@ class Api
     /**
      * @param array<string, mixed>|Config $config
      * @param array{cache?: Token\TokenCache, logger?: Http\Log\Logger} $services
+     *
      * @return Payments
      */
     public static function payments(array|Config $config, array $services = [])

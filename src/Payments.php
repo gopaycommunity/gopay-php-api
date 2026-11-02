@@ -20,6 +20,7 @@ class Payments
 
     /**
      * @param array<string, mixed> $rawPayment
+     *
      * @return Response
      */
     public function createPayment(array $rawPayment)
@@ -27,15 +28,16 @@ class Payments
         $payment = $rawPayment + [
             'target' => [
                 'type' => 'ACCOUNT',
-                'goid' => $this->gopay->getConfig('goid')
+                'goid' => $this->gopay->getConfig('goid'),
             ],
-            'lang' => $this->gopay->getConfig('language')
+            'lang' => $this->gopay->getConfig('language'),
         ];
         return $this->post('/payments/payment', GoPay::JSON, $payment);
     }
 
     /**
      * @param int|string $id
+     *
      * @return Response
      */
     public function getStatus($id)
@@ -48,6 +50,7 @@ class Payments
      *
      * @param int|string $id     Payment ID
      * @param string|null $format Image format of the QR code: 'png' (default) or 'svg'
+     *
      * @return Response
      */
     public function getQrPayment($id, ?string $format = null)
@@ -61,8 +64,10 @@ class Payments
 
     /**
      * @see refundPaymentEET
+     *
      * @param int|string $id
      * @param int|string|array<string, mixed> $data amount to refund, array delegates to refundPaymentEET
+     *
      * @return Response
      */
     public function refundPayment($id, $data)
@@ -77,6 +82,7 @@ class Payments
     /**
      * @param int|string $id
      * @param array<string, mixed> $payment
+     *
      * @return Response
      */
     public function createRecurrence($id, array $payment)
@@ -86,6 +92,7 @@ class Payments
 
     /**
      * @param int|string $id
+     *
      * @return Response
      */
     public function voidRecurrence($id)
@@ -95,6 +102,7 @@ class Payments
 
     /**
      * @param int|string $id
+     *
      * @return Response
      */
     public function captureAuthorization($id)
@@ -105,6 +113,7 @@ class Payments
     /**
      * @param int|string $id
      * @param array<string, mixed> $capturePayment
+     *
      * @return Response
      */
     public function captureAuthorizationPartial($id, array $capturePayment)
@@ -114,6 +123,7 @@ class Payments
 
     /**
      * @param int|string $id
+     *
      * @return Response
      */
     public function voidAuthorization($id)
@@ -123,6 +133,7 @@ class Payments
 
     /**
      * @param int|string $cardId
+     *
      * @return Response
      */
     public function getCardDetails($cardId)
@@ -132,6 +143,7 @@ class Payments
 
     /**
      * @param int|string $cardId
+     *
      * @return Response
      */
     public function deleteCard($cardId)
@@ -141,6 +153,7 @@ class Payments
 
     /**
      * @param int|string $id
+     *
      * @return Response
      */
     public function getHistoryRefunds($id)
@@ -151,6 +164,7 @@ class Payments
     /**
      * @param int|string $goid
      * @param string $currency one of Currency constants
+     *
      * @return Response
      */
     public function getPaymentInstruments($goid, $currency)
@@ -159,6 +173,7 @@ class Payments
     }
     /**
      * @param int|string $goid
+     *
      * @return Response
      */
     public function getPaymentInstrumentsAll($goid)
@@ -168,16 +183,18 @@ class Payments
 
     /**
      * @param array<string, mixed> $accountStatement
+     *
      * @return Response
      */
     public function getAccountStatement(array $accountStatement)
     {
-        return $this->post("/accounts/account-statement", GoPay::JSON, $accountStatement);
+        return $this->post('/accounts/account-statement', GoPay::JSON, $accountStatement);
     }
 
     /**
      * @param int|string $id
      * @param array<string, mixed> $paymentData
+     *
      * @return Response
      */
     public function refundPaymentEET($id, array $paymentData)
@@ -186,6 +203,7 @@ class Payments
     }
     /**
      * @param int|string $paymentId
+     *
      * @return Response
      */
     public function getEETReceiptByPaymentId($paymentId)
@@ -195,11 +213,12 @@ class Payments
 
     /**
      * @param array<string, mixed> $filter
+     *
      * @return Response
      */
     public function findEETReceiptsByFilter(array $filter)
     {
-        return $this->post("/eet-receipts", GoPay::JSON, $filter);
+        return $this->post('/eet-receipts', GoPay::JSON, $filter);
     }
 
 
@@ -209,6 +228,7 @@ class Payments
      * If the access token cannot be obtained, the OAuth error response is returned instead.
      *
      * @param string $urlPath
+     *
      * @return Response
      */
     public function get($urlPath)
@@ -231,6 +251,7 @@ class Payments
      * @param string $urlPath
      * @param string $contentType GoPay::JSON or GoPay::FORM
      * @param array<mixed>|null $data
+     *
      * @return Response
      */
     public function post($urlPath, $contentType, $data = null)
@@ -253,6 +274,7 @@ class Payments
      * If the access token cannot be obtained, the OAuth error response is returned instead.
      *
      * @param string $urlPath
+     *
      * @return Response
      */
     public function delete($urlPath)

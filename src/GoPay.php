@@ -2,10 +2,10 @@
 
 namespace GoPay;
 
+use GoPay\Definition\Language;
+use GoPay\Http\JsonBrowser;
 use GoPay\Http\Request;
 use GoPay\Http\Response;
-use GoPay\Http\JsonBrowser;
-use GoPay\Definition\Language;
 
 class GoPay
 {
@@ -33,6 +33,7 @@ class GoPay
 
     /**
      * @param string $key
+     *
      * @return mixed
      */
     public function getConfig($key)
@@ -46,6 +47,7 @@ class GoPay
      * @param string $method one of RequestMethods constants
      * @param string|null $contentType GoPay::JSON, GoPay::FORM or null for requests without body
      * @param array<mixed>|null $data
+     *
      * @return Response
      */
     public function call($urlPath, $authorization, $method, $contentType = null, $data = null)
@@ -59,6 +61,7 @@ class GoPay
 
     /**
      * @param string $urlPath
+     *
      * @return string
      */
     public function buildUrl($urlPath)
@@ -93,7 +96,7 @@ class GoPay
     {
         if ($data) {
             if ($contentType === GoPay::FORM) {
-                return http_build_query($data, "", '&');
+                return http_build_query($data, '', '&');
             }
             // JSON_UNESCAPED_UNICODE ensures non-ASCII characters (e.g. Cyrillic, Bulgarian)
             // are sent as-is in UTF-8 instead of being \uXXXX-escaped.
@@ -107,6 +110,7 @@ class GoPay
     /**
      * @param string|null $contentType
      * @param string $authorization
+     *
      * @return array<string, string>
      */
     private function buildHeaders($contentType, $authorization): array
@@ -117,7 +121,7 @@ class GoPay
                 'Accept' => 'application/json',
                 'Accept-Language' => $this->getAcceptedLanguage(),
                 'Authorization' => $authorization,
-                'User-Agent' => is_null($customUserAgent) ? self::DEFAULT_USER_AGENT : $customUserAgent
+                'User-Agent' => is_null($customUserAgent) ? self::DEFAULT_USER_AGENT : $customUserAgent,
             ];
         } else {
             return [
@@ -125,7 +129,7 @@ class GoPay
                 'Accept-Language' => $this->getAcceptedLanguage(),
                 'Content-Type' => $contentType,
                 'Authorization' => $authorization,
-                'User-Agent' => is_null($customUserAgent) ? self::DEFAULT_USER_AGENT : $customUserAgent
+                'User-Agent' => is_null($customUserAgent) ? self::DEFAULT_USER_AGENT : $customUserAgent,
             ];
         }
     }

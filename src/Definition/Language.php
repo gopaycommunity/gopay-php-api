@@ -18,9 +18,9 @@ class Language
     public const ITALIAN = 'IT';
     public const SPANISH = 'ES';
     public const UKRAINIAN = 'UK';
-    public const ESTONIAN = "ET";
-    public const LITHUANIAN = "LT";
-    public const LATVIAN = "LV";
-    public const SLOVENIAN = "SL";
-    public const PORTUGUESE = "PT";
+    public const ESTONIAN = 'ET';
+    public const LITHUANIAN = 'LT';
+    public const LATVIAN = 'LV';
+    public const SLOVENIAN = 'SL';
+    public const PORTUGUESE = 'PT';
 }

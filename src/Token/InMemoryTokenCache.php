@@ -9,6 +9,7 @@ class InMemoryTokenCache implements TokenCache
 
     /**
      * @param string $client
+     *
      * @return void
      */
     public function setAccessToken($client, AccessToken $t)
@@ -18,6 +19,7 @@ class InMemoryTokenCache implements TokenCache
 
     /**
      * @param string $client
+     *
      * @return AccessToken|null
      */
     public function getAccessToken($client)
