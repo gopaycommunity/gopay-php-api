@@ -18,9 +18,18 @@ return (new PhpCsFixer\Config())
     ->setUsingCache(true)
     ->setCacheFile(__DIR__ . '/.php-cs-fixer.cache')
     ->setRules([
-        '@PSR12' => true,
+        '@PER-CS' => true,
+        '@PHP81Migration' => true,
         'array_indentation' => true,
-        'array_syntax' => ['syntax' => 'short'],
         'no_unused_imports' => true,
+        'ordered_imports' => ['sort_algorithm' => 'alpha'],
+        'array_syntax' => ['syntax' => 'short'],
+        'trailing_comma_in_multiline' => true,
+        'phpdoc_order' => true,
+        'phpdoc_separation' => true,
+        'phpdoc_trim' => true,
+        'single_quote' => true,
+        'cast_spaces' => true,
+        'concat_space' => ['spacing' => 'one'],
     ])
     ->setFinder($finder);
