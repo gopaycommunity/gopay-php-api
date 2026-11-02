@@ -3,18 +3,18 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use GoPay\Definition\Language;
+use GoPay\Definition\Payment\BankSwiftCode;
 use GoPay\Definition\Payment\Currency;
 use GoPay\Definition\Payment\PaymentInstrument;
-use GoPay\Definition\Payment\BankSwiftCode;
-use GoPay\Definition\Payment\VatRate;
 use GoPay\Definition\Payment\PaymentItemType;
+use GoPay\Definition\Payment\VatRate;
 
 $gopay = GoPay\payments([
     'goid' => 'my goid',
     'clientId' => 'my clientId',
     'clientSecret' => 'my clientSecret',
     'gatewayUrl' => 'https://gw.sandbox.gopay.com/api',
-    'language' => Language::CZECH
+    'language' => Language::CZECH,
 ]);
 
 // Create standard payment with eet
@@ -32,8 +32,8 @@ $response = $gopay->createPayment([
             'city' => 'C.Budejovice',
             'street' => 'Plana 67',
             'postal_code' => '373 01',
-            'country_code' => 'CZE'
-        ]
+            'country_code' => 'CZE',
+        ],
     ],
     'amount' => 139951,
     'currency' => Currency::CZECH_CROWNS,
@@ -47,7 +47,7 @@ $response = $gopay->createPayment([
             'ean' => 1234567890123,
             'amount' => 119990,
             'count' => 1,
-            'vat_rate' => VatRate::RATE_4
+            'vat_rate' => VatRate::RATE_4,
         ],
         [
             'type' => PaymentItemType::ITEM,
@@ -56,8 +56,8 @@ $response = $gopay->createPayment([
             'ean' => 1234567890189,
             'amount' => 19961,
             'count' => 1,
-            'vat_rate' => VatRate::RATE_3
-        ]
+            'vat_rate' => VatRate::RATE_3,
+        ],
     ],
     'eet' => [
         'celk_trzba' => 139951,
@@ -65,17 +65,17 @@ $response = $gopay->createPayment([
         'dan1' => 20830,
         'zakl_dan2' => 17358,
         'dan2' => 2603,
-        'mena' => Currency::CZECH_CROWNS
+        'mena' => Currency::CZECH_CROWNS,
     ],
     'additional_params' => [[
         'name' => 'invoicenumber',
-        'value' => '2015001003'
+        'value' => '2015001003',
     ]],
     'callback' => [
         'return_url' => 'https://www.eshop.cz/return',
-        'notification_url' => 'https://www.eshop.cz/notify'
+        'notification_url' => 'https://www.eshop.cz/notify',
     ],
-    'lang' => Language::CZECH
+    'lang' => Language::CZECH,
 ]);
 
 if ($response->hasSucceed()) {

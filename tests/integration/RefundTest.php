@@ -2,17 +2,18 @@
 
 namespace GoPay;
 
-use PHPUnit\Framework\TestCase;
-
-use function PHPUnit\Framework\assertArrayNotHasKey;
-use function PHPUnit\Framework\assertNotEmpty;
 use function PHPUnit\Framework\assertArrayHasKey;
+use function PHPUnit\Framework\assertArrayNotHasKey;
 use function PHPUnit\Framework\assertEquals;
+use function PHPUnit\Framework\assertNotEmpty;
+
+use PHPUnit\Framework\TestCase;
 
 require_once 'TestUtils.php';
 
 /**
  * Class RefundTests
+ *
  * @package GoPay
  *
  * To execute test for certain method properly it is necessary to add prefix 'test' to its name.

@@ -5,18 +5,20 @@ namespace GoPay;
 require_once 'TestUtils.php';
 
 use GoPay\Definition\Language;
+use GoPay\Definition\Payment\BankSwiftCode;
 use GoPay\Definition\Payment\Currency;
 use GoPay\Definition\Payment\PaymentInstrument;
-use GoPay\Definition\Payment\BankSwiftCode;
-use GoPay\Definition\Payment\Recurrence;
 use GoPay\Definition\Payment\PaymentItemType;
-use PHPUnit\Framework\TestCase;
+use GoPay\Definition\Payment\Recurrence;
 
 use function PHPUnit\Framework\assertNotEmpty;
 use function PHPUnit\Framework\assertNotNull;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * Class EETTests
+ *
  * @package GoPay
  *
  * To execute test for certain method properly it is necessary to add prefix 'test' to its name.
@@ -39,7 +41,7 @@ class EETTest extends TestCase
             'payer' => [
                 'allowed_payment_instruments' => [
                     PaymentInstrument::BANK_ACCOUNT,
-                    PaymentInstrument::PAYMENT_CARD
+                    PaymentInstrument::PAYMENT_CARD,
                 ],
                 'allowed_swifts' => [BankSwiftCode::RAIFFEISENBANK, BankSwiftCode::CESKA_SPORITELNA],
                 //'default_swift' => BankSwiftCode::FIO_BANKA,
@@ -54,23 +56,23 @@ class EETTest extends TestCase
             'order_description' => 'EET9876Description',
             'lang' => Language::CZECH,
             'additional_params' => [
-                ['name' => 'invoicenumber', 'value' => '2015001003']
+                ['name' => 'invoicenumber', 'value' => '2015001003'],
             ],
             'items' => [
                 [
                     'name' => 'Pocitac Item1', 'amount' => '119990', 'count' => '1', 'vat_rate' => 21,
                     'type' => PaymentItemType::ITEM, 'ean' => '1234567890123',
-                    'product_url' => 'https://www.eshop123.cz/pocitac'
+                    'product_url' => 'https://www.eshop123.cz/pocitac',
                 ],
                 [
                     'name' => 'Oprava Item2', 'amount' => '19960', 'count' => '1', 'vat_rate' => 15,
                     'type' => PaymentItemType::ITEM, 'ean' => '1234567890189',
-                    'product_url' => 'https://www.eshop123.cz/pocitac/oprava'
+                    'product_url' => 'https://www.eshop123.cz/pocitac/oprava',
                 ],
             ],
             'callback' => [
                 'return_url' => 'https://eshop123.cz/return',
-                'notification_url' => 'https://eshop123.cz/notify'
+                'notification_url' => 'https://eshop123.cz/notify',
             ],
             'eet' => [
                 'celk_trzba' => 139950,
@@ -78,8 +80,8 @@ class EETTest extends TestCase
                 'dan1' => 20825,
                 'zakl_dan2' => 17357,
                 'dan2' => 2603,
-                'mena' => Currency::CZECH_CROWNS
-            ]
+                'mena' => Currency::CZECH_CROWNS,
+            ],
         ];
 
         return $baseEETPayment;
@@ -99,9 +101,9 @@ class EETTest extends TestCase
         $st = json_encode($payment->json, JSON_THROW_ON_ERROR);
 
         if (strpos($st, 'error_code') === false) {
-            print_r("Payment ID: " . $payment->json['id'] . "\n");
-            print_r("Payment gwUrl: " . $payment->json['gw_url'] . "\n");
-            print_r("Payment state: " . $payment->json['state'] . "\n");
+            print_r('Payment ID: ' . $payment->json['id'] . "\n");
+            print_r('Payment gwUrl: ' . $payment->json['gw_url'] . "\n");
+            print_r('Payment state: ' . $payment->json['state'] . "\n");
         }
 
         return $payment;
@@ -121,8 +123,8 @@ class EETTest extends TestCase
 
         $baseEETPayment['recurrence'] = [
             'recurrence_cycle' => Recurrence::WEEKLY,
-            'recurrence_period' => "1",
-            'recurrence_date_to' => '2100-04-01'
+            'recurrence_period' => '1',
+            'recurrence_date_to' => '2100-04-01',
         ];
 
         //        $baseEETPayment['recurrence'] = [
@@ -135,7 +137,7 @@ class EETTest extends TestCase
         assertNotNull($payment->json['id']);
         $st = json_encode($payment->json, JSON_THROW_ON_ERROR);
         if (strpos($st, 'error_code') === false) {
-            print_r("Recurrence: ");
+            print_r('Recurrence: ');
             echo print_r($payment->json['recurrence'], true);
         }
     }
@@ -152,15 +154,15 @@ class EETTest extends TestCase
                     'name' => 'OnDemand Prodlouzena zaruka', 'amount' => '2000', 'count' => '1',
                     'vat_rate' => 21, 'type' => PaymentItemType::ITEM,
                     'ean' => '1234567890123',
-                    'product_url' => 'https://www.eshop123.cz/pocitac/prodlouzena_zaruka'
+                    'product_url' => 'https://www.eshop123.cz/pocitac/prodlouzena_zaruka',
                 ],
             ],
             'eet' => [
                 'celk_trzba' => 2000,
                 'zakl_dan1' => 1580,
                 'dan1' => 420,
-                'mena' => Currency::CZECH_CROWNS
-            ]
+                'mena' => Currency::CZECH_CROWNS,
+            ],
         ];
 
         $EETOnDemandPayment = $this->gopay->createRecurrence(3049604610, $nextEETPayment);
@@ -169,9 +171,9 @@ class EETTest extends TestCase
         $st = json_encode($EETOnDemandPayment->json, JSON_THROW_ON_ERROR);
 
         if (strpos($st, 'error_code') === false) {
-            print_r("Payment ID: " . $EETOnDemandPayment->json['id'] . "\n");
-            print_r("Payment gwUrl: " . $EETOnDemandPayment->json['gw_url'] . "\n");
-            print_r("Payment state: " . $EETOnDemandPayment->json['state'] . "\n");
+            print_r('Payment ID: ' . $EETOnDemandPayment->json['id'] . "\n");
+            print_r('Payment gwUrl: ' . $EETOnDemandPayment->json['gw_url'] . "\n");
+            print_r('Payment state: ' . $EETOnDemandPayment->json['state'] . "\n");
         }
     }
 
@@ -185,9 +187,9 @@ class EETTest extends TestCase
         $st = json_encode($response->json, JSON_THROW_ON_ERROR);
 
         if (strpos($st, 'error_code') === false) {
-            print_r("Payment ID: " . $response->json['id'] . "\n");
-            print_r("Payment gwUrl: " . $response->json['gw_url'] . "\n");
-            print_r("Payment state: " . $response->json['state'] . "\n");
+            print_r('Payment ID: ' . $response->json['id'] . "\n");
+            print_r('Payment gwUrl: ' . $response->json['gw_url'] . "\n");
+            print_r('Payment state: ' . $response->json['state'] . "\n");
         }
     }
 
@@ -199,12 +201,12 @@ class EETTest extends TestCase
                 [
                     'name' => 'Pocitac Item1', 'amount' => '119990', 'count' => '1', 'vat_rate' => 21,
                     'type' => PaymentItemType::ITEM, 'ean' => '1234567890123',
-                    'product_url' => 'https://www.eshop123.cz/pocitac'
+                    'product_url' => 'https://www.eshop123.cz/pocitac',
                 ],
                 [
                     'name' => 'Oprava Item2', 'amount' => '19960', 'count' => '1', 'vat_rate' => 15,
                     'type' => PaymentItemType::ITEM, 'ean' => '1234567890189',
-                    'product_url' => 'https://www.eshop123.cz/pocitac/oprava'
+                    'product_url' => 'https://www.eshop123.cz/pocitac/oprava',
                 ],
             ],
             'eet' => [
@@ -213,8 +215,8 @@ class EETTest extends TestCase
                 'dan1' => 20825,
                 'zakl_dan2' => 17357,
                 'dan2' => 2603,
-                'mena' => Currency::CZECH_CROWNS
-            ]
+                'mena' => Currency::CZECH_CROWNS,
+            ],
         ];
 
         $response = $this->gopay->refundPayment(3049604714, $refundObject);
@@ -227,7 +229,7 @@ class EETTest extends TestCase
         $receiptFilter = [
             'date_from' => '2017-03-02',
             'date_to' => '2017-04-02',
-            'id_provozovny' => 11
+            'id_provozovny' => 11,
         ];
 
         $receipts = $this->gopay->findEETReceiptsByFilter($receiptFilter);

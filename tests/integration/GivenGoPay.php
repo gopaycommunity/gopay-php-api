@@ -4,9 +4,10 @@ namespace GoPay;
 
 use GoPay\Definition\Language;
 use GoPay\Definition\TokenScope;
-use PHPUnit\Framework\TestCase;
 
 use function PHPUnit\Framework\assertIsArray;
+
+use PHPUnit\Framework\TestCase;
 
 class GivenGoPay extends TestCase
 {
@@ -24,10 +25,10 @@ class GivenGoPay extends TestCase
             'clientSecret' => getenv('clientSecret'),
             'gatewayUrl' => 'https://gw.sandbox.gopay.com/api',
             'scope' => TokenScope::ALL,
-            'language' => Language::CZECH
+            'language' => Language::CZECH,
         ];
         $services = [
-            'logger' => new Http\Log\PrintHttpRequest()
+            'logger' => new Http\Log\PrintHttpRequest(),
         ];
         $this->gopay = payments($config, $services);
     }

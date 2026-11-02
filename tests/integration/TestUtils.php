@@ -22,7 +22,7 @@ class TestUtils
             'clientId' => self::CLIENT_ID,
             'clientSecret' => self::CLIENT_SECRET,
             'gatewayUrl' => 'https://gw.sandbox.gopay.com/api',
-            'language' => Language::CZECH
+            'language' => Language::CZECH,
         ]);
         return $gopay;
     }
@@ -34,7 +34,7 @@ class TestUtils
             'clientId' => self::CLIENT_ID_EET,
             'clientSecret' => self::CLIENT_SECRET_EET,
             'gatewayUrl' => 'https://gw.sandbox.gopay.com/api',
-            'language' => Language::CZECH
+            'language' => Language::CZECH,
         ]);
         return $gopay;
     }

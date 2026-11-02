@@ -239,8 +239,8 @@ class UnicodeEncodingTest extends TestCase
         $this->assertStringNotContainsString(
             '\u',
             $capture->body,
-            'The outgoing JSON body must not contain \\uXXXX escape sequences – ' .
-            'they trigger WAF SQL Injection protection on the GoPay gateway (HTTP 403)'
+            'The outgoing JSON body must not contain \\uXXXX escape sequences – '
+            . 'they trigger WAF SQL Injection protection on the GoPay gateway (HTTP 403)'
         );
         $this->assertStringContainsString('СЛИВЕН - РЕЧИЦА (АВТОМАТ)', $capture->body);
         $this->assertStringContainsString('СОФИЯ - ЦЕНТРАЛНА ГАРА', $capture->body);
