@@ -54,10 +54,10 @@ class Config
         if (is_array($userConfig)) {
             if ($defaultArrayValues) {
                 return $userConfig + [
-                        'scope' => TokenScope::ALL,
-                        'language' => Language::ENGLISH,
-                        'timeout' => 30
-                    ];
+                    'scope' => TokenScope::ALL,
+                    'language' => Language::ENGLISH,
+                    'timeout' => 30
+                ];
             }
 
             return $userConfig;

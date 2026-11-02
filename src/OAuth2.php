@@ -27,7 +27,7 @@ class OAuth2 implements Auth
             GoPay::FORM,
             ['grant_type' => 'client_credentials', 'scope' => $this->gopay->getConfig('scope')]
         );
-        $t = new AccessToken;
+        $t = new AccessToken();
         $t->response = $response;
         if ($response->hasSucceed()) {
             // Successful token response is always JSON with access_token and expires_in

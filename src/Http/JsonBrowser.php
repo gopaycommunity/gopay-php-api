@@ -8,7 +8,6 @@ use GuzzleHttp\Exception\ClientException;
 
 class JsonBrowser
 {
-
     private Logger $logger;
     /** @var int|float passed to Guzzle as is */
     private $timeout;

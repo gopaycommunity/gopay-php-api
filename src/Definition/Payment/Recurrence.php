@@ -4,8 +4,8 @@ namespace GoPay\Definition\Payment;
 
 class Recurrence
 {
-    const DAILY = 'DAY';
-    const WEEKLY = 'WEEK';
-    const MONTHLY = 'MONTH';
-    const ON_DEMAND = 'ON_DEMAND';
+    public const DAILY = 'DAY';
+    public const WEEKLY = 'WEEK';
+    public const MONTHLY = 'MONTH';
+    public const ON_DEMAND = 'ON_DEMAND';
 }

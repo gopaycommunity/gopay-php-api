@@ -16,6 +16,6 @@ class AccessToken
      */
     public function isExpired()
     {
-        return $this->token == '' || $this->expirationDate < (new \DateTime);
+        return $this->token == '' || $this->expirationDate < (new \DateTime());
     }
 }

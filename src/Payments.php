@@ -90,7 +90,7 @@ class Payments
      */
     public function voidRecurrence($id)
     {
-        return $this->post("/payments/payment/{$id}/void-recurrence", GoPay::FORM, array());
+        return $this->post("/payments/payment/{$id}/void-recurrence", GoPay::FORM, []);
     }
 
     /**
@@ -99,7 +99,7 @@ class Payments
      */
     public function captureAuthorization($id)
     {
-        return $this->post("/payments/payment/{$id}/capture", GoPay::FORM, array());
+        return $this->post("/payments/payment/{$id}/capture", GoPay::FORM, []);
     }
 
     /**
@@ -118,7 +118,7 @@ class Payments
      */
     public function voidAuthorization($id)
     {
-        return $this->post("/payments/payment/{$id}/void-authorization", GoPay::FORM, array());
+        return $this->post("/payments/payment/{$id}/void-authorization", GoPay::FORM, []);
     }
 
     /**

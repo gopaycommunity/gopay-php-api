@@ -9,14 +9,14 @@ use GoPay\Definition\Language;
 
 class GoPay
 {
-    const JSON = 'application/json';
-    const FORM = 'application/x-www-form-urlencoded';
+    public const JSON = 'application/json';
+    public const FORM = 'application/x-www-form-urlencoded';
 
-    const LOCALE_CZECH = 'cs-CZ';
-    const LOCALE_ENGLISH = 'en-US';
+    public const LOCALE_CZECH = 'cs-CZ';
+    public const LOCALE_ENGLISH = 'en-US';
 
-    const VERSION = '1.11.1';
-    const DEFAULT_USER_AGENT = 'GoPay PHP ' . self::VERSION;
+    public const VERSION = '1.11.1';
+    public const DEFAULT_USER_AGENT = 'GoPay PHP ' . self::VERSION;
 
     /** @var array<string, mixed> */
     private array $config;
@@ -120,7 +120,7 @@ class GoPay
                 'User-Agent' => is_null($customUserAgent) ? self::DEFAULT_USER_AGENT : $customUserAgent
             ];
         } else {
-        return [
+            return [
                 'Accept' => 'application/json',
                 'Accept-Language' => $this->getAcceptedLanguage(),
                 'Content-Type' => $contentType,

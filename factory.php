@@ -11,8 +11,8 @@ function payments(array|Config $userConfig, array $userServices = [])
 {
     $config = Config::parseUserConfig($userConfig);
     $services = $userServices + [
-        'cache' => new Token\InMemoryTokenCache,
-        'logger' => new Http\Log\NullLogger
+        'cache' => new Token\InMemoryTokenCache(),
+        'logger' => new Http\Log\NullLogger()
     ];
     $browser = new Http\JsonBrowser($services['logger'], $config['timeout']);
     $gopay = new GoPay($config, $browser);
@@ -30,9 +30,9 @@ function paymentsSupercash(array|Config $userConfig, array $userServices = []) /
 {
     $config = Config::parseUserConfig($userConfig);
     $services = $userServices + [
-                    'cache' => new Token\InMemoryTokenCache,
-                    'logger' => new Http\Log\NullLogger
-            ];
+        'cache' => new Token\InMemoryTokenCache(),
+        'logger' => new Http\Log\NullLogger()
+    ];
     $browser = new Http\JsonBrowser($services['logger'], $config['timeout']);
     $gopay = new GoPay($config, $browser);
     $auth = new Token\CachedOAuth(new OAuth2($gopay), $services['cache']);

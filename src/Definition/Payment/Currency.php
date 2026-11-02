@@ -4,12 +4,12 @@ namespace GoPay\Definition\Payment;
 
 class Currency
 {
-    const CZECH_CROWNS = 'CZK';
-    const EUROS = 'EUR';
-    const POLISH_ZLOTY = 'PLN';
-    const HUNGARIAN_FORINT = 'HUF';
-    const BRITISH_POUND = 'GBP';
-    const US_DOLLAR = 'USD';
-    const ROMANIAN_LEU = 'RON';
-    const BULGARIAN_LEV = 'BGN';
+    public const CZECH_CROWNS = 'CZK';
+    public const EUROS = 'EUR';
+    public const POLISH_ZLOTY = 'PLN';
+    public const HUNGARIAN_FORINT = 'HUF';
+    public const BRITISH_POUND = 'GBP';
+    public const US_DOLLAR = 'USD';
+    public const ROMANIAN_LEU = 'RON';
+    public const BULGARIAN_LEV = 'BGN';
 }
