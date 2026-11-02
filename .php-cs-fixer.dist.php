@@ -18,8 +18,8 @@ return (new PhpCsFixer\Config())
     ->setUsingCache(true)
     ->setCacheFile(__DIR__ . '/.php-cs-fixer.cache')
     ->setRules([
-        '@PER-CS' => true,
-        '@PHP81Migration' => true,
+        '@PER-CS3x0' => true,
+        '@PHP8x1Migration' => true,
         'array_indentation' => true,
         'no_unused_imports' => true,
         'ordered_imports' => ['sort_algorithm' => 'alpha'],
