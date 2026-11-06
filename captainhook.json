@@ -1,0 +1,34 @@
+{
+    "pre-commit": {
+        "enabled": true,
+        "actions": [
+            {
+                "action": "composer validate --strict --no-check-publish",
+                "conditions": [
+                    {
+                        "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\Any",
+                        "args": [["composer.json", "composer.lock"]]
+                    }
+                ]
+            },
+            {
+                "action": "php bin/php-cs-fixer fix --dry-run --diff --config=.php-cs-fixer.dist.php --path-mode=intersection -- {$STAGED_FILES|of-type:php}",
+                "conditions": [
+                    {
+                        "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\OfType",
+                        "args": ["php", "ACMR"]
+                    }
+                ]
+            },
+            {
+                "action": "php bin/phpstan analyse --no-progress --memory-limit=1G -- {$STAGED_FILES|of-type:php}",
+                "conditions": [
+                    {
+                        "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\OfType",
+                        "args": ["php", "ACMR"]
+                    }
+                ]
+            }
+        ]
+    }
+}
