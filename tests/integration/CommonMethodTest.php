@@ -66,8 +66,8 @@ class CommonMethodTest extends TestCase
     public function testGetAccountStatement(): void
     {
         $accountStatement = [
-            'date_from' => '2023-01-01',
-            'date_to' => '2023-02-27',
+            'date_from' => '2026-01-01',
+            'date_to' => '2026-02-27',
             'goid' => TestUtils::GO_ID,
             'currency' => Currency::CZECH_CROWNS,
             'format' => StatementGeneratingFormat::CSV_A,
