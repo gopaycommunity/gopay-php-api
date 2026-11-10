@@ -5,10 +5,10 @@ on:
   - pull_request
 
 jobs:
-  coding-style:
+  code-quality:
     runs-on: ubuntu-latest
 
-    name: Coding style
+    name: Code quality
 
     steps:
       - uses: actions/checkout@v6
@@ -18,11 +18,17 @@ jobs:
         with:
           php-version: "8.1"
 
+      - name: Validate composer.json and composer.lock
+        run: composer validate --strict
+
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
 
       - name: Check coding style
         run: composer cs-check
+
+      - name: Run static analysis
+        run: composer phpstan
 
   build:
     runs-on: ubuntu-latest
@@ -36,9 +42,6 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Validate composer.json and composer.lock
-        run: composer validate --strict
-
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -49,9 +52,6 @@ jobs:
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
-
-      - name: Run static analysis
-        run: composer phpstan
 
       # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
       # Docs: https://getcomposer.org/doc/articles/scripts.md
