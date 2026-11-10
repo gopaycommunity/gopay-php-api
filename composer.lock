@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a8cdee40dfbf73176191bc76bb96e8c2",
+    "content-hash": "5f49e5d64ce732b956691b53c0f784ff",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
@@ -605,36 +605,54 @@
     ],
     "packages-dev": [
         {
-            "name": "captainhook/captainhook-phar",
+            "name": "captainhook/captainhook",
             "version": "5.29.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/captainhook-git/captainhook-phar.git",
-                "reference": "a5dbcd8d20b3dcdb1cbd6948d0d3a058453b3d6a"
+                "url": "https://github.com/captainhook-git/captainhook.git",
+                "reference": "805d44b0de8ed143f4acfb8c6bcb788cdbc42963"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/captainhook-git/captainhook-phar/zipball/a5dbcd8d20b3dcdb1cbd6948d0d3a058453b3d6a",
-                "reference": "a5dbcd8d20b3dcdb1cbd6948d0d3a058453b3d6a",
+                "url": "https://api.github.com/repos/captainhook-git/captainhook/zipball/805d44b0de8ed143f4acfb8c6bcb788cdbc42963",
+                "reference": "805d44b0de8ed143f4acfb8c6bcb788cdbc42963",
                 "shasum": ""
             },
             "require": {
-                "composer-plugin-api": "^1.1||^2.0",
+                "captainhook/secrets": "^0.9.4",
                 "ext-json": "*",
                 "ext-spl": "*",
-                "phar-io/composer-distributor": "^1.0.1",
-                "php": ">=8.0"
+                "ext-xml": "*",
+                "php": ">=8.0",
+                "sebastianfeldmann/camino": "^0.9.2",
+                "sebastianfeldmann/cli": "^3.3",
+                "sebastianfeldmann/git": "^3.16.0",
+                "symfony/console": "^2.7 || ^3.0 || ^4.0 || ^5.0 || ^6.0 || ^7.0 || ^8.0",
+                "symfony/filesystem": "^2.7 || ^3.0 || ^4.0 || ^5.0 || ^6.0 || ^7.0 || ^8.0",
+                "symfony/process": "^2.7 || ^3.0 || ^4.0 || ^5.0 || ^6.0 || ^7.0 || ^8.0"
+            },
+            "replace": {
+                "sebastianfeldmann/captainhook": "*"
             },
             "require-dev": {
-                "composer/composer": "^1.1 || ^2.0"
+                "composer/composer": "~1 || ^2.0",
+                "mikey179/vfsstream": "~1"
             },
-            "type": "composer-plugin",
+            "bin": [
+                "bin/captainhook"
+            ],
+            "type": "library",
             "extra": {
-                "class": "CaptainHook\\Composer\\Plugin"
+                "captainhook": {
+                    "config": "captainhook.json"
+                },
+                "branch-alias": {
+                    "dev-main": "6.0.x-dev"
+                }
             },
             "autoload": {
                 "psr-4": {
-                    "CaptainHook\\Composer\\": "src/"
+                    "CaptainHook\\App\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -648,7 +666,7 @@
                 }
             ],
             "description": "PHP git hook manager",
-            "homepage": "https://github.com/captainhook-git/captainhook",
+            "homepage": "https://php.captainhook.info/",
             "keywords": [
                 "commit-msg",
                 "git",
@@ -660,7 +678,7 @@
             ],
             "support": {
                 "issues": "https://github.com/captainhook-git/captainhook/issues",
-                "source": "https://github.com/captainhook-git/captainhook-phar/tree/5.29.2"
+                "source": "https://github.com/captainhook-git/captainhook/tree/5.29.2"
             },
             "funding": [
                 {
@@ -668,7 +686,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-04-08T07:07:48+00:00"
+            "time": "2026-03-25T19:32:25+00:00"
         },
         {
             "name": "captainhook/hook-installer",
@@ -716,6 +734,62 @@
                 "source": "https://github.com/captainhook-git/hook-installer/tree/1.0.5"
             },
             "time": "2026-08-02T20:10:37+00:00"
+        },
+        {
+            "name": "captainhook/secrets",
+            "version": "0.9.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/captainhook-git/secrets.git",
+                "reference": "d62c97f75f81ac98e22f1c282482bd35fa82f631"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/captainhook-git/secrets/zipball/d62c97f75f81ac98e22f1c282482bd35fa82f631",
+                "reference": "d62c97f75f81ac98e22f1c282482bd35fa82f631",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": ">=8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "CaptainHook\\Secrets\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Feldmann",
+                    "email": "sf@sebastian-feldmann.info"
+                }
+            ],
+            "description": "Utility classes to detect secrets",
+            "keywords": [
+                "commit-msg",
+                "keys",
+                "passwords",
+                "post-merge",
+                "prepare-commit-msg",
+                "secrets",
+                "tokens"
+            ],
+            "support": {
+                "issues": "https://github.com/captainhook-git/secrets/issues",
+                "source": "https://github.com/captainhook-git/secrets/tree/0.9.7"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sponsors/sebastianfeldmann",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-04-08T07:10:48+00:00"
         },
         {
             "name": "clue/ndjson-react",
@@ -1567,220 +1641,6 @@
                 "source": "https://github.com/nikic/PHP-Parser/tree/v5.7.0"
             },
             "time": "2025-12-06T11:56:16+00:00"
-        },
-        {
-            "name": "phar-io/composer-distributor",
-            "version": "1.0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/phar-io/composer-distributor.git",
-                "reference": "dd7d936290b2a42b0c64bfe08090b5c597c280c9"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/phar-io/composer-distributor/zipball/dd7d936290b2a42b0c64bfe08090b5c597c280c9",
-                "reference": "dd7d936290b2a42b0c64bfe08090b5c597c280c9",
-                "shasum": ""
-            },
-            "require": {
-                "composer-plugin-api": "^1.1 || ^2.0",
-                "ext-dom": "*",
-                "ext-libxml": "*",
-                "phar-io/filesystem": "^2.0",
-                "phar-io/gnupg": "^1.0",
-                "php": "^7.3 || ^8.0"
-            },
-            "require-dev": {
-                "composer/composer": "^2.0",
-                "phpunit/phpunit": "^9.4"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "PharIo\\ComposerDistributor\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Andreas Heigl",
-                    "email": "andreas@heigl.org",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Arne Blankerts",
-                    "email": "arne@blankerts.de",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Sebastian Feldmann",
-                    "email": "sf@sebastian-feldmann.info",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Base Code for a composer plugin that installs PHAR-files",
-            "homepage": "https://phar.io",
-            "keywords": [
-                "bin",
-                "binary",
-                "composer",
-                "distribute",
-                "phar",
-                "phive"
-            ],
-            "support": {
-                "issues": "https://github.com/phar-io/composer-distributor/issues",
-                "source": "https://github.com/phar-io/composer-distributor/tree/1.0.2"
-            },
-            "funding": [
-                {
-                    "url": "https://phar.io",
-                    "type": "other"
-                }
-            ],
-            "time": "2023-05-31T17:05:49+00:00"
-        },
-        {
-            "name": "phar-io/executor",
-            "version": "1.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/phar-io/executor.git",
-                "reference": "5bfb7400224a0c1cf83343660af85c7f5a073473"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/phar-io/executor/zipball/5bfb7400224a0c1cf83343660af85c7f5a073473",
-                "reference": "5bfb7400224a0c1cf83343660af85c7f5a073473",
-                "shasum": ""
-            },
-            "require": {
-                "phar-io/filesystem": "^2.0",
-                "php": "^7.2||^8.0"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "src/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Arne Blankerts",
-                    "email": "arne@blankerts.de",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Sebastian Heuer",
-                    "email": "sebastian@phpeople.de",
-                    "role": "Developer"
-                }
-            ],
-            "support": {
-                "issues": "https://github.com/phar-io/executor/issues",
-                "source": "https://github.com/phar-io/executor/tree/1.0.1"
-            },
-            "time": "2020-11-30T10:53:57+00:00"
-        },
-        {
-            "name": "phar-io/filesystem",
-            "version": "2.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/phar-io/filesystem.git",
-                "reference": "222e3ea432262a05706b7066697c21257664d9d1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/phar-io/filesystem/zipball/222e3ea432262a05706b7066697c21257664d9d1",
-                "reference": "222e3ea432262a05706b7066697c21257664d9d1",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.2 || ^8.0"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "src/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Arne Blankerts",
-                    "email": "arne@blankerts.de",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Sebastian Heuer",
-                    "email": "sebastian@phpeople.de",
-                    "role": "Developer"
-                }
-            ],
-            "support": {
-                "issues": "https://github.com/phar-io/filesystem/issues",
-                "source": "https://github.com/phar-io/filesystem/tree/2.0.1"
-            },
-            "time": "2020-11-30T10:16:22+00:00"
-        },
-        {
-            "name": "phar-io/gnupg",
-            "version": "1.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/phar-io/gnupg.git",
-                "reference": "ed8ab1740ac4e9db99500e7252911f2821357093"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/phar-io/gnupg/zipball/ed8ab1740ac4e9db99500e7252911f2821357093",
-                "reference": "ed8ab1740ac4e9db99500e7252911f2821357093",
-                "shasum": ""
-            },
-            "require": {
-                "phar-io/executor": "^1.0",
-                "phar-io/filesystem": "^2.0",
-                "php": "^7.2||^8.0"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "src/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Arne Blankerts",
-                    "email": "arne@blankerts.de",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Sebastian Heuer",
-                    "email": "sebastian@phpeople.de",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Thin GnuPG wrapper class around the gnupg binary, mimicking the pecl/gnupg api",
-            "support": {
-                "issues": "https://github.com/phar-io/gnupg/issues",
-                "source": "https://github.com/phar-io/gnupg/tree/1.0.3"
-            },
-            "time": "2024-08-22T20:45:57+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -4478,17 +4338,193 @@
             "time": "2020-09-28T06:39:44+00:00"
         },
         {
-            "name": "symfony/console",
-            "version": "v6.4.49",
+            "name": "sebastianfeldmann/camino",
+            "version": "0.9.5",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/console.git",
-                "reference": "e918c95b70bdfa09148054a71c82c2858ae82efd"
+                "url": "https://github.com/sebastianfeldmann/camino.git",
+                "reference": "bf2e4c8b2a029e9eade43666132b61331e3e8184"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/e918c95b70bdfa09148054a71c82c2858ae82efd",
-                "reference": "e918c95b70bdfa09148054a71c82c2858ae82efd",
+                "url": "https://api.github.com/repos/sebastianfeldmann/camino/zipball/bf2e4c8b2a029e9eade43666132b61331e3e8184",
+                "reference": "bf2e4c8b2a029e9eade43666132b61331e3e8184",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "SebastianFeldmann\\Camino\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Feldmann",
+                    "email": "sf@sebastian-feldmann.info"
+                }
+            ],
+            "description": "Path management the OO way",
+            "homepage": "https://github.com/sebastianfeldmann/camino",
+            "keywords": [
+                "file system",
+                "path"
+            ],
+            "support": {
+                "issues": "https://github.com/sebastianfeldmann/camino/issues",
+                "source": "https://github.com/sebastianfeldmann/camino/tree/0.9.5"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sebastianfeldmann",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-01-03T13:15:10+00:00"
+        },
+        {
+            "name": "sebastianfeldmann/cli",
+            "version": "3.4.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianfeldmann/cli.git",
+                "reference": "6fa122afd528dae7d7ec988a604aa6c600f5d9b5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianfeldmann/cli/zipball/6fa122afd528dae7d7ec988a604aa6c600f5d9b5",
+                "reference": "6fa122afd528dae7d7ec988a604aa6c600f5d9b5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2"
+            },
+            "require-dev": {
+                "symfony/process": "^4.3 | ^5.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.4.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "SebastianFeldmann\\Cli\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Feldmann",
+                    "email": "sf@sebastian-feldmann.info"
+                }
+            ],
+            "description": "PHP cli helper classes",
+            "homepage": "https://github.com/sebastianfeldmann/cli",
+            "keywords": [
+                "cli"
+            ],
+            "support": {
+                "issues": "https://github.com/sebastianfeldmann/cli/issues",
+                "source": "https://github.com/sebastianfeldmann/cli/tree/3.4.2"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sebastianfeldmann",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-11-26T10:19:01+00:00"
+        },
+        {
+            "name": "sebastianfeldmann/git",
+            "version": "3.16.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianfeldmann/git.git",
+                "reference": "40a5cc043f0957228767f639e370ec92590e940f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianfeldmann/git/zipball/40a5cc043f0957228767f639e370ec92590e940f",
+                "reference": "40a5cc043f0957228767f639e370ec92590e940f",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-libxml": "*",
+                "ext-simplexml": "*",
+                "php": ">=8.0",
+                "sebastianfeldmann/cli": "^3.0"
+            },
+            "require-dev": {
+                "mikey179/vfsstream": "^1.6"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "SebastianFeldmann\\Git\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Feldmann",
+                    "email": "sf@sebastian-feldmann.info"
+                }
+            ],
+            "description": "PHP git wrapper",
+            "homepage": "https://github.com/sebastianfeldmann/git",
+            "keywords": [
+                "git"
+            ],
+            "support": {
+                "issues": "https://github.com/sebastianfeldmann/git/issues",
+                "source": "https://github.com/sebastianfeldmann/git/tree/3.16.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sebastianfeldmann",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-01-26T20:59:18+00:00"
+        },
+        {
+            "name": "symfony/console",
+            "version": "v6.4.50",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/console.git",
+                "reference": "955771637c0a01d5e91730aa8f63edae5190e2c7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/console/zipball/955771637c0a01d5e91730aa8f63edae5190e2c7",
+                "reference": "955771637c0a01d5e91730aa8f63edae5190e2c7",
                 "shasum": ""
             },
             "require": {
@@ -4553,7 +4589,7 @@
                 "terminal"
             ],
             "support": {
-                "source": "https://github.com/symfony/console/tree/v6.4.49"
+                "source": "https://github.com/symfony/console/tree/v6.4.50"
             },
             "funding": [
                 {
@@ -4573,7 +4609,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-28T10:54:25+00:00"
+            "time": "2026-11-03T21:19:33+00:00"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -4661,16 +4697,16 @@
         },
         {
             "name": "symfony/event-dispatcher-contracts",
-            "version": "v3.7.1",
+            "version": "v3.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher-contracts.git",
-                "reference": "c7de7a00ffb67842132da02ea92988a39ccd9f4e"
+                "reference": "658e29751424da3ef4758c60f769e59d1b2981eb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/event-dispatcher-contracts/zipball/c7de7a00ffb67842132da02ea92988a39ccd9f4e",
-                "reference": "c7de7a00ffb67842132da02ea92988a39ccd9f4e",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher-contracts/zipball/658e29751424da3ef4758c60f769e59d1b2981eb",
+                "reference": "658e29751424da3ef4758c60f769e59d1b2981eb",
                 "shasum": ""
             },
             "require": {
@@ -4684,7 +4720,7 @@
                     "name": "symfony/contracts"
                 },
                 "branch-alias": {
-                    "dev-main": "3.7-dev"
+                    "dev-main": "3.8-dev"
                 }
             },
             "autoload": {
@@ -4717,7 +4753,7 @@
                 "standards"
             ],
             "support": {
-                "source": "https://github.com/symfony/event-dispatcher-contracts/tree/v3.7.1"
+                "source": "https://github.com/symfony/event-dispatcher-contracts/tree/v3.8.1"
             },
             "funding": [
                 {
@@ -4737,20 +4773,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-06-05T06:23:12+00:00"
+            "time": "2026-09-16T14:15:10+00:00"
         },
         {
             "name": "symfony/filesystem",
-            "version": "v6.4.48",
+            "version": "v6.4.50",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/filesystem.git",
-                "reference": "e3ff48b19ac71ee79f89021122211710b892ae0b"
+                "reference": "9c54f695d2fcfb0bb21c8003b7a038bc631aa2e9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/filesystem/zipball/e3ff48b19ac71ee79f89021122211710b892ae0b",
-                "reference": "e3ff48b19ac71ee79f89021122211710b892ae0b",
+                "url": "https://api.github.com/repos/symfony/filesystem/zipball/9c54f695d2fcfb0bb21c8003b7a038bc631aa2e9",
+                "reference": "9c54f695d2fcfb0bb21c8003b7a038bc631aa2e9",
                 "shasum": ""
             },
             "require": {
@@ -4787,7 +4823,7 @@
             "description": "Provides basic utilities for the filesystem",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/filesystem/tree/v6.4.48"
+                "source": "https://github.com/symfony/filesystem/tree/v6.4.50"
             },
             "funding": [
                 {
@@ -4807,7 +4843,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-06T17:30:58+00:00"
+            "time": "2026-11-04T08:16:31+00:00"
         },
         {
             "name": "symfony/finder",
@@ -5594,16 +5630,16 @@
         },
         {
             "name": "symfony/service-contracts",
-            "version": "v3.7.3",
+            "version": "v3.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/service-contracts.git",
-                "reference": "15e6a07ec2a2c75ceb1b21dd98105ee8456d2257"
+                "reference": "052852a96fd5e5ebdb617dba22031e41a3300fb5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/service-contracts/zipball/15e6a07ec2a2c75ceb1b21dd98105ee8456d2257",
-                "reference": "15e6a07ec2a2c75ceb1b21dd98105ee8456d2257",
+                "url": "https://api.github.com/repos/symfony/service-contracts/zipball/052852a96fd5e5ebdb617dba22031e41a3300fb5",
+                "reference": "052852a96fd5e5ebdb617dba22031e41a3300fb5",
                 "shasum": ""
             },
             "require": {
@@ -5621,7 +5657,7 @@
                     "name": "symfony/contracts"
                 },
                 "branch-alias": {
-                    "dev-main": "3.7-dev"
+                    "dev-main": "3.8-dev"
                 }
             },
             "autoload": {
@@ -5657,7 +5693,7 @@
                 "standards"
             ],
             "support": {
-                "source": "https://github.com/symfony/service-contracts/tree/v3.7.3"
+                "source": "https://github.com/symfony/service-contracts/tree/v3.8.1"
             },
             "funding": [
                 {
@@ -5677,7 +5713,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-07-27T15:39:01+00:00"
+            "time": "2026-10-20T17:38:25+00:00"
         },
         {
             "name": "symfony/stopwatch",

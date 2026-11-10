@@ -23,7 +23,6 @@
       "php": "8.1.0"
     },
     "allow-plugins": {
-      "captainhook/captainhook-phar": true,
       "captainhook/hook-installer": true
     }
   },
@@ -57,8 +56,8 @@
     "phpstan/phpstan": "^2.1",
     "phpstan/phpstan-phpunit": "^2.0",
     "friendsofphp/php-cs-fixer": "^3.95",
-    "captainhook/captainhook-phar": "^5.29",
-    "captainhook/hook-installer": "^1.0"
+    "captainhook/hook-installer": "^1.0",
+    "captainhook/captainhook": "^5.29"
   },
   "scripts": {
     "phpstan": "phpstan analyse --no-progress",
