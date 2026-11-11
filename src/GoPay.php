@@ -15,7 +15,7 @@ class GoPay
     public const LOCALE_CZECH = 'cs-CZ';
     public const LOCALE_ENGLISH = 'en-US';
 
-    public const VERSION = '1.11.1';
+    public const VERSION = '1.12.0';
     public const DEFAULT_USER_AGENT = 'GoPay PHP ' . self::VERSION;
 
     /** @var array<string, mixed> */
