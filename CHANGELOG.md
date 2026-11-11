@@ -1,7 +1,7 @@
 
 # Changelog
 
-## 1.12.0
+## Unreleased
 
 - Added PHPStan static analysis (level 8) for SDK sources and tests, run in CI
 - Public API typed via PHPDoc only, public signatures are unchanged
