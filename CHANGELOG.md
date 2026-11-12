@@ -24,6 +24,7 @@
 - CI runs unit tests on the whole PHP and OS matrix, integration tests (GoPay sandbox) only once in a separate job
 - Code coverage measured with pcov in the CI integration job (Clover report as the `coverage` artifact, summary in the job summary)
 - Added `composer test`, `test:unit`, `test:integration` and `test:coverage` scripts
+- Removed stale `composer.bak` (lock file backup from 2020)
 
 ## 1.11.1
 
