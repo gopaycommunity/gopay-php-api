@@ -21,6 +21,7 @@
 - Fixed invalid `phpunit.xml.dist` (removed `syntaxCheck` and the non-existent unit test suite), CI runs PHPUnit with it, so deprecations, warnings and risky tests fail the build
 - Tests split into `unit` (offline) and `integration` (sandbox) suites, test classes autoloaded via PSR-4 (`GoPay\Tests\Unit`, `GoPay\Tests\Integration`) instead of `require_once`
 - Added unit tests for `GoPay`, `Config`, `OAuth2`, `CachedOAuth`, `Payments` (all endpoints, OAuth error handling), `JsonBrowser` transport errors and the `payments()` factory
+- CI runs unit tests on the whole PHP and OS matrix, integration tests (GoPay sandbox) only once in a separate job
 
 ## 1.11.1
 

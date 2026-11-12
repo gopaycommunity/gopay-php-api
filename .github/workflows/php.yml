@@ -37,7 +37,7 @@ jobs:
         operating-system: [ubuntu-latest, windows-latest, macOS-latest]
         php-versions: ["8.1", "8.2", "8.3", "8.4"]
 
-    name: PHP ${{ matrix.php-versions }} Test on ${{ matrix.operating-system }}
+    name: PHP ${{ matrix.php-versions }} unit tests on ${{ matrix.operating-system }}
 
     steps:
       - uses: actions/checkout@v6
@@ -53,8 +53,26 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
 
-      # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
-      # Docs: https://getcomposer.org/doc/articles/scripts.md
+      - name: Run unit tests
+        run: php vendor/phpunit/phpunit/phpunit --testsuite unit
 
-      - name: Run test suite
-        run: php vendor/phpunit/phpunit/phpunit
+  # Integration tests call the GoPay sandbox and create real sandbox payments,
+  # so they run once instead of in every job of the matrix.
+  integration:
+    runs-on: ubuntu-latest
+
+    name: Integration tests
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress
+
+      - name: Run integration tests
+        run: php vendor/phpunit/phpunit/phpunit --testsuite integration

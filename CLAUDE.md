@@ -8,9 +8,11 @@
 
 ```bash
 composer install                                   # composer bin-dir is ./bin, so tools land in bin/
-bin/phpunit                                        # run all tests (same as CI, uses phpunit.xml.dist)
+bin/phpunit                                        # run all tests (uses phpunit.xml.dist)
+bin/phpunit --testsuite unit                       # offline unit tests (CI runs them on the whole PHP/OS matrix)
+bin/phpunit --testsuite integration                # sandbox tests (CI runs them once, Ubuntu + PHP 8.4)
 bin/phpunit tests/integration/RefundTest.php       # single test file
-bin/phpunit --filter testRefundPayment tests/integration   # single test method
+bin/phpunit --filter testRefundPayment             # single test method
 composer validate --strict                         # CI also runs this
 composer phpstan                                   # PHPStan on src + tests (config phpstan.neon.dist, level 8), CI also runs this
 composer cs-check                                  # PHP-CS-Fixer dry run with diff (config .php-cs-fixer.dist.php), CI also runs this
@@ -18,13 +20,16 @@ composer cs-fix                                    # apply coding style fixes
 bin/captainhook install -f                         # (re)install git hooks; normally done automatically by composer install
 ```
 
-Git hooks are managed by CaptainHook ([captainhook.json](captainhook.json)), installed into `.git/hooks` by the `captainhook/hook-installer` Composer plugin. The `pre-commit` hook runs on staged files only: PHP-CS-Fixer dry run and PHPStan on staged `*.php`, `composer validate --strict` when `composer.json`/`composer.lock` is staged. Integration tests are intentionally not in the hook (network, slow). Tools are invoked as `php bin/...`, so `php` in `PATH` must be >= 8.1. Bypass with `git commit --no-verify`.
+Git hooks are managed by CaptainHook ([captainhook.json](captainhook.json)), installed into `.git/hooks` by the `captainhook/hook-installer` Composer plugin. The `pre-commit` hook runs on staged files only: PHP-CS-Fixer dry run and PHPStan on staged `*.php`, `composer validate --strict` when `composer.json`/`composer.lock` is staged. Tests are intentionally not in the hook (integration tests need network and are slow). Tools are invoked as `php bin/...`, so `php` in `PATH` must be >= 8.1. Bypass with `git commit --no-verify`.
 
-PHPStan rules for this repo: public API (public/protected methods, public properties, interfaces) is typed **only via PHPDoc** to keep BC; native types only on private members. Legacy unreachable code is ignored inline with `@phpstan-ignore <identifier>` plus a reason, no baseline. The Jenkins script [bin/jenkins.sh](bin/jenkins.sh) runs `phpqa` if available. `phpunit.xml.dist` is used by CI and makes deprecations, warnings and risky tests fail the run (PHPUnit 9 can enable deprecation failures only via XML, so don't run CI with `--no-configuration`); only `tests/integration/` exists.
+PHPStan rules for this repo: public API (public/protected methods, public properties, interfaces) is typed **only via PHPDoc** to keep BC; native types only on private members. Legacy unreachable code is ignored inline with `@phpstan-ignore <identifier>` plus a reason, no baseline. The Jenkins script [bin/jenkins.sh](bin/jenkins.sh) runs `phpqa` if available. `phpunit.xml.dist` is used by CI and makes deprecations, warnings and risky tests fail the run (PHPUnit 9 can enable deprecation failures only via XML, so don't run CI with `--no-configuration`).
 
-### Tests hit the real sandbox
+### Tests
 
-All tests are integration tests against `https://gw.sandbox.gopay.com/api` and need network access. Sandbox credentials are hardcoded in [tests/integration/TestUtils.php](tests/integration/TestUtils.php) (`TestUtils::setup()` builds a `Payments` instance; there is a separate EET account). Many tests require IDs of existing sandbox payments/cards (test files note that a method only runs if its name has the `test` prefix). `QrPaymentTest.php.disabled` is disabled on purpose. Tests use Hamcrest (`assertThat`, `is(...)`) loaded via `autoload-dev`, plus PHPUnit asserts.
+Two suites, test classes are autoloaded via PSR-4 (`autoload-dev`):
+
+- `tests/unit/` (`GoPay\Tests\Unit`) – offline. [RecordingBrowser](tests/unit/RecordingBrowser.php) replaces `JsonBrowser`: it records sent `Request`s and returns queued `Response`s, so `GoPay`, `OAuth2`, `CachedOAuth` and `Payments` are tested without network. `JsonBrowser` creates its Guzzle client internally, so only its transport error path is unit-tested. A new endpoint in `Payments` belongs to `PaymentsTest::provideEndpoints()`.
+- `tests/integration/` (`GoPay\Tests\Integration`) – against `https://gw.sandbox.gopay.com/api`, need network access. Sandbox credentials are hardcoded in [tests/integration/TestUtils.php](tests/integration/TestUtils.php) (`TestUtils::setup()` builds a `Payments` instance; there is a separate EET account). Many tests require IDs of existing sandbox payments/cards (test files note that a method only runs if its name has the `test` prefix). `QrPaymentTest.php.disabled` is disabled on purpose, tests that no longer work against the sandbox are skipped via `markTestSkipped` with a reason. Tests use PHPUnit asserts only (Hamcrest is still loaded via `autoload-dev` but unused).
 
 ## Architecture
 
