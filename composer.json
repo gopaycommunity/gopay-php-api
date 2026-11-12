@@ -18,7 +18,13 @@
   ],
   "config": {
     "bin-dir": "bin",
-    "optimize-autoloader": true
+    "optimize-autoloader": true,
+    "platform": {
+      "php": "8.1.0"
+    },
+    "allow-plugins": {
+      "captainhook/hook-installer": true
+    }
   },
   "autoload": {
     "psr-4": {
@@ -46,6 +52,16 @@
     "phpunit/phpunit": "9.6.33",
     "hamcrest/hamcrest-php": "*",
     "phpspec/prophecy": "~1.0",
-    "phpspec/prophecy-phpunit": "^2.0"
+    "phpspec/prophecy-phpunit": "^2.0",
+    "phpstan/phpstan": "^2.1",
+    "phpstan/phpstan-phpunit": "^2.0",
+    "friendsofphp/php-cs-fixer": "^3.95",
+    "captainhook/hook-installer": "^1.0",
+    "captainhook/captainhook": "^5.29"
+  },
+  "scripts": {
+    "phpstan": "phpstan analyse --no-progress",
+    "cs-check": "php-cs-fixer fix --dry-run --diff",
+    "cs-fix": "php-cs-fixer fix"
   }
 }

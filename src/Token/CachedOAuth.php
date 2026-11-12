@@ -7,8 +7,8 @@ use GoPay\OAuth2;
 
 class CachedOAuth implements Auth
 {
-    private $oauth;
-    private $cache;
+    private OAuth2 $oauth;
+    private TokenCache $cache;
 
     public function __construct(OAuth2 $auth, TokenCache $cache)
     {
@@ -16,6 +16,9 @@ class CachedOAuth implements Auth
         $this->cache = $cache;
     }
 
+    /**
+     * @return AccessToken
+     */
     public function authorize()
     {
         $client = $this->oauth->getClient();

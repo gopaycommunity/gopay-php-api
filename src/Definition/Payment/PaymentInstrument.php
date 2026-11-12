@@ -4,19 +4,19 @@ namespace GoPay\Definition\Payment;
 
 class PaymentInstrument
 {
-    const PAYMENT_CARD = 'PAYMENT_CARD';
-    const BANK_ACCOUNT = 'BANK_ACCOUNT';
-    const PREMIUM_SMS = 'PRSMS';
-    const MPAYMENT = 'MPAYMENT';
-    const PAYSAFECARD = 'PAYSAFECARD';
-    const SUPERCASH = 'SUPERCASH';
-    const GOPAY = 'GOPAY';
-    const PAYPAL = 'PAYPAL';
-    const BITCOIN = 'BITCOIN';
-    const ACCOUNT = 'ACCOUNT';
-    const GPAY = 'GPAY';
-    const APPLE_PAY = 'APPLE_PAY';
-    const CLICK_TO_PAY = 'CLICK_TO_PAY';
-    const TWISTO = 'TWISTO';
-    const SKIPPAY = 'SKIPPAY';
+    public const PAYMENT_CARD = 'PAYMENT_CARD';
+    public const BANK_ACCOUNT = 'BANK_ACCOUNT';
+    public const PREMIUM_SMS = 'PRSMS';
+    public const MPAYMENT = 'MPAYMENT';
+    public const PAYSAFECARD = 'PAYSAFECARD';
+    public const SUPERCASH = 'SUPERCASH';
+    public const GOPAY = 'GOPAY';
+    public const PAYPAL = 'PAYPAL';
+    public const BITCOIN = 'BITCOIN';
+    public const ACCOUNT = 'ACCOUNT';
+    public const GPAY = 'GPAY';
+    public const APPLE_PAY = 'APPLE_PAY';
+    public const CLICK_TO_PAY = 'CLICK_TO_PAY';
+    public const TWISTO = 'TWISTO';
+    public const SKIPPAY = 'SKIPPAY';
 }

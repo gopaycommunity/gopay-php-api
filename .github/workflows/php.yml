@@ -5,20 +5,42 @@ on:
   - pull_request
 
 jobs:
-  build:
+  code-quality:
     runs-on: ubuntu-latest
+
+    name: Code quality
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.1"
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate --strict
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress
+
+      - name: Check coding style
+        run: composer cs-check
+
+      - name: Run static analysis
+        run: composer phpstan
+
+  build:
+    runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
         operating-system: [ubuntu-latest, windows-latest, macOS-latest]
-        php-versions: ["8.1", "8.2"]
+        php-versions: ["8.1", "8.2", "8.3", "8.4"]
 
     name: PHP ${{ matrix.php-versions }} Test on ${{ matrix.operating-system }}
 
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Validate composer.json and composer.lock
-        run: composer validate --strict
+      - uses: actions/checkout@v6
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -35,4 +57,4 @@ jobs:
       # Docs: https://getcomposer.org/doc/articles/scripts.md
 
       - name: Run test suite
-        run: vendor/phpunit/phpunit/phpunit --no-configuration tests/integration
+        run: php vendor/phpunit/phpunit/phpunit --no-configuration tests/integration

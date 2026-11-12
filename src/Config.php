@@ -19,8 +19,7 @@ class Config
         public ?string $goid = null,
         public ?string $gatewayUrl = null,
         public ?string $customUserAgent = null,
-    ) {
-    }
+    ) {}
 
     /**
      * {@see https://doc.gopay.com/#access-token}
@@ -45,19 +44,20 @@ class Config
     public int $timeout = 30;
 
     /**
-     * @param array|Config $userConfig
+     * @param array<string, mixed>|Config $userConfig
      * @param bool $defaultArrayValues
-     * @return array
+     *
+     * @return array<string, mixed>
      */
     public static function parseUserConfig(array|Config $userConfig, bool $defaultArrayValues = true): array
     {
         if (is_array($userConfig)) {
             if ($defaultArrayValues) {
                 return $userConfig + [
-                        'scope' => TokenScope::ALL,
-                        'language' => Language::ENGLISH,
-                        'timeout' => 30
-                    ];
+                    'scope' => TokenScope::ALL,
+                    'language' => Language::ENGLISH,
+                    'timeout' => 30,
+                ];
             }
 
             return $userConfig;
@@ -67,7 +67,8 @@ class Config
     }
 
     /**
-     * @param array $arr
+     * @param array<string, mixed> $arr
+     *
      * @return Config
      */
     public static function fromArray(array $arr): Config
@@ -94,7 +95,7 @@ class Config
     }
 
     /**
-     * @return array
+     * @return array{goid: string|null, clientId: string|null, clientSecret: string|null, gatewayUrl: string|null, scope: string, language: string, timeout: int}
      */
     public function toArray(): array
     {

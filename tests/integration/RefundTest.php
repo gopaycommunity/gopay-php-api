@@ -2,24 +2,25 @@
 
 namespace GoPay;
 
-use PHPUnit\Framework\TestCase;
-use function PHPUnit\Framework\assertArrayNotHasKey;
-use function PHPUnit\Framework\assertNotEmpty;
 use function PHPUnit\Framework\assertArrayHasKey;
+use function PHPUnit\Framework\assertArrayNotHasKey;
 use function PHPUnit\Framework\assertEquals;
+use function PHPUnit\Framework\assertNotEmpty;
+
+use PHPUnit\Framework\TestCase;
 
 require_once 'TestUtils.php';
 
 /**
  * Class RefundTests
+ *
  * @package GoPay
  *
  * To execute test for certain method properly it is necessary to add prefix 'test' to its name.
  */
 class RefundTest extends TestCase
 {
-
-    private $gopay;
+    private Payments $gopay;
 
     protected function setUp(): void
     {
@@ -27,7 +28,7 @@ class RefundTest extends TestCase
     }
 
     /** This test will always return an error, as the payment with id '3049604064' has been already refunded */
-    public function testRefundPayment()
+    public function testRefundPayment(): void
     {
         $paymentId = 3178283550;
 
@@ -43,7 +44,7 @@ class RefundTest extends TestCase
         echo print_r($response->json, true);
     }
 
-    public function testHistoryOfRefunds()
+    public function testHistoryOfRefunds(): void
     {
         {
             $cardId = 3178283550;

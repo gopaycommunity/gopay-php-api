@@ -5,39 +5,40 @@ namespace GoPay;
 require_once 'TestUtils.php';
 require_once 'CreatePaymentTest.php';
 
-use GoPay\Definition\Payment\Recurrence;
 use GoPay\Definition\Payment\Currency;
-use PHPUnit\Framework\TestCase;
+use GoPay\Definition\Payment\Recurrence;
 
+use function PHPUnit\Framework\assertArrayHasKey;
+use function PHPUnit\Framework\assertArrayNotHasKey;
+use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertNotEmpty;
 use function PHPUnit\Framework\assertNotNull;
-use function PHPUnit\Framework\assertEquals;
-use function PHPUnit\Framework\assertArrayNotHasKey;
-use function PHPUnit\Framework\assertArrayHasKey;
+
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class OnDemandPaymentTests
+ *
  * @package GoPay
  *
  * To execute test for certain method properly it is necessary to add prefix 'test' to its name.
  */
 class OnDemandPaymentTest extends TestCase
 {
-
-    private $gopay;
+    private Payments $gopay;
 
     protected function setUp(): void
     {
         $this->gopay = TestUtils::setup();
     }
 
-    public function testCreateOnDemandPayment()
+    public function testCreateOnDemandPayment(): void
     {
         $basePayment = CreatePaymentTest::createBasePayment();
 
         $basePayment['recurrence'] = [
             'recurrence_cycle' => Recurrence::ON_DEMAND,
-            'recurrence_date_to' => '2100-04-01'
+            'recurrence_date_to' => '2100-04-01',
         ];
 
         $response = $this->gopay->createPayment($basePayment);
@@ -50,16 +51,16 @@ class OnDemandPaymentTest extends TestCase
         echo print_r($responseBody, true);
 
         if ($response->hasSucceed()) {
-            print_r("OnDemand Payment ID: " . $responseBody['id'] . "\n");
-            print_r("OnDemand Payment gwUrl: " . $responseBody['gw_url'] . "\n");
-            print_r("OnDemand Payment state: " . $responseBody['state'] . "\n");
-            print_r("Recurrence: ");
+            print_r('OnDemand Payment ID: ' . $responseBody['id'] . "\n");
+            print_r('OnDemand Payment gwUrl: ' . $responseBody['gw_url'] . "\n");
+            print_r('OnDemand Payment state: ' . $responseBody['state'] . "\n");
+            print_r('Recurrence: ');
             echo print_r($responseBody['recurrence'], true);
         }
     }
 
 
-    public function testCreateNextOnDemandPayment()
+    public function testCreateNextOnDemandPayment(): void
     {
         $nextPayment = [
             'amount' => 4000,
@@ -71,21 +72,21 @@ class OnDemandPaymentTest extends TestCase
             ],
         ];
 
-        $response = $this->gopay->createRecurrence(3252157272, $nextPayment);
+        $response = $this->gopay->createRecurrence(3310523762, $nextPayment);
         $responseBody = $response->json;
 
         assertNotEmpty($responseBody);
 
-        assertArrayHasKey("errors", $responseBody);
+        assertArrayHasKey('errors', $responseBody);
         $message = $responseBody['errors'][0]['error_name'];
         assertEquals($message, 'PAYMENT_RECURRENCE_STOPPED');
 
         echo print_r($responseBody, true);
 
         if ($response->hasSucceed()) {
-            print_r("OnDemand Payment ID: " . $responseBody['id'] . "\n");
-            print_r("OnDemand Payment gwUrl: " . $responseBody['gw_url'] . "\n");
-            print_r("OnDemand Payment state: " . $responseBody['state'] . "\n");
+            print_r('OnDemand Payment ID: ' . $responseBody['id'] . "\n");
+            print_r('OnDemand Payment gwUrl: ' . $responseBody['gw_url'] . "\n");
+            print_r('OnDemand Payment state: ' . $responseBody['state'] . "\n");
         }
     }
 }

@@ -4,6 +4,6 @@ namespace GoPay\Definition;
 
 class TokenScope
 {
-    const CREATE_PAYMENT = 'payment-create';
-    const ALL = 'payment-all';
+    public const CREATE_PAYMENT = 'payment-create';
+    public const ALL = 'payment-all';
 }

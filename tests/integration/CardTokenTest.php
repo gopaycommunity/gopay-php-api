@@ -7,31 +7,35 @@ require_once 'TestUtils.php';
 use GoPay\Definition\Language;
 use GoPay\Definition\Payment\Currency;
 use GoPay\Definition\Payment\PaymentInstrument;
-use PHPUnit\Framework\TestCase;
 
+use function PHPUnit\Framework\assertArrayNotHasKey;
+use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertNotEmpty;
 use function PHPUnit\Framework\assertNotNull;
-use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertTrue;
-use function PHPUnit\Framework\assertArrayNotHasKey;
+
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class CardTokenTests
+ *
  * @package GoPay
  *
  * To execute test for certain method properly it is necessary to add prefix 'test' to its name.
  */
 class CardTokenTest extends TestCase
 {
-
-    private $gopay;
+    private Payments $gopay;
 
     protected function setUp(): void
     {
         $this->gopay = TestUtils::setup();
     }
 
-    public static function createBaseCardTokenPayment()
+    /**
+     * @return array<string, mixed>
+     */
+    public static function createBaseCardTokenPayment(): array
     {
         $basePayment = [
             'payer' => [
@@ -49,21 +53,21 @@ class CardTokenTest extends TestCase
             'order_description' => '9876Description',
             'lang' => Language::CZECH,
             'additional_params' => [
-                array('name' => 'invoicenumber', 'value' => '2015001003')
+                ['name' => 'invoicenumber', 'value' => '2015001003'],
             ],
             'items' => [
                 ['name' => 'item01', 'amount' => 2000, 'count' => 1],
             ],
             'callback' => [
                 'return_url' => 'https://eshop123.cz/return',
-                'notification_url' => 'https://eshop123.cz/notify'
+                'notification_url' => 'https://eshop123.cz/notify',
             ],
         ];
 
         return $basePayment;
     }
 
-    public function testPaymentWithCardTokenRequest()
+    public function testPaymentWithCardTokenRequest(): void
     {
         $basePayment = self::createBaseCardTokenPayment();
         $basePayment['payer']['request_card_token'] = true;
@@ -79,9 +83,9 @@ class CardTokenTest extends TestCase
         echo print_r($responseBody, true);
 
         if ($response->hasSucceed()) {
-            print_r("Payment ID: " . $responseBody['id'] . "\n");
-            print_r("Payment gwUrl: " . $responseBody['gw_url'] . "\n");
-            print_r("Payment state: " . $responseBody['state'] . "\n");
+            print_r('Payment ID: ' . $responseBody['id'] . "\n");
+            print_r('Payment gwUrl: ' . $responseBody['gw_url'] . "\n");
+            print_r('Payment state: ' . $responseBody['state'] . "\n");
         }
     }
 
@@ -141,7 +145,7 @@ class CardTokenTest extends TestCase
     }
     */
 
-    public function testDeletedCardDetails()
+    public function testDeletedCardDetails(): void
     {
         $cardId = 3011480505;
 
@@ -151,17 +155,17 @@ class CardTokenTest extends TestCase
         assertNotEmpty($responseBody);
         assertArrayNotHasKey('errors', $responseBody);
 
-        assertEquals($responseBody['status'], "DELETED");
+        assertEquals($responseBody['status'], 'DELETED');
 
         echo print_r($responseBody, true);
 
         if ($response->hasSucceed()) {
-            print_r("Card ID: " . $responseBody['card_id'] . "\n");
-            print_r("Card status: " . $responseBody['status'] . "\n");
+            print_r('Card ID: ' . $responseBody['card_id'] . "\n");
+            print_r('Card status: ' . $responseBody['status'] . "\n");
         }
     }
 
-    public function testDeleteCardToken()
+    public function testDeleteCardToken(): void
     {
         $cardId = 3011480505;
 

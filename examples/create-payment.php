@@ -3,9 +3,9 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use GoPay\Definition\Language;
+use GoPay\Definition\Payment\BankSwiftCode;
 use GoPay\Definition\Payment\Currency;
 use GoPay\Definition\Payment\PaymentInstrument;
-use GoPay\Definition\Payment\BankSwiftCode;
 use GoPay\Definition\Payment\Recurrence;
 
 $gopay = GoPay\payments([
@@ -13,21 +13,21 @@ $gopay = GoPay\payments([
     'clientId' => 'my id',
     'clientSecret' => 'my secret',
     'gatewayUrl' => 'https://gw.sandbox.gopay.com/api',
-    'language' => Language::CZECH
+    'language' => Language::CZECH,
 ]);
 
 // recurrent payment must have field ''
 $recurrentPayment = [
     'recurrence' => [
         'recurrence_cycle' => Recurrence::DAILY,
-        'recurrence_period' => "7",
-        'recurrence_date_to' => '2015-12-31'
-    ]
+        'recurrence_period' => '7',
+        'recurrence_date_to' => '2015-12-31',
+    ],
 ];
 
 // pre-authorized payment must have field 'preauthorization'
 $preauthorizedPayment = [
-    'preauthorization' => true
+    'preauthorization' => true,
 ];
 
 $response = $gopay->createPayment([
@@ -56,11 +56,11 @@ $response = $gopay->createPayment([
         ['name' => 'item02', 'amount' => 100],
     ],
     'additional_params' => [
-        array('name' => 'invoicenumber', 'value' => '2015001003')
+        ['name' => 'invoicenumber', 'value' => '2015001003'],
     ],
     'callback' => [
         'return_url' => 'http://www.your-url.tld/return',
-        'notification_url' => 'http://www.your-url.tld/notify'
+        'notification_url' => 'http://www.your-url.tld/notify',
     ],
     'lang' => Language::CZECH, // if lang is not specified, then default lang is used
 ]);

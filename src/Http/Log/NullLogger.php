@@ -7,11 +7,13 @@ use GoPay\Http\Response;
 
 class NullLogger implements Logger
 {
-    public function logHttpCommunication(Request $request, Response $response)
-    {
-    }
+    /**
+     * @return void
+     */
+    public function logHttpCommunication(Request $request, Response $response) {}
 
-    public function log(string $message)
-    {
-    }
+    /**
+     * @return void
+     */
+    public function log(string $message) {}
 }

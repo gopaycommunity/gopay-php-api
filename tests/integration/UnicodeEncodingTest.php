@@ -21,7 +21,11 @@ use PHPUnit\Framework\TestCase;
  */
 class UnicodeEncodingTest extends TestCase
 {
-    /** Minimal config sufficient to construct a GoPay instance (no real network needed). */
+    /**
+     * Minimal config sufficient to construct a GoPay instance (no real network needed).
+     *
+     * @return array<string, mixed>
+     */
     private function makeConfig(): array
     {
         return [
@@ -62,6 +66,8 @@ class UnicodeEncodingTest extends TestCase
 
     /**
      * Helper: encode $data through the full call() stack and return the captured body string.
+     *
+     * @param array<mixed> $data
      */
     private function encodeViaCall(array $data, string $contentType = GoPay::JSON): string
     {
@@ -110,10 +116,16 @@ class UnicodeEncodingTest extends TestCase
         foreach ($bulgarianNames as $name) {
             $result = $this->encodeViaCall(['item_name' => $name]);
 
-            $this->assertStringNotContainsString('\u', $result,
-                "Item name '$name' must not contain \\uXXXX escape sequences");
-            $this->assertStringContainsString($name, $result,
-                "Item name '$name' must appear verbatim in JSON");
+            $this->assertStringNotContainsString(
+                '\u',
+                $result,
+                "Item name '$name' must not contain \\uXXXX escape sequences"
+            );
+            $this->assertStringContainsString(
+                $name,
+                $result,
+                "Item name '$name' must appear verbatim in JSON"
+            );
         }
     }
 
@@ -134,10 +146,16 @@ class UnicodeEncodingTest extends TestCase
         foreach ($samples as $script => $text) {
             $result = $this->encodeViaCall(['city' => $text]);
 
-            $this->assertStringNotContainsString('\u', $result,
-                "$script text must not contain \\uXXXX escapes in JSON");
-            $this->assertStringContainsString($text, $result,
-                "$script text must appear verbatim in JSON");
+            $this->assertStringNotContainsString(
+                '\u',
+                $result,
+                "$script text must not contain \\uXXXX escapes in JSON"
+            );
+            $this->assertStringContainsString(
+                $text,
+                $result,
+                "$script text must appear verbatim in JSON"
+            );
         }
     }
 
@@ -221,11 +239,11 @@ class UnicodeEncodingTest extends TestCase
         $this->assertStringNotContainsString(
             '\u',
             $capture->body,
-            'The outgoing JSON body must not contain \\uXXXX escape sequences – ' .
-            'they trigger WAF SQL Injection protection on the GoPay gateway (HTTP 403)'
+            'The outgoing JSON body must not contain \\uXXXX escape sequences – '
+            . 'they trigger WAF SQL Injection protection on the GoPay gateway (HTTP 403)'
         );
         $this->assertStringContainsString('СЛИВЕН - РЕЧИЦА (АВТОМАТ)', $capture->body);
-        $this->assertStringContainsString('СОФИЯ - ЦЕНТРАЛНА ГАРА',    $capture->body);
+        $this->assertStringContainsString('СОФИЯ - ЦЕНТРАЛНА ГАРА', $capture->body);
     }
 
     /**
@@ -252,10 +270,13 @@ class UnicodeEncodingTest extends TestCase
 
         $gopay->call('/payments/payment', 'Bearer mock-token', 'POST', GoPay::JSON, $payload);
 
-        $this->assertStringNotContainsString('\u', $capture->body,
-            'Mixed Unicode payload must not contain \\uXXXX escapes');
-        $this->assertStringContainsString('Příliš žluťoučký kůň',       $capture->body);
-        $this->assertStringContainsString('СЛИВЕН - РЕЧИЦА (АВТОМАТ)',   $capture->body);
-        $this->assertStringContainsString('Standard ASCII item',         $capture->body);
+        $this->assertStringNotContainsString(
+            '\u',
+            $capture->body,
+            'Mixed Unicode payload must not contain \\uXXXX escapes'
+        );
+        $this->assertStringContainsString('Příliš žluťoučký kůň', $capture->body);
+        $this->assertStringContainsString('СЛИВЕН - РЕЧИЦА (АВТОМАТ)', $capture->body);
+        $this->assertStringContainsString('Standard ASCII item', $capture->body);
     }
 }

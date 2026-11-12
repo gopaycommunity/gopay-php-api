@@ -4,7 +4,7 @@ namespace GoPay\Definition\Payment;
 
 class PaymentItemType
 {
-    const ITEM = 'ITEM';
-    const DISCOUNT = 'DISCOUNT';
-    const DELIVERY = 'DELIVERY';
+    public const ITEM = 'ITEM';
+    public const DISCOUNT = 'DISCOUNT';
+    public const DELIVERY = 'DELIVERY';
 }
