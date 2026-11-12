@@ -205,8 +205,8 @@ class UnicodeEncodingTest extends TestCase
      * When a payment with Cyrillic item names is submitted via call(), the
      * captured HTTP request body must not contain \uXXXX escape sequences.
      *
-     * This is the exact scenario that caused HTTP 403 for O-global s.r.o.
-     * (EVČ: 1878275146) when ordering from www.orsay.com/bg.
+     * This is the exact scenario that caused HTTP 403 for a merchant
+     * with Bulgarian item names.
      */
     public function testCallWithCyrillicItemNamesDoesNotEscapeUnicode(): void
     {
@@ -222,8 +222,8 @@ class UnicodeEncodingTest extends TestCase
                 ['name' => 'СОФИЯ - ЦЕНТРАЛНА ГАРА',    'amount' => 5000, 'count' => 1],
             ],
             'callback' => [
-                'return_url'       => 'https://orsay.com/bg/return',
-                'notification_url' => 'https://orsay.com/bg/notify',
+                'return_url'       => 'https://example.com/return',
+                'notification_url' => 'https://example.com/notify',
             ],
         ];
 
