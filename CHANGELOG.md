@@ -15,7 +15,7 @@
 - CI tests actually run on Ubuntu, Windows and macOS (the OS matrix was previously ignored)
 - Added CLAUDE.md
 - Fixed broken tests
-- Removed unused `phpspec/prophecy` and `phpspec/prophecy-phpunit` dev dependencies
+- Removed unused `phpspec/prophecy`, `phpspec/prophecy-phpunit` and `hamcrest/hamcrest-php` dev dependencies
 - Account statement test uses last month instead of a hardcoded date range
 - Removed unused `GivenGoPay` test helper, disabled tests are reported as skipped instead of being commented out or misnamed
 - Fixed invalid `phpunit.xml.dist` (removed `syntaxCheck` and the non-existent unit test suite), CI runs PHPUnit with it, so deprecations, warnings and risky tests fail the build

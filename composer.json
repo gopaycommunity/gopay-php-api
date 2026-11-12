@@ -41,10 +41,7 @@
     "psr-4": {
       "GoPay\\Tests\\Integration\\": "tests/integration/",
       "GoPay\\Tests\\Unit\\": "tests/unit/"
-    },
-    "files": [
-      "vendor/hamcrest/hamcrest-php/hamcrest/Hamcrest.php"
-    ]
+    }
   },
   "require": {
     "php": ">=8.1",
@@ -53,7 +50,6 @@
   },
   "require-dev": {
     "phpunit/phpunit": "9.6.33",
-    "hamcrest/hamcrest-php": "*",
     "phpstan/phpstan": "^2.1",
     "phpstan/phpstan-phpunit": "^2.0",
     "friendsofphp/php-cs-fixer": "^3.95",
