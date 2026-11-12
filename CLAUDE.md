@@ -8,9 +8,10 @@
 
 ```bash
 composer install                                   # composer bin-dir is ./bin, so tools land in bin/
-bin/phpunit                                        # run all tests (uses phpunit.xml.dist)
-bin/phpunit --testsuite unit                       # offline unit tests (CI runs them on the whole PHP/OS matrix)
-bin/phpunit --testsuite integration                # sandbox tests (CI runs them once, Ubuntu + PHP 8.4)
+composer test                                      # run all tests (bin/phpunit, uses phpunit.xml.dist)
+composer test:unit                                 # offline unit tests (CI runs them on the whole PHP/OS matrix)
+composer test:integration                          # sandbox tests (CI runs them once, Ubuntu + PHP 8.4)
+composer test:coverage                             # all tests + HTML report in build/coverage/html, needs pcov or Xdebug (XDEBUG_MODE=coverage)
 bin/phpunit tests/integration/RefundTest.php       # single test file
 bin/phpunit --filter testRefundPayment             # single test method
 composer validate --strict                         # CI also runs this
@@ -22,7 +23,7 @@ bin/captainhook install -f                         # (re)install git hooks; norm
 
 Git hooks are managed by CaptainHook ([captainhook.json](captainhook.json)), installed into `.git/hooks` by the `captainhook/hook-installer` Composer plugin. The `pre-commit` hook runs on staged files only: PHP-CS-Fixer dry run and PHPStan on staged `*.php`, `composer validate --strict` when `composer.json`/`composer.lock` is staged. Tests are intentionally not in the hook (integration tests need network and are slow). Tools are invoked as `php bin/...`, so `php` in `PATH` must be >= 8.1. Bypass with `git commit --no-verify`.
 
-PHPStan rules for this repo: public API (public/protected methods, public properties, interfaces) is typed **only via PHPDoc** to keep BC; native types only on private members. Legacy unreachable code is ignored inline with `@phpstan-ignore <identifier>` plus a reason, no baseline. The Jenkins script [bin/jenkins.sh](bin/jenkins.sh) runs `phpqa` if available. `phpunit.xml.dist` is used by CI and makes deprecations, warnings and risky tests fail the run (PHPUnit 9 can enable deprecation failures only via XML, so don't run CI with `--no-configuration`).
+PHPStan rules for this repo: public API (public/protected methods, public properties, interfaces) is typed **only via PHPDoc** to keep BC; native types only on private members. Legacy unreachable code is ignored inline with `@phpstan-ignore <identifier>` plus a reason, no baseline. The Jenkins script [bin/jenkins.sh](bin/jenkins.sh) runs `phpqa` if available. `phpunit.xml.dist` is used by CI and makes deprecations, warnings and risky tests fail the run (PHPUnit 9 can enable deprecation failures only via XML, so don't run CI with `--no-configuration`). Coverage (filter `src` + `factory.php`) is measured in the CI integration job with pcov over both suites; the Clover report is uploaded as the `coverage` artifact and the text summary goes to the job summary. Without a coverage driver PHPUnit only warns and writes no report.
 
 ### Tests
 

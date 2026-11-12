@@ -57,6 +57,10 @@
     "captainhook/captainhook": "^5.29"
   },
   "scripts": {
+    "test": "@php bin/phpunit",
+    "test:unit": "@php bin/phpunit --testsuite unit",
+    "test:integration": "@php bin/phpunit --testsuite integration",
+    "test:coverage": "@php bin/phpunit --coverage-html build/coverage/html --coverage-text",
     "phpstan": "phpstan analyse --no-progress",
     "cs-check": "php-cs-fixer fix --dry-run --diff",
     "cs-fix": "php-cs-fixer fix"
