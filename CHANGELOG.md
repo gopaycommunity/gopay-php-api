@@ -15,6 +15,7 @@
 - CI tests actually run on Ubuntu, Windows and macOS (the OS matrix was previously ignored)
 - Added CLAUDE.md
 - Fixed broken tests
+- Removed unused `phpspec/prophecy` and `phpspec/prophecy-phpunit` dev dependencies
 
 ## 1.11.1
 
