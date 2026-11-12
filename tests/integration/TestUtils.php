@@ -1,8 +1,11 @@
 <?php
 
-namespace GoPay;
+namespace GoPay\Tests\Integration;
 
 use GoPay\Definition\Language;
+use GoPay\Payments;
+
+use function GoPay\payments;
 
 class TestUtils
 {

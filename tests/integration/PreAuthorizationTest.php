@@ -1,17 +1,16 @@
 <?php
 
-namespace GoPay;
+namespace GoPay\Tests\Integration;
 
-use PHPUnit\Framework\TestCase;
-
-require_once 'TestUtils.php';
-require_once 'CreatePaymentTest.php';
+use GoPay\Payments;
 
 use function PHPUnit\Framework\assertArrayHasKey;
 use function PHPUnit\Framework\assertArrayNotHasKey;
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertNotEmpty;
 use function PHPUnit\Framework\assertNotNull;
+
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class PreAuthorizationTests

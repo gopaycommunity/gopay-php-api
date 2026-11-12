@@ -1,14 +1,13 @@
 <?php
 
-namespace GoPay;
-
-require_once 'TestUtils.php';
+namespace GoPay\Tests\Integration;
 
 use GoPay\Definition\Language;
 use GoPay\Definition\Payment\BankSwiftCode;
 use GoPay\Definition\Payment\BnplType;
 use GoPay\Definition\Payment\Currency;
 use GoPay\Definition\Payment\PaymentInstrument;
+use GoPay\Payments;
 
 use function PHPUnit\Framework\assertArrayNotHasKey;
 use function PHPUnit\Framework\assertNotEmpty;

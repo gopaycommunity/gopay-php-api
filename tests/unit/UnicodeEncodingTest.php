@@ -1,8 +1,9 @@
 <?php
 
-namespace GoPay;
+namespace GoPay\Tests\Unit;
 
 use GoPay\Definition\Language;
+use GoPay\GoPay;
 use GoPay\Http\JsonBrowser;
 use GoPay\Http\Request;
 use GoPay\Http\Response;

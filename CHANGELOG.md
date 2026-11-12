@@ -19,6 +19,7 @@
 - Account statement test uses last month instead of a hardcoded date range
 - Removed unused `GivenGoPay` test helper, disabled tests are reported as skipped instead of being commented out or misnamed
 - Fixed invalid `phpunit.xml.dist` (removed `syntaxCheck` and the non-existent unit test suite), CI runs PHPUnit with it, so deprecations, warnings and risky tests fail the build
+- Tests split into `unit` (offline) and `integration` (sandbox) suites, test classes autoloaded via PSR-4 (`GoPay\Tests\Unit`, `GoPay\Tests\Integration`) instead of `require_once`
 
 ## 1.11.1
 

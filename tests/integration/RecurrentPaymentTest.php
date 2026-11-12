@@ -1,11 +1,9 @@
 <?php
 
-namespace GoPay;
-
-require_once 'TestUtils.php';
-require_once 'CreatePaymentTest.php';
+namespace GoPay\Tests\Integration;
 
 use GoPay\Definition\Payment\Recurrence;
+use GoPay\Payments;
 
 use function PHPUnit\Framework\assertArrayHasKey;
 use function PHPUnit\Framework\assertArrayNotHasKey;

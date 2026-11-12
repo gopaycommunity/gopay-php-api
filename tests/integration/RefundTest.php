@@ -1,6 +1,8 @@
 <?php
 
-namespace GoPay;
+namespace GoPay\Tests\Integration;
+
+use GoPay\Payments;
 
 use function PHPUnit\Framework\assertArrayHasKey;
 use function PHPUnit\Framework\assertArrayNotHasKey;
@@ -8,8 +10,6 @@ use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertNotEmpty;
 
 use PHPUnit\Framework\TestCase;
-
-require_once 'TestUtils.php';
 
 /**
  * Class RefundTests

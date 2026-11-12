@@ -1,11 +1,10 @@
 <?php
 
-namespace GoPay;
-
-require_once 'TestUtils.php';
+namespace GoPay\Tests\Integration;
 
 use GoPay\Definition\Account\StatementGeneratingFormat;
 use GoPay\Definition\Payment\Currency;
+use GoPay\Payments;
 
 use function PHPUnit\Framework\assertArrayHasKey;
 use function PHPUnit\Framework\assertArrayNotHasKey;

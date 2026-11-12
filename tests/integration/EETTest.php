@@ -1,8 +1,6 @@
 <?php
 
-namespace GoPay;
-
-require_once 'TestUtils.php';
+namespace GoPay\Tests\Integration;
 
 use GoPay\Definition\Language;
 use GoPay\Definition\Payment\BankSwiftCode;
@@ -10,6 +8,8 @@ use GoPay\Definition\Payment\Currency;
 use GoPay\Definition\Payment\PaymentInstrument;
 use GoPay\Definition\Payment\PaymentItemType;
 use GoPay\Definition\Payment\Recurrence;
+use GoPay\Http\Response;
+use GoPay\Payments;
 
 use function PHPUnit\Framework\assertNotEmpty;
 use function PHPUnit\Framework\assertNotNull;
@@ -90,7 +90,7 @@ class EETTest extends TestCase
     /**
      * @param array<string, mixed> $baseEETPayment
      */
-    private function createEETPaymentObject(array $baseEETPayment): Http\Response
+    private function createEETPaymentObject(array $baseEETPayment): Response
     {
         $payment = $this->gopay->createPayment($baseEETPayment);
 
