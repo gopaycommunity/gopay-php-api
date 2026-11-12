@@ -27,7 +27,7 @@ class RefundTest extends TestCase
         $this->gopay = TestUtils::setup();
     }
 
-    /** This test will always return an error, as the payment with id '3049604064' has been already refunded */
+    /** Returns PAYMENT_REFUND_NOT_SUPPORTED, the payment with id '3178283550' cannot be refunded */
     public function testRefundPayment(): void
     {
         $paymentId = 3178283550;
@@ -46,18 +46,16 @@ class RefundTest extends TestCase
 
     public function testHistoryOfRefunds(): void
     {
-        {
-            $cardId = 3178283550;
+        $paymentId = 3178283550;
 
-            $response = $this->gopay->getHistoryRefunds($cardId);
-            $responseBody = $response->json;
+        $response = $this->gopay->getHistoryRefunds($paymentId);
+        $responseBody = $response->json;
 
-            echo print_r($responseBody, true);
+        echo print_r($responseBody, true);
 
-            assertNotEmpty($responseBody);
-            assertArrayNotHasKey('errors', $responseBody);
+        assertNotEmpty($responseBody);
+        assertArrayNotHasKey('errors', $responseBody);
 
-            echo print_r($responseBody, true);
-        }
+        echo print_r($responseBody, true);
     }
 }

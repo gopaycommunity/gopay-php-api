@@ -187,14 +187,15 @@ class UnicodeEncodingTest extends TestCase
     }
 
     /**
-     * Empty array data must return an empty string (no encoding attempted).
+     * Null or empty array data must result in an empty body (no encoding attempted).
      */
     public function testEmptyDataReturnsEmptyString(): void
     {
-        [$gopay, $capture] = $this->makeGoPayWithCapture();
-        // Pass null explicitly via call() – body should be ''
-        $gopay->call('/payments/payment', 'Bearer mock', 'POST', GoPay::JSON, null);
-        $this->assertSame('', $capture->body);
+        foreach ([null, []] as $data) {
+            [$gopay, $capture] = $this->makeGoPayWithCapture();
+            $gopay->call('/payments/payment', 'Bearer mock', 'POST', GoPay::JSON, $data);
+            $this->assertSame('', $capture->body);
+        }
     }
 
     // -------------------------------------------------------------------------

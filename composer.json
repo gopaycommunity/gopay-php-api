@@ -39,7 +39,6 @@
   },
   "autoload-dev": {
     "files": [
-      "tests/integration/GivenGoPay.php",
       "vendor/hamcrest/hamcrest-php/hamcrest/Hamcrest.php"
     ]
   },

@@ -17,6 +17,7 @@
 - Fixed broken tests
 - Removed unused `phpspec/prophecy` and `phpspec/prophecy-phpunit` dev dependencies
 - Account statement test uses last month instead of a hardcoded date range
+- Removed unused `GivenGoPay` test helper, disabled tests are reported as skipped instead of being commented out or misnamed
 
 ## 1.11.1
 

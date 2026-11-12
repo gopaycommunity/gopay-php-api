@@ -43,7 +43,6 @@ class PreAuthorizationTest extends TestCase
 
         assertNotNull($responseBody['id']);
         echo print_r($responseBody, true);
-        $st = json_encode($responseBody);
 
         if ($response->hasSucceed()) {
             print_r('Payment ID: ' . $responseBody['id'] . "\n");
@@ -55,7 +54,7 @@ class PreAuthorizationTest extends TestCase
     }
 
     /**
-     * returns an error, the preauthorized payment id '3049602803' has been already processed or cancelled
+     * returns an error, the preauthorized payment id '3192064499' has been already processed or cancelled
      */
     public function testVoidAuthorization(): void
     {
@@ -74,7 +73,7 @@ class PreAuthorizationTest extends TestCase
     }
 
     /**
-     * returns an error, the preauthorized payment id '3049602803' has been already processed or cancelled
+     * returns an error, the preauthorized payment id '3192064499' has been already processed or cancelled
      */
     public function testCapturePayment(): void
     {

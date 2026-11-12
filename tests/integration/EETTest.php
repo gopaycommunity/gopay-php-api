@@ -193,8 +193,11 @@ class EETTest extends TestCase
         }
     }
 
-    public function tEETPaymentRefund(): void
+    public function testEETPaymentRefund(): void
     {
+        $this->markTestSkipped('Refunds the fixed sandbox payment 3049604714, the result depends on whether it has been refunded already.');
+
+        // @phpstan-ignore deadCode.unreachable (test is skipped, body kept for re-enabling)
         $refundObject = [
             'amount' => 139950,
             'items' => [

@@ -90,12 +90,11 @@ class CardTokenTest extends TestCase
     }
 
 
-    /*
-     * Disabled: test fails because the hardcoded card token is no longer valid
-     * (gateway returns errors in response).
-     *
-    public function testPaymentWithCardToken()
+    public function testPaymentWithCardToken(): void
     {
+        $this->markTestSkipped('The hardcoded card token is no longer valid (gateway returns errors in response).');
+
+        // @phpstan-ignore deadCode.unreachable (test is skipped, body kept for re-enabling)
         $basePayment = self::createBaseCardTokenPayment();
         $basePayment['payer']['allowed_card_token'] = 'X5GMEJIPGhRuIBm/Q5G+D6m0WYnjN70YoLFZhN61UeSu9U0TRrrx0T1Xxvqp2dUEwqBjy62stJFLzkMoRxfeoOfetEnJqotVYntw9BFEp3mbYwkTN7XsAU36MbMkYplwsPmXBeQD9XCYUfjXmn16WQ==';
 
@@ -110,20 +109,17 @@ class CardTokenTest extends TestCase
         echo print_r($responseBody, true);
 
         if ($response->hasSucceed()) {
-            print_r("Payment ID: " . $responseBody['id'] . "\n");
-            print_r("Payment gwUrl: " . $responseBody['gw_url'] . "\n");
-            print_r("Payment state: " . $responseBody['state'] . "\n");
+            print_r('Payment ID: ' . $responseBody['id'] . "\n");
+            print_r('Payment gwUrl: ' . $responseBody['gw_url'] . "\n");
+            print_r('Payment state: ' . $responseBody['state'] . "\n");
         }
     }
-    */
 
-    /*
-     * Disabled: test fails because the hardcoded card ID (3011475940) returns
-     * status 'ACTIVE' but the test expects 'DELETED' – the card state in the
-     * sandbox has changed since the test was written.
-     *
-    public function testActiveCardDetails()
+    public function testActiveCardDetails(): void
     {
+        $this->markTestSkipped('The card state in the sandbox has changed since the test was written, card 3011475940 is DELETED instead of ACTIVE.');
+
+        // @phpstan-ignore deadCode.unreachable (test is skipped, body kept for re-enabling)
         $cardId = 3011475940;
 
         $response = $this->gopay->getCardDetails($cardId);
@@ -132,18 +128,17 @@ class CardTokenTest extends TestCase
         assertNotEmpty($responseBody);
         assertArrayNotHasKey('errors', $responseBody);
 
-        assertEquals($responseBody['status'], "ACTIVE");
+        assertEquals($responseBody['status'], 'ACTIVE');
 
         echo print_r($responseBody, true);
 
         if ($response->hasSucceed()) {
-            print_r("Card ID: " . $responseBody['card_id'] . "\n");
-            print_r("Card status: " . $responseBody['status'] . "\n");
-            print_r("Card token: " . $responseBody['card_token'] . "\n");
-            print_r("Card fingerprint: " . $responseBody['card_fingerprint'] . "\n");
+            print_r('Card ID: ' . $responseBody['card_id'] . "\n");
+            print_r('Card status: ' . $responseBody['status'] . "\n");
+            print_r('Card token: ' . $responseBody['card_token'] . "\n");
+            print_r('Card fingerprint: ' . $responseBody['card_fingerprint'] . "\n");
         }
     }
-    */
 
     public function testDeletedCardDetails(): void
     {
