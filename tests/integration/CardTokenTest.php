@@ -79,12 +79,12 @@ class CardTokenTest extends TestCase
         assertNotNull($responseBody['id']);
 
 
-        echo print_r($responseBody, true);
+        TestUtils::debug($responseBody);
 
         if ($response->hasSucceed()) {
-            print_r('Payment ID: ' . $responseBody['id'] . "\n");
-            print_r('Payment gwUrl: ' . $responseBody['gw_url'] . "\n");
-            print_r('Payment state: ' . $responseBody['state'] . "\n");
+            TestUtils::debug('Payment ID: ' . $responseBody['id']);
+            TestUtils::debug('Payment gwUrl: ' . $responseBody['gw_url']);
+            TestUtils::debug('Payment state: ' . $responseBody['state']);
         }
     }
 
@@ -105,12 +105,12 @@ class CardTokenTest extends TestCase
         assertNotNull($responseBody['id']);
 
 
-        echo print_r($responseBody, true);
+        TestUtils::debug($responseBody);
 
         if ($response->hasSucceed()) {
-            print_r('Payment ID: ' . $responseBody['id'] . "\n");
-            print_r('Payment gwUrl: ' . $responseBody['gw_url'] . "\n");
-            print_r('Payment state: ' . $responseBody['state'] . "\n");
+            TestUtils::debug('Payment ID: ' . $responseBody['id']);
+            TestUtils::debug('Payment gwUrl: ' . $responseBody['gw_url']);
+            TestUtils::debug('Payment state: ' . $responseBody['state']);
         }
     }
 
@@ -129,13 +129,13 @@ class CardTokenTest extends TestCase
 
         assertEquals($responseBody['status'], 'ACTIVE');
 
-        echo print_r($responseBody, true);
+        TestUtils::debug($responseBody);
 
         if ($response->hasSucceed()) {
-            print_r('Card ID: ' . $responseBody['card_id'] . "\n");
-            print_r('Card status: ' . $responseBody['status'] . "\n");
-            print_r('Card token: ' . $responseBody['card_token'] . "\n");
-            print_r('Card fingerprint: ' . $responseBody['card_fingerprint'] . "\n");
+            TestUtils::debug('Card ID: ' . $responseBody['card_id']);
+            TestUtils::debug('Card status: ' . $responseBody['status']);
+            TestUtils::debug('Card token: ' . $responseBody['card_token']);
+            TestUtils::debug('Card fingerprint: ' . $responseBody['card_fingerprint']);
         }
     }
 
@@ -151,11 +151,11 @@ class CardTokenTest extends TestCase
 
         assertEquals($responseBody['status'], 'DELETED');
 
-        echo print_r($responseBody, true);
+        TestUtils::debug($responseBody);
 
         if ($response->hasSucceed()) {
-            print_r('Card ID: ' . $responseBody['card_id'] . "\n");
-            print_r('Card status: ' . $responseBody['status'] . "\n");
+            TestUtils::debug('Card ID: ' . $responseBody['card_id']);
+            TestUtils::debug('Card status: ' . $responseBody['status']);
         }
     }
 

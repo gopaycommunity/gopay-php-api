@@ -42,12 +42,12 @@ class CommonMethodTest extends TestCase
         assertArrayNotHasKey('errors', $responseBody);
 
         assertNotNull($responseBody['id']);
-        echo print_r($responseBody, true);
+        TestUtils::debug($responseBody);
 
         if ($response->hasSucceed()) {
-            print_r('Payment ID: ' . $responseBody['id'] . "\n");
-            print_r('Payment gwUrl: ' . $responseBody['gw_url'] . "\n");
-            print_r('Payment state: ' . $responseBody['state'] . "\n");
+            TestUtils::debug('Payment ID: ' . $responseBody['id']);
+            TestUtils::debug('Payment gwUrl: ' . $responseBody['gw_url']);
+            TestUtils::debug('Payment state: ' . $responseBody['state']);
         }
     }
 
@@ -60,7 +60,7 @@ class CommonMethodTest extends TestCase
         assertArrayNotHasKey('errors', $responseBody);
         assertArrayHasKey('enabledPaymentInstruments', $responseBody);
 
-        echo print_r($responseBody, true);
+        TestUtils::debug($responseBody);
     }
 
     public function testGetAccountStatement(): void

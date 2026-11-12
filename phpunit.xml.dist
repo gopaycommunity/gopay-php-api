@@ -7,6 +7,7 @@
     convertDeprecationsToExceptions="true"
     failOnWarning="true"
     failOnRisky="true"
+    beStrictAboutOutputDuringTests="true"
 >
     <testsuites>
         <testsuite name="unit">

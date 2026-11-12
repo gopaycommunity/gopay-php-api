@@ -41,7 +41,7 @@ class RefundTest extends TestCase
         $message = $responseBody['errors'][0]['error_name'];
         assertEquals($message, 'PAYMENT_REFUND_NOT_SUPPORTED');
 
-        echo print_r($response->json, true);
+        TestUtils::debug($response->json);
     }
 
     public function testHistoryOfRefunds(): void
@@ -51,11 +51,11 @@ class RefundTest extends TestCase
         $response = $this->gopay->getHistoryRefunds($paymentId);
         $responseBody = $response->json;
 
-        echo print_r($responseBody, true);
+        TestUtils::debug($responseBody);
 
         assertNotEmpty($responseBody);
         assertArrayNotHasKey('errors', $responseBody);
 
-        echo print_r($responseBody, true);
+        TestUtils::debug($responseBody);
     }
 }

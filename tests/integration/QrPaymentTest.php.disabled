@@ -49,13 +49,13 @@ abstract class QrPaymentTest extends TestCase
     public function testGetQrPaymentDefaultFormat()
     {
         $paymentId = $this->createPaymentAndGetId();
-        echo "\nCreated payment ID: {$paymentId}\n";
+        TestUtils::debug("Created payment ID: {$paymentId}");
 
         $response = $this->gopay->getQrPayment($paymentId);
         $responseBody = $response->json;
 
-        echo "QR Payment response:\n";
-        echo print_r($responseBody, true);
+        TestUtils::debug("QR Payment response:");
+        TestUtils::debug($responseBody);
 
         assertNotEmpty($responseBody);
         assertArrayNotHasKey('errors', $responseBody);
@@ -75,12 +75,12 @@ abstract class QrPaymentTest extends TestCase
         foreach ($knownTypes as $type) {
             if (!empty($qrCode[$type])) {
                 $foundAny = true;
-                echo "QR type '{$type}' is present (base64 length: " . strlen($qrCode[$type]) . ")\n";
+                TestUtils::debug("QR type '{$type}' is present (base64 length: " . strlen($qrCode[$type]) . ")");
             }
         }
         $this->assertTrue($foundAny, 'Response qr_code must contain at least one QR code type (spayd, paybysquare, sepa, mnb_qr)');
 
-        echo "HTTP status: {$response->statusCode}\n";
+        TestUtils::debug("HTTP status: {$response->statusCode}");
     }
 
     /**
@@ -89,19 +89,19 @@ abstract class QrPaymentTest extends TestCase
     public function testGetQrPaymentPngFormat()
     {
         $paymentId = $this->createPaymentAndGetId();
-        echo "\nCreated payment ID: {$paymentId}\n";
+        TestUtils::debug("Created payment ID: {$paymentId}");
 
         $response = $this->gopay->getQrPayment($paymentId, 'png');
         $responseBody = $response->json;
 
-        echo "QR Payment (png) response:\n";
-        echo print_r($responseBody, true);
+        TestUtils::debug("QR Payment (png) response:");
+        TestUtils::debug($responseBody);
 
         assertNotEmpty($responseBody);
         assertArrayNotHasKey('errors', $responseBody);
         assertArrayHasKey('qr_code', $responseBody);
 
-        echo "HTTP status: {$response->statusCode}\n";
+        TestUtils::debug("HTTP status: {$response->statusCode}");
     }
 
     /**
@@ -110,19 +110,19 @@ abstract class QrPaymentTest extends TestCase
     public function testGetQrPaymentSvgFormat()
     {
         $paymentId = $this->createPaymentAndGetId();
-        echo "\nCreated payment ID: {$paymentId}\n";
+        TestUtils::debug("Created payment ID: {$paymentId}");
 
         $response = $this->gopay->getQrPayment($paymentId, 'svg');
         $responseBody = $response->json;
 
-        echo "QR Payment (svg) response:\n";
-        echo print_r($responseBody, true);
+        TestUtils::debug("QR Payment (svg) response:");
+        TestUtils::debug($responseBody);
 
         assertNotEmpty($responseBody);
         assertArrayNotHasKey('errors', $responseBody);
         assertArrayHasKey('qr_code', $responseBody);
 
-        echo "HTTP status: {$response->statusCode}\n";
+        TestUtils::debug("HTTP status: {$response->statusCode}");
     }
 
     /**
@@ -143,7 +143,7 @@ abstract class QrPaymentTest extends TestCase
         $recipient = $responseBody['recipient'];
         assertNotEmpty($recipient);
 
-        echo "\nRecipient info:\n";
-        echo print_r($recipient, true);
+        TestUtils::debug("Recipient info:");
+        TestUtils::debug($recipient);
     }
 }

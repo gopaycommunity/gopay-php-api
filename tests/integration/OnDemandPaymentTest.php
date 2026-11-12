@@ -46,14 +46,14 @@ class OnDemandPaymentTest extends TestCase
         assertArrayNotHasKey('errors', $responseBody);
 
         assertNotNull($responseBody['id']);
-        echo print_r($responseBody, true);
+        TestUtils::debug($responseBody);
 
         if ($response->hasSucceed()) {
-            print_r('OnDemand Payment ID: ' . $responseBody['id'] . "\n");
-            print_r('OnDemand Payment gwUrl: ' . $responseBody['gw_url'] . "\n");
-            print_r('OnDemand Payment state: ' . $responseBody['state'] . "\n");
-            print_r('Recurrence: ');
-            echo print_r($responseBody['recurrence'], true);
+            TestUtils::debug('OnDemand Payment ID: ' . $responseBody['id']);
+            TestUtils::debug('OnDemand Payment gwUrl: ' . $responseBody['gw_url']);
+            TestUtils::debug('OnDemand Payment state: ' . $responseBody['state']);
+            TestUtils::debug('Recurrence:');
+            TestUtils::debug($responseBody['recurrence']);
         }
     }
 
@@ -79,12 +79,12 @@ class OnDemandPaymentTest extends TestCase
         $message = $responseBody['errors'][0]['error_name'];
         assertEquals($message, 'PAYMENT_RECURRENCE_STOPPED');
 
-        echo print_r($responseBody, true);
+        TestUtils::debug($responseBody);
 
         if ($response->hasSucceed()) {
-            print_r('OnDemand Payment ID: ' . $responseBody['id'] . "\n");
-            print_r('OnDemand Payment gwUrl: ' . $responseBody['gw_url'] . "\n");
-            print_r('OnDemand Payment state: ' . $responseBody['state'] . "\n");
+            TestUtils::debug('OnDemand Payment ID: ' . $responseBody['id']);
+            TestUtils::debug('OnDemand Payment gwUrl: ' . $responseBody['gw_url']);
+            TestUtils::debug('OnDemand Payment state: ' . $responseBody['state']);
         }
     }
 }

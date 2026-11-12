@@ -25,6 +25,7 @@
 - Code coverage measured with pcov in the CI integration job (Clover report as the `coverage` artifact, summary in the job summary)
 - Added `composer test`, `test:unit`, `test:integration` and `test:coverage` scripts
 - Removed stale `composer.bak` (lock file backup from 2020)
+- Integration tests print API responses only with the `GOPAY_TEST_DEBUG` environment variable set (to STDERR), tests printing to stdout fail as risky
 
 ## 1.11.1
 

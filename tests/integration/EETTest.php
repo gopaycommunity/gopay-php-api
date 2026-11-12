@@ -97,13 +97,13 @@ class EETTest extends TestCase
         assertNotEmpty($payment->json);
         assertNotNull($payment->json['id']);
 
-        echo print_r($payment->json, true);
+        TestUtils::debug($payment->json);
         $st = json_encode($payment->json, JSON_THROW_ON_ERROR);
 
         if (strpos($st, 'error_code') === false) {
-            print_r('Payment ID: ' . $payment->json['id'] . "\n");
-            print_r('Payment gwUrl: ' . $payment->json['gw_url'] . "\n");
-            print_r('Payment state: ' . $payment->json['state'] . "\n");
+            TestUtils::debug('Payment ID: ' . $payment->json['id']);
+            TestUtils::debug('Payment gwUrl: ' . $payment->json['gw_url']);
+            TestUtils::debug('Payment state: ' . $payment->json['state']);
         }
 
         return $payment;
@@ -137,8 +137,8 @@ class EETTest extends TestCase
         assertNotNull($payment->json['id']);
         $st = json_encode($payment->json, JSON_THROW_ON_ERROR);
         if (strpos($st, 'error_code') === false) {
-            print_r('Recurrence: ');
-            echo print_r($payment->json['recurrence'], true);
+            TestUtils::debug('Recurrence:');
+            TestUtils::debug($payment->json['recurrence']);
         }
     }
 
@@ -167,13 +167,13 @@ class EETTest extends TestCase
 
         $EETOnDemandPayment = $this->gopay->createRecurrence(3049604610, $nextEETPayment);
         assertNotEmpty($EETOnDemandPayment->json);
-        echo print_r($EETOnDemandPayment->json, true);
+        TestUtils::debug($EETOnDemandPayment->json);
         $st = json_encode($EETOnDemandPayment->json, JSON_THROW_ON_ERROR);
 
         if (strpos($st, 'error_code') === false) {
-            print_r('Payment ID: ' . $EETOnDemandPayment->json['id'] . "\n");
-            print_r('Payment gwUrl: ' . $EETOnDemandPayment->json['gw_url'] . "\n");
-            print_r('Payment state: ' . $EETOnDemandPayment->json['state'] . "\n");
+            TestUtils::debug('Payment ID: ' . $EETOnDemandPayment->json['id']);
+            TestUtils::debug('Payment gwUrl: ' . $EETOnDemandPayment->json['gw_url']);
+            TestUtils::debug('Payment state: ' . $EETOnDemandPayment->json['state']);
         }
     }
 
@@ -183,13 +183,13 @@ class EETTest extends TestCase
         $response = $this->gopay->getStatus($EETPaymentId);
         assertNotEmpty($response->json);
         assertNotNull($response->json['id']);
-        echo print_r($response->json, true);
+        TestUtils::debug($response->json);
         $st = json_encode($response->json, JSON_THROW_ON_ERROR);
 
         if (strpos($st, 'error_code') === false) {
-            print_r('Payment ID: ' . $response->json['id'] . "\n");
-            print_r('Payment gwUrl: ' . $response->json['gw_url'] . "\n");
-            print_r('Payment state: ' . $response->json['state'] . "\n");
+            TestUtils::debug('Payment ID: ' . $response->json['id']);
+            TestUtils::debug('Payment gwUrl: ' . $response->json['gw_url']);
+            TestUtils::debug('Payment state: ' . $response->json['state']);
         }
     }
 
@@ -224,7 +224,7 @@ class EETTest extends TestCase
 
         $response = $this->gopay->refundPayment(3049604714, $refundObject);
 
-        echo print_r($response->json, true);
+        TestUtils::debug($response->json);
     }
 
     public function testEETReceiptFindByFilter(): void
@@ -237,13 +237,13 @@ class EETTest extends TestCase
 
         $receipts = $this->gopay->findEETReceiptsByFilter($receiptFilter);
         assertNotEmpty($receipts->json);
-        echo print_r($receipts->json, true);
+        TestUtils::debug($receipts->json);
     }
 
     public function testEETReceiptFindByPaymentId(): void
     {
         $receipt = $this->gopay->getEETReceiptByPaymentId(3048429735);
         assertNotEmpty($receipt->json);
-        echo print_r($receipt->json, true);
+        TestUtils::debug($receipt->json);
     }
 }
