@@ -8,7 +8,7 @@
 
 ```bash
 composer install                                   # composer bin-dir is ./bin, so tools land in bin/
-bin/phpunit tests/integration                      # run all tests (same as CI, which uses --no-configuration)
+bin/phpunit                                        # run all tests (same as CI, uses phpunit.xml.dist)
 bin/phpunit tests/integration/RefundTest.php       # single test file
 bin/phpunit --filter testRefundPayment tests/integration   # single test method
 composer validate --strict                         # CI also runs this
@@ -20,7 +20,7 @@ bin/captainhook install -f                         # (re)install git hooks; norm
 
 Git hooks are managed by CaptainHook ([captainhook.json](captainhook.json)), installed into `.git/hooks` by the `captainhook/hook-installer` Composer plugin. The `pre-commit` hook runs on staged files only: PHP-CS-Fixer dry run and PHPStan on staged `*.php`, `composer validate --strict` when `composer.json`/`composer.lock` is staged. Integration tests are intentionally not in the hook (network, slow). Tools are invoked as `php bin/...`, so `php` in `PATH` must be >= 8.1. Bypass with `git commit --no-verify`.
 
-PHPStan rules for this repo: public API (public/protected methods, public properties, interfaces) is typed **only via PHPDoc** to keep BC; native types only on private members. Legacy unreachable code is ignored inline with `@phpstan-ignore <identifier>` plus a reason, no baseline. The Jenkins script [bin/jenkins.sh](bin/jenkins.sh) runs `phpqa` if available. `phpunit.xml.dist` references a `tests/unit/` suite that does not exist — only `tests/integration/` exists.
+PHPStan rules for this repo: public API (public/protected methods, public properties, interfaces) is typed **only via PHPDoc** to keep BC; native types only on private members. Legacy unreachable code is ignored inline with `@phpstan-ignore <identifier>` plus a reason, no baseline. The Jenkins script [bin/jenkins.sh](bin/jenkins.sh) runs `phpqa` if available. `phpunit.xml.dist` is used by CI and makes deprecations, warnings and risky tests fail the run (PHPUnit 9 can enable deprecation failures only via XML, so don't run CI with `--no-configuration`); only `tests/integration/` exists.
 
 ### Tests hit the real sandbox
 

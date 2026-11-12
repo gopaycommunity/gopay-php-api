@@ -57,4 +57,4 @@ jobs:
       # Docs: https://getcomposer.org/doc/articles/scripts.md
 
       - name: Run test suite
-        run: php vendor/phpunit/phpunit/phpunit --no-configuration tests/integration
+        run: php vendor/phpunit/phpunit/phpunit
