@@ -16,6 +16,7 @@
 - Added CLAUDE.md
 - Fixed broken tests
 - Removed unused `phpspec/prophecy` and `phpspec/prophecy-phpunit` dev dependencies
+- Account statement test uses last month instead of a hardcoded date range
 
 ## 1.11.1
 

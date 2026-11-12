@@ -9,6 +9,7 @@ use GoPay\Definition\Payment\Currency;
 
 use function PHPUnit\Framework\assertArrayHasKey;
 use function PHPUnit\Framework\assertArrayNotHasKey;
+use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertNotEmpty;
 use function PHPUnit\Framework\assertNotNull;
 use function PHPUnit\Framework\assertTrue;
@@ -66,8 +67,8 @@ class CommonMethodTest extends TestCase
     public function testGetAccountStatement(): void
     {
         $accountStatement = [
-            'date_from' => '2026-01-01',
-            'date_to' => '2026-02-27',
+            'date_from' => (new \DateTimeImmutable('first day of last month'))->format('Y-m-d'),
+            'date_to' => (new \DateTimeImmutable('last day of last month'))->format('Y-m-d'),
             'goid' => TestUtils::GO_ID,
             'currency' => Currency::CZECH_CROWNS,
             'format' => StatementGeneratingFormat::CSV_A,
@@ -76,6 +77,7 @@ class CommonMethodTest extends TestCase
         $response = $this->gopay->getAccountStatement($accountStatement);
 
         assertTrue($response->hasSucceed());
-        assertNotEmpty($response);
+        assertEquals(200, $response->statusCode);
+        assertNotEmpty($response->rawBody);
     }
 }
