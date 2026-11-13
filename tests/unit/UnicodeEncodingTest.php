@@ -281,4 +281,32 @@ class UnicodeEncodingTest extends TestCase
         $this->assertStringContainsString('СЛИВЕН - РЕЧИЦА (АВТОМАТ)', $capture->body);
         $this->assertStringContainsString('Standard ASCII item', $capture->body);
     }
+
+    /**
+     * Czech diacritics (lower + upper case) combined with JSON special characters
+     * must produce valid JSON that decodes back to the exact original data.
+     *
+     * Characters like / \ " are escaped by json_encode (\/, \\, \"), so the
+     * check compares decoded data instead of searching for the raw string.
+     */
+    public function testCallWithSpecialCharactersRoundTrips(): void
+    {
+        [$gopay, $capture] = $this->makeGoPayWithCapture();
+
+        $items = [
+            ['name' => 'item01', 'amount' => 2300, 'count' => 1],
+            ['name' => 'item01 (ěščřžýáíéóúůťďňĚŠČŘŽÝÁÍÉÓÚŮŤĎŇ)[]/\\"\'<>{}&', 'amount' => 2300, 'count' => 1],
+        ];
+
+        $gopay->call('/payments/payment', 'Bearer mock-token', 'POST', GoPay::JSON, ['items' => $items]);
+
+        $body = (string) $capture->body;
+        $this->assertJson($body);
+        $this->assertStringNotContainsString('\u', $body, 'Diacritics must not be \\uXXXX-escaped');
+        $this->assertStringContainsString('ěščřžýáíéóúůťďňĚŠČŘŽÝÁÍÉÓÚŮŤĎŇ', $body);
+
+        $decoded = json_decode($body, true);
+        $this->assertIsArray($decoded);
+        $this->assertSame($items, $decoded['items']);
+    }
 }
