@@ -3,6 +3,7 @@
 
 ## Unreleased
 
+- Required `guzzlehttp/guzzle` ^7.16.1 (fixes security advisories in Guzzle and PSR-7 versions allowed before)
 - Added PHPStan static analysis (level 8) for SDK sources and tests, run in CI
 - Public API typed via PHPDoc only, public signatures are unchanged
 - Fixed PHPDoc of `Request::$method` and `Response::$statusCode` to match actual values (no runtime change)
@@ -10,9 +11,8 @@
 - Applied coding style to SDK sources, tests and examples (formatting only)
 - Composer platform pinned to PHP 8.1, the minimum supported version
 - Added CaptainHook pre-commit hook (PHP-CS-Fixer and PHPStan on staged files, `composer validate` on `composer.json` change), installed automatically on `composer install` (`captainhook/captainhook` package, not the PHAR, so no GnuPG is needed, e.g. on Windows)
-- CI tests also on PHP 8.3 and 8.4, `actions/checkout` bumped to v6
+- CI tests also on PHP 8.3, 8.4 and 8.5, `actions/checkout` bumped to v7
 - CI runs `composer validate`, coding style and PHPStan once in a single code quality job, the PHP matrix runs tests only
-- CI tests actually run on Ubuntu, Windows and macOS (the OS matrix was previously ignored)
 - Added CLAUDE.md
 - Fixed broken tests
 - Removed unused `phpspec/prophecy`, `phpspec/prophecy-phpunit` and `hamcrest/hamcrest-php` dev dependencies
@@ -20,13 +20,17 @@
 - Removed unused `GivenGoPay` test helper, disabled tests are reported as skipped instead of being commented out or misnamed
 - Fixed invalid `phpunit.xml.dist` (removed `syntaxCheck` and the non-existent unit test suite), CI runs PHPUnit with it, so deprecations, warnings and risky tests fail the build
 - Tests split into `unit` (offline) and `integration` (sandbox) suites, test classes autoloaded via PSR-4 (`GoPay\Tests\Unit`, `GoPay\Tests\Integration`) instead of `require_once`
-- Added unit tests for `GoPay`, `Config`, `OAuth2`, `CachedOAuth`, `Payments` (all endpoints, OAuth error handling), `JsonBrowser` transport errors and the `payments()` factory
-- CI runs unit tests on the whole PHP and OS matrix, integration tests (GoPay sandbox) only once in a separate job
+- Added unit tests for `GoPay`, `Config`, `OAuth2`, `CachedOAuth`, `Payments` (all endpoints, OAuth error handling), `JsonBrowser` transport errors, the `payments()` factory and JSON encoding of special characters
+- CI runs unit tests on Ubuntu with PHP 8.1–8.5 and on Windows and macOS with PHP 8.1 (the OS matrix was previously ignored), integration tests (GoPay sandbox) only once in a separate job
 - Code coverage measured with pcov in the CI integration job (Clover report as the `coverage` artifact, summary in the job summary)
 - Added `composer test`, `test:unit`, `test:integration` and `test:coverage` scripts
 - Removed stale `composer.bak` (lock file backup from 2020)
 - Integration tests print API responses only with the `GOPAY_TEST_DEBUG` environment variable set (to STDERR), tests printing to stdout fail as risky
 - Stronger assertions in integration tests (status code, error name, response content matching the request) via a shared `IntegrationTestCase`; `testNextOnDemandEET` no longer passes when the API returns an error
+- CI runs `composer audit` (security audit of locked dependencies)
+- Upgraded `phpunit/phpunit` from 9.6.33 to 10.5.67 (`phpunit.xml.dist` migrated, deprecations and notices still fail the run)
+- Updated dev dependencies (PHPStan, PHP-CS-Fixer, CaptainHook)
+- README: fixed `hasSucceed()` and `statusCode` description, Guzzle mentioned as a required dependency, added Development section
 
 ## 1.11.1
 
