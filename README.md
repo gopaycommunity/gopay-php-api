@@ -1,4 +1,3 @@
-
 # GoPay's PHP SDK for Payments REST API
 
 [![License](https://poser.pugx.org/gopay/payments-sdk-php/license)](https://packagist.org/packages/gopay/payments-sdk-php)
@@ -12,6 +11,10 @@
 
 - PHP >= 8.1
 - enabled extension `curl`, `json`
+- [`guzzlehttp/guzzle`](https://github.com/guzzle/guzzle) >= 7.7 (and its dependencies, e.g. `guzzlehttp/psr7`), used for all HTTP communication
+
+Composer installs Guzzle automatically. If you don't use Composer, you have to install Guzzle
+and its dependencies yourself and register their autoloading together with the SDK.
 
 ## Installation
 
@@ -79,7 +82,7 @@ API | SDK method |
 [Delete a saved card](https://doc.gopay.com#payment-card-deletion) | `$gopay->deleteCard($cardId)` |
 [Get allowed payment methods for a currency](https://doc.gopay.com#available-payment-methods-for-a-currency) | `$gopay->getPaymentInstruments($goid, $currency)` |
 [Get all allowed payment methods](https://doc.gopay.com#all-available-payment-methods) | `$gopay->getPaymentInstrumentsAll($goid)` |
-[Generate an account statement](https://doc.gopay.com#account-statement) | `$gopay->getAccountStatement(array $accountStatement)`
+[Generate an account statement](https://doc.gopay.com#account-statement) | `$gopay->getAccountStatement(array $accountStatement)` |
 
 ### SDK response? Has my call succeed?
 
@@ -102,9 +105,9 @@ if ($response->hasSucceed()) {
 
 Method | Description |
 ------ | ---------- |
-`$response->hasSucceed()` | checks if API returns status code _200_ |
+`$response->hasSucceed()` | checks if API returns status code lower than _400_ |
 `$response->json` | decoded response, returned objects are converted into associative arrays |
-`$response->statusCode` | HTTP status code |
+`$response->statusCode` | HTTP status code, numeric string on success (e.g. `'200'`), int on error (e.g. `404`) – don't compare it strictly |
 `$response->rawBody` | raw body from HTTP response |
 
 ### Are required fields and allowed values validated?
@@ -230,13 +233,33 @@ $gopay = GoPay\payments(
 Available logger | Description |
 ---------------- | ----------- |
 [NullLogger](/src/Http/Log/NullLogger.php) | Default logger which does nothing |
-[PrintHttpRequest](/src/Http/Log/PrintHttpRequest.php) | Prints basic information about request and response, used in [remote tests](tests/integration/GivenGoPay.php#GivenGoPay.php-26) |
+[PrintHttpRequest](/src/Http/Log/PrintHttpRequest.php) | Prints method, URL and status code of every request to stdout, useful for debugging |
 
 ## Contributing
 
 Contributions from others would be very much appreciated! Send
 [pull request](https://github.com/gopaycommunity/gopay-php-api/pulls)/
 [issue](https://github.com/gopaycommunity/gopay-php-api/issues). Thanks!
+
+## Development
+
+```bash
+composer install              # installs dev tools into bin/ and the git pre-commit hook
+composer test:unit            # offline unit tests
+composer test:integration     # tests against the GoPay sandbox, need network access
+composer test                 # all tests
+composer test:coverage        # all tests + HTML report in build/coverage/html, needs pcov or Xdebug
+composer phpstan              # static analysis (PHPStan level 8)
+composer cs-check             # coding style check (PHP-CS-Fixer), `composer cs-fix` applies fixes
+composer validate --strict
+```
+
+Set `GOPAY_TEST_DEBUG=1` to print API responses from integration tests (to STDERR).
+
+The [CaptainHook](https://php.captainhook.info/) pre-commit hook runs PHP-CS-Fixer and PHPStan
+on staged PHP files and `composer validate` when `composer.json` or `composer.lock` is staged.
+Reinstall it with `bin/captainhook install -f`, bypass it with `git commit --no-verify`.
+CI runs the same checks, unit tests on PHP 8.1–8.4 (Ubuntu, Windows, macOS) and integration tests once with code coverage.
 
 ## License
 
