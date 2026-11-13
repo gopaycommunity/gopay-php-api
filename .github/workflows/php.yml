@@ -11,7 +11,7 @@ jobs:
     name: Code quality
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -36,7 +36,7 @@ jobs:
     name: Security audit
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -59,7 +59,7 @@ jobs:
     name: PHP ${{ matrix.php-versions }} unit tests on ${{ matrix.operating-system }}
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -84,7 +84,7 @@ jobs:
     name: Integration tests and coverage
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
