@@ -4,16 +4,8 @@ namespace GoPay\Tests\Integration;
 
 use GoPay\Definition\Account\StatementGeneratingFormat;
 use GoPay\Definition\Payment\Currency;
-use GoPay\Payments;
-
-use function PHPUnit\Framework\assertArrayHasKey;
-use function PHPUnit\Framework\assertArrayNotHasKey;
-use function PHPUnit\Framework\assertEquals;
-use function PHPUnit\Framework\assertNotEmpty;
-use function PHPUnit\Framework\assertNotNull;
-use function PHPUnit\Framework\assertTrue;
-
-use PHPUnit\Framework\TestCase;
+use GoPay\Definition\Payment\PaymentInstrument;
+use GoPay\Definition\Response\PaymentStatus;
 
 /**
  * Class CommonMethodTests
@@ -22,45 +14,44 @@ use PHPUnit\Framework\TestCase;
  *
  * To execute test for certain method properly it is necessary to add prefix 'test' to its name.
  */
-class CommonMethodTest extends TestCase
+class CommonMethodTest extends IntegrationTestCase
 {
-    private Payments $gopay;
-
-    protected function setUp(): void
-    {
-        $this->gopay = TestUtils::setup();
-    }
-
     public function testPaymentStatus(): void
     {
         $paymentId = 3178283550;
 
         $response = $this->gopay->getStatus($paymentId);
-        $responseBody = $response->json;
 
-        assertNotEmpty($responseBody);
-        assertArrayNotHasKey('errors', $responseBody);
+        $payment = $this->assertSucceeded($response);
+        $this->assertSame($paymentId, $payment['id'] ?? null);
+        $this->assertContains($payment['state'] ?? null, (new \ReflectionClass(PaymentStatus::class))->getConstants());
+        $this->assertIsInt($payment['amount'] ?? null);
+        $this->assertSame(Currency::CZECH_CROWNS, $payment['currency'] ?? null);
+        $this->assertIsArray($payment['target'] ?? null);
+        $this->assertSame(TestUtils::GO_ID, (string) ($payment['target']['goid'] ?? null));
+        $this->assertIsString($payment['gw_url'] ?? null);
 
-        assertNotNull($responseBody['id']);
-        TestUtils::debug($responseBody);
-
-        if ($response->hasSucceed()) {
-            TestUtils::debug('Payment ID: ' . $responseBody['id']);
-            TestUtils::debug('Payment gwUrl: ' . $responseBody['gw_url']);
-            TestUtils::debug('Payment state: ' . $responseBody['state']);
-        }
+        TestUtils::debug($payment);
     }
 
     public function testGetPaymentInstruments(): void
     {
         $response = $this->gopay->getPaymentInstruments(TestUtils::GO_ID, Currency::CZECH_CROWNS);
-        $responseBody = $response->json;
 
-        assertNotEmpty($responseBody);
-        assertArrayNotHasKey('errors', $responseBody);
-        assertArrayHasKey('enabledPaymentInstruments', $responseBody);
+        $body = $this->assertSucceeded($response);
+        $this->assertIsArray($body['groups'] ?? null);
+        $this->assertNotEmpty($body['groups']);
+        $this->assertIsArray($body['enabledPaymentInstruments'] ?? null);
+        $instruments = [];
+        foreach ($body['enabledPaymentInstruments'] as $instrument) {
+            $this->assertIsArray($instrument);
+            $this->assertIsString($instrument['paymentInstrument'] ?? null);
+            $instruments[] = $instrument['paymentInstrument'];
+        }
+        $this->assertContains(PaymentInstrument::PAYMENT_CARD, $instruments);
+        $this->assertContains(PaymentInstrument::BANK_ACCOUNT, $instruments);
 
-        TestUtils::debug($responseBody);
+        TestUtils::debug($body);
     }
 
     public function testGetAccountStatement(): void
@@ -75,8 +66,10 @@ class CommonMethodTest extends TestCase
 
         $response = $this->gopay->getAccountStatement($accountStatement);
 
-        assertTrue($response->hasSucceed());
-        assertEquals(200, $response->statusCode);
-        assertNotEmpty($response->rawBody);
+        $this->assertTrue($response->hasSucceed(), "Request failed: {$response->rawBody}");
+        $this->assertStatusCode(200, $response);
+        // Statement is CSV, not JSON: header row of quoted column names separated by semicolons
+        $this->assertNull($response->json);
+        $this->assertMatchesRegularExpression('/^"[^"]+"(;"[^"]+")+\R/u', $response->rawBody);
     }
 }

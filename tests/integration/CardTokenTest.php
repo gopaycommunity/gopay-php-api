@@ -5,15 +5,6 @@ namespace GoPay\Tests\Integration;
 use GoPay\Definition\Language;
 use GoPay\Definition\Payment\Currency;
 use GoPay\Definition\Payment\PaymentInstrument;
-use GoPay\Payments;
-
-use function PHPUnit\Framework\assertArrayNotHasKey;
-use function PHPUnit\Framework\assertEquals;
-use function PHPUnit\Framework\assertNotEmpty;
-use function PHPUnit\Framework\assertNotNull;
-use function PHPUnit\Framework\assertTrue;
-
-use PHPUnit\Framework\TestCase;
 
 /**
  * Class CardTokenTests
@@ -22,15 +13,8 @@ use PHPUnit\Framework\TestCase;
  *
  * To execute test for certain method properly it is necessary to add prefix 'test' to its name.
  */
-class CardTokenTest extends TestCase
+class CardTokenTest extends IntegrationTestCase
 {
-    private Payments $gopay;
-
-    protected function setUp(): void
-    {
-        $this->gopay = TestUtils::setup();
-    }
-
     /**
      * @return array<string, mixed>
      */
@@ -72,20 +56,10 @@ class CardTokenTest extends TestCase
         $basePayment['payer']['request_card_token'] = true;
 
         $response = $this->gopay->createPayment($basePayment);
-        $responseBody = $response->json;
 
-        assertNotEmpty($responseBody);
-        assertArrayNotHasKey('errors', $responseBody);
-        assertNotNull($responseBody['id']);
-
-
-        TestUtils::debug($responseBody);
-
-        if ($response->hasSucceed()) {
-            TestUtils::debug('Payment ID: ' . $responseBody['id']);
-            TestUtils::debug('Payment gwUrl: ' . $responseBody['gw_url']);
-            TestUtils::debug('Payment state: ' . $responseBody['state']);
-        }
+        $payment = $this->assertPaymentCreated($response, $basePayment);
+        $this->assertIsArray($payment['payer'] ?? null);
+        $this->assertSame(PaymentInstrument::PAYMENT_CARD, $payment['payer']['default_payment_instrument'] ?? null);
     }
 
 
@@ -98,20 +72,8 @@ class CardTokenTest extends TestCase
         $basePayment['payer']['allowed_card_token'] = 'X5GMEJIPGhRuIBm/Q5G+D6m0WYnjN70YoLFZhN61UeSu9U0TRrrx0T1Xxvqp2dUEwqBjy62stJFLzkMoRxfeoOfetEnJqotVYntw9BFEp3mbYwkTN7XsAU36MbMkYplwsPmXBeQD9XCYUfjXmn16WQ==';
 
         $response = $this->gopay->createPayment($basePayment);
-        $responseBody = $response->json;
 
-        assertNotEmpty($responseBody);
-        assertArrayNotHasKey('errors', $responseBody);
-        assertNotNull($responseBody['id']);
-
-
-        TestUtils::debug($responseBody);
-
-        if ($response->hasSucceed()) {
-            TestUtils::debug('Payment ID: ' . $responseBody['id']);
-            TestUtils::debug('Payment gwUrl: ' . $responseBody['gw_url']);
-            TestUtils::debug('Payment state: ' . $responseBody['state']);
-        }
+        $this->assertPaymentCreated($response, $basePayment);
     }
 
     public function testActiveCardDetails(): void
@@ -122,21 +84,14 @@ class CardTokenTest extends TestCase
         $cardId = 3011475940;
 
         $response = $this->gopay->getCardDetails($cardId);
-        $responseBody = $response->json;
 
-        assertNotEmpty($responseBody);
-        assertArrayNotHasKey('errors', $responseBody);
+        $card = $this->assertSucceeded($response);
+        $this->assertSame($cardId, $card['card_id'] ?? null);
+        $this->assertSame('ACTIVE', $card['status'] ?? null);
+        $this->assertIsString($card['card_token'] ?? null);
+        $this->assertIsString($card['card_fingerprint'] ?? null);
 
-        assertEquals($responseBody['status'], 'ACTIVE');
-
-        TestUtils::debug($responseBody);
-
-        if ($response->hasSucceed()) {
-            TestUtils::debug('Card ID: ' . $responseBody['card_id']);
-            TestUtils::debug('Card status: ' . $responseBody['status']);
-            TestUtils::debug('Card token: ' . $responseBody['card_token']);
-            TestUtils::debug('Card fingerprint: ' . $responseBody['card_fingerprint']);
-        }
+        TestUtils::debug($card);
     }
 
     public function testDeletedCardDetails(): void
@@ -144,19 +99,11 @@ class CardTokenTest extends TestCase
         $cardId = 3011480505;
 
         $response = $this->gopay->getCardDetails($cardId);
-        $responseBody = $response->json;
 
-        assertNotEmpty($responseBody);
-        assertArrayNotHasKey('errors', $responseBody);
+        $card = $this->assertSucceeded($response);
+        $this->assertSame(['card_id' => $cardId, 'status' => 'DELETED'], $card);
 
-        assertEquals($responseBody['status'], 'DELETED');
-
-        TestUtils::debug($responseBody);
-
-        if ($response->hasSucceed()) {
-            TestUtils::debug('Card ID: ' . $responseBody['card_id']);
-            TestUtils::debug('Card status: ' . $responseBody['status']);
-        }
+        TestUtils::debug($card);
     }
 
     public function testDeleteCardToken(): void
@@ -164,7 +111,10 @@ class CardTokenTest extends TestCase
         $cardId = 3011480505;
 
         $response = $this->gopay->deleteCard($cardId);
-        assertTrue($response->hasSucceed());
-        assertEquals($response->statusCode, 204);
+
+        // Deleting an already deleted card succeeds, 204 has no body
+        $this->assertTrue($response->hasSucceed(), "Request failed: {$response->rawBody}");
+        $this->assertStatusCode(204, $response);
+        $this->assertSame('', $response->rawBody);
     }
 }

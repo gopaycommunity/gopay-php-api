@@ -26,6 +26,7 @@
 - Added `composer test`, `test:unit`, `test:integration` and `test:coverage` scripts
 - Removed stale `composer.bak` (lock file backup from 2020)
 - Integration tests print API responses only with the `GOPAY_TEST_DEBUG` environment variable set (to STDERR), tests printing to stdout fail as risky
+- Stronger assertions in integration tests (status code, error name, response content matching the request) via a shared `IntegrationTestCase`; `testNextOnDemandEET` no longer passes when the API returns an error
 
 ## 1.11.1
 

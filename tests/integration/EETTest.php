@@ -8,13 +8,9 @@ use GoPay\Definition\Payment\Currency;
 use GoPay\Definition\Payment\PaymentInstrument;
 use GoPay\Definition\Payment\PaymentItemType;
 use GoPay\Definition\Payment\Recurrence;
-use GoPay\Http\Response;
+use GoPay\Definition\Response\PaymentStatus;
+use GoPay\Definition\Response\RecurrenceState;
 use GoPay\Payments;
-
-use function PHPUnit\Framework\assertNotEmpty;
-use function PHPUnit\Framework\assertNotNull;
-
-use PHPUnit\Framework\TestCase;
 
 /**
  * Class EETTests
@@ -23,13 +19,11 @@ use PHPUnit\Framework\TestCase;
  *
  * To execute test for certain method properly it is necessary to add prefix 'test' to its name.
  */
-class EETTest extends TestCase
+class EETTest extends IntegrationTestCase
 {
-    private Payments $gopay;
-
-    protected function setUp(): void
+    protected function createPayments(): Payments
     {
-        $this->gopay = TestUtils::setupEET();
+        return TestUtils::setupEET();
     }
 
     /**
@@ -87,34 +81,13 @@ class EETTest extends TestCase
         return $baseEETPayment;
     }
 
-    /**
-     * @param array<string, mixed> $baseEETPayment
-     */
-    private function createEETPaymentObject(array $baseEETPayment): Response
-    {
-        $payment = $this->gopay->createPayment($baseEETPayment);
-
-        assertNotEmpty($payment->json);
-        assertNotNull($payment->json['id']);
-
-        TestUtils::debug($payment->json);
-        $st = json_encode($payment->json, JSON_THROW_ON_ERROR);
-
-        if (strpos($st, 'error_code') === false) {
-            TestUtils::debug('Payment ID: ' . $payment->json['id']);
-            TestUtils::debug('Payment gwUrl: ' . $payment->json['gw_url']);
-            TestUtils::debug('Payment state: ' . $payment->json['state']);
-        }
-
-        return $payment;
-    }
-
     public function testCreateEETPayment(): void
     {
         $baseEETPayment = $this->createBaseEETPayment();
-        $payment = $this->createEETPaymentObject($baseEETPayment);
-        assertNotEmpty($payment->json);
-        assertNotNull($payment->json['id']);
+
+        $response = $this->gopay->createPayment($baseEETPayment);
+
+        $this->assertPaymentCreated($response, $baseEETPayment);
     }
 
     public function testCreateRecurrentEETPayment(): void
@@ -132,16 +105,21 @@ class EETTest extends TestCase
         //                'recurrence_date_to' => '2018-04-01'
         //        ];
 
-        $payment = $this->createEETPaymentObject($baseEETPayment);
-        assertNotEmpty($payment->json);
-        assertNotNull($payment->json['id']);
-        $st = json_encode($payment->json, JSON_THROW_ON_ERROR);
-        if (strpos($st, 'error_code') === false) {
-            TestUtils::debug('Recurrence:');
-            TestUtils::debug($payment->json['recurrence']);
-        }
+        $response = $this->gopay->createPayment($baseEETPayment);
+
+        $payment = $this->assertPaymentCreated($response, $baseEETPayment);
+        $this->assertSame(
+            [
+                'recurrence_cycle' => Recurrence::WEEKLY,
+                'recurrence_period' => 1,
+                'recurrence_date_to' => '2100-04-01',
+                'recurrence_state' => RecurrenceState::REQUESTED,
+            ],
+            $payment['recurrence'] ?? null
+        );
     }
 
+    /** Returns an error, as the recurrence for the payment id '3049604610' has been already stopped. */
     public function testNextOnDemandEET(): void
     {
         $nextEETPayment = [
@@ -165,32 +143,28 @@ class EETTest extends TestCase
             ],
         ];
 
-        $EETOnDemandPayment = $this->gopay->createRecurrence(3049604610, $nextEETPayment);
-        assertNotEmpty($EETOnDemandPayment->json);
-        TestUtils::debug($EETOnDemandPayment->json);
-        $st = json_encode($EETOnDemandPayment->json, JSON_THROW_ON_ERROR);
+        $response = $this->gopay->createRecurrence(3049604610, $nextEETPayment);
 
-        if (strpos($st, 'error_code') === false) {
-            TestUtils::debug('Payment ID: ' . $EETOnDemandPayment->json['id']);
-            TestUtils::debug('Payment gwUrl: ' . $EETOnDemandPayment->json['gw_url']);
-            TestUtils::debug('Payment state: ' . $EETOnDemandPayment->json['state']);
-        }
+        $this->assertApiError($response, 409, 'PAYMENT_RECURRENCE_STOPPED');
+
+        TestUtils::debug($response->json);
     }
 
     public function testEETPaymentStatus(): void
     {
         $EETPaymentId = 3049604714;
-        $response = $this->gopay->getStatus($EETPaymentId);
-        assertNotEmpty($response->json);
-        assertNotNull($response->json['id']);
-        TestUtils::debug($response->json);
-        $st = json_encode($response->json, JSON_THROW_ON_ERROR);
 
-        if (strpos($st, 'error_code') === false) {
-            TestUtils::debug('Payment ID: ' . $response->json['id']);
-            TestUtils::debug('Payment gwUrl: ' . $response->json['gw_url']);
-            TestUtils::debug('Payment state: ' . $response->json['state']);
-        }
+        $response = $this->gopay->getStatus($EETPaymentId);
+
+        $payment = $this->assertSucceeded($response);
+        $this->assertSame($EETPaymentId, $payment['id'] ?? null);
+        $this->assertContains($payment['state'] ?? null, (new \ReflectionClass(PaymentStatus::class))->getConstants());
+        $this->assertIsArray($payment['target'] ?? null);
+        $this->assertSame(TestUtils::GO_ID_EET, (string) ($payment['target']['goid'] ?? null));
+        $this->assertIsArray($payment['eet_code'] ?? null);
+        $this->assertIsString($payment['eet_code']['fik'] ?? null);
+
+        TestUtils::debug($payment);
     }
 
     public function testEETPaymentRefund(): void
@@ -224,6 +198,8 @@ class EETTest extends TestCase
 
         $response = $this->gopay->refundPayment(3049604714, $refundObject);
 
+        $this->assertSucceeded($response);
+
         TestUtils::debug($response->json);
     }
 
@@ -235,15 +211,39 @@ class EETTest extends TestCase
             'id_provozovny' => 11,
         ];
 
-        $receipts = $this->gopay->findEETReceiptsByFilter($receiptFilter);
-        assertNotEmpty($receipts->json);
-        TestUtils::debug($receipts->json);
+        $response = $this->gopay->findEETReceiptsByFilter($receiptFilter);
+
+        $receipts = $this->assertSucceeded($response);
+        $this->assertNotEmpty($receipts);
+        $this->assertTrue(array_is_list($receipts), 'Receipts must be a list');
+        foreach ($receipts as $receipt) {
+            $this->assertIsArray($receipt);
+            $this->assertIsInt($receipt['payment_id'] ?? null);
+            $this->assertSame(11, $receipt['id_provoz'] ?? null);
+            $this->assertIsString($receipt['dat_trzby'] ?? null);
+            $date = substr($receipt['dat_trzby'], 0, 10);
+            $this->assertGreaterThanOrEqual('2017-03-02', $date);
+            $this->assertLessThanOrEqual('2017-04-02', $date);
+        }
+
+        TestUtils::debug($receipts);
     }
 
     public function testEETReceiptFindByPaymentId(): void
     {
-        $receipt = $this->gopay->getEETReceiptByPaymentId(3048429735);
-        assertNotEmpty($receipt->json);
-        TestUtils::debug($receipt->json);
+        $paymentId = 3048429735;
+
+        $response = $this->gopay->getEETReceiptByPaymentId($paymentId);
+
+        $receipts = $this->assertSucceeded($response);
+        $this->assertNotEmpty($receipts);
+        $this->assertTrue(array_is_list($receipts), 'Receipts must be a list');
+        foreach ($receipts as $receipt) {
+            $this->assertIsArray($receipt);
+            $this->assertSame($paymentId, $receipt['payment_id'] ?? null);
+            $this->assertIsString($receipt['fik'] ?? null);
+        }
+
+        TestUtils::debug($receipts);
     }
 }

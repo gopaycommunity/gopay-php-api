@@ -7,13 +7,6 @@ use GoPay\Definition\Payment\BankSwiftCode;
 use GoPay\Definition\Payment\BnplType;
 use GoPay\Definition\Payment\Currency;
 use GoPay\Definition\Payment\PaymentInstrument;
-use GoPay\Payments;
-
-use function PHPUnit\Framework\assertArrayNotHasKey;
-use function PHPUnit\Framework\assertNotEmpty;
-use function PHPUnit\Framework\assertNotNull;
-
-use PHPUnit\Framework\TestCase;
 
 /**
  * Class CreatePaymentTests
@@ -22,15 +15,8 @@ use PHPUnit\Framework\TestCase;
  *
  * To execute test for certain method properly it is necessary to add prefix 'test' to its name.
  */
-class CreatePaymentTest extends TestCase
+class CreatePaymentTest extends IntegrationTestCase
 {
-    private Payments $gopay;
-
-    protected function setUp(): void
-    {
-        $this->gopay = TestUtils::setup();
-    }
-
     /**
      * @return array<string, mixed>
      */
@@ -82,18 +68,10 @@ class CreatePaymentTest extends TestCase
         $basePayment = self::createBasePayment();
 
         $response = $this->gopay->createPayment($basePayment);
-        $responseBody = $response->json;
 
-        assertNotEmpty($responseBody);
-        assertArrayNotHasKey('errors', $responseBody);
-        assertNotNull($responseBody['id']);
-
-        TestUtils::debug($responseBody);
-
-        if ($response->hasSucceed()) {
-            TestUtils::debug('Payment ID: ' . $responseBody['id']);
-            TestUtils::debug('Payment gwUrl: ' . $responseBody['gw_url']);
-            TestUtils::debug('Payment state: ' . $responseBody['state']);
-        }
+        $payment = $this->assertPaymentCreated($response, $basePayment);
+        $this->assertSame($basePayment['additional_params'], $payment['additional_params'] ?? null);
+        $this->assertArrayNotHasKey('recurrence', $payment);
+        $this->assertArrayNotHasKey('preauthorization', $payment);
     }
 }
