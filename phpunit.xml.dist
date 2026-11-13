@@ -3,8 +3,15 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
     bootstrap="vendor/autoload.php"
+    cacheDirectory=".phpunit.cache"
     colors="true"
-    convertDeprecationsToExceptions="true"
+    displayDetailsOnTestsThatTriggerDeprecations="true"
+    displayDetailsOnTestsThatTriggerNotices="true"
+    displayDetailsOnTestsThatTriggerWarnings="true"
+    displayDetailsOnTestsThatTriggerErrors="true"
+    displayDetailsOnPhpunitDeprecations="true"
+    failOnDeprecation="true"
+    failOnNotice="true"
     failOnWarning="true"
     failOnRisky="true"
     beStrictAboutOutputDuringTests="true"
@@ -18,10 +25,10 @@
         </testsuite>
     </testsuites>
 
-    <coverage>
+    <source>
         <include>
             <directory suffix=".php">src</directory>
             <file>factory.php</file>
         </include>
-    </coverage>
+    </source>
 </phpunit>
