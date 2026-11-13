@@ -30,6 +30,22 @@ jobs:
       - name: Run static analysis
         run: composer phpstan
 
+  security-audit:
+    runs-on: ubuntu-latest
+
+    name: Security audit
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.1"
+
+      - name: Audit dependencies for known vulnerabilities
+        run: composer audit --locked
+
   build:
     runs-on: ${{ matrix.operating-system }}
     strategy:
