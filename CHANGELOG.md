@@ -3,7 +3,6 @@
 
 ## Unreleased
 
-- Required `guzzlehttp/guzzle` ^7.16.1 (fixes security advisories in Guzzle and PSR-7 versions allowed before)
 - Added PHPStan static analysis (level 8) for SDK sources and tests, run in CI
 - Public API typed via PHPDoc only, public signatures are unchanged
 - Fixed PHPDoc of `Request::$method` and `Response::$statusCode` to match actual values (no runtime change)
