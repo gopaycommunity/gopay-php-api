@@ -9,13 +9,14 @@
 ```bash
 composer install                                   # composer bin-dir is ./bin, so tools land in bin/
 composer test                                      # run all tests (bin/phpunit, uses phpunit.xml.dist)
-composer test:unit                                 # offline unit tests (CI runs them on the whole PHP/OS matrix)
+composer test:unit                                 # offline unit tests (CI: PHP 8.1–8.5 on Ubuntu, PHP 8.1 on Windows and macOS)
 composer test:integration                          # sandbox tests (CI runs them once, Ubuntu + PHP 8.4)
 composer test:coverage                             # all tests + HTML report in build/coverage/html, needs pcov or Xdebug (XDEBUG_MODE=coverage)
 GOPAY_TEST_DEBUG=1 composer test:integration       # print API responses from integration tests (TestUtils::debug, to STDERR)
 bin/phpunit tests/integration/RefundTest.php       # single test file
 bin/phpunit --filter testRefundPayment             # single test method
 composer validate --strict                         # CI also runs this
+composer audit --locked                            # security audit of locked dependencies, CI runs it as a separate job (not in the git hook)
 composer phpstan                                   # PHPStan on src + tests (config phpstan.neon.dist, level 8), CI also runs this
 composer cs-check                                  # PHP-CS-Fixer dry run with diff (config .php-cs-fixer.dist.php), CI also runs this
 composer cs-fix                                    # apply coding style fixes

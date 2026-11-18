@@ -259,7 +259,8 @@ Set `GOPAY_TEST_DEBUG=1` to print API responses from integration tests (to STDER
 The [CaptainHook](https://php.captainhook.info/) pre-commit hook runs PHP-CS-Fixer and PHPStan
 on staged PHP files and `composer validate` when `composer.json` or `composer.lock` is staged.
 Reinstall it with `bin/captainhook install -f`, bypass it with `git commit --no-verify`.
-CI runs the same checks, unit tests on PHP 8.1–8.4 (Ubuntu, Windows, macOS) and integration tests once with code coverage.
+CI runs the same checks plus `composer audit`, unit tests on PHP 8.1–8.5 on Ubuntu and on PHP 8.1 on Windows and macOS,
+and integration tests once (Ubuntu, PHP 8.4) together with the unit tests to measure code coverage.
 
 ## License
 
