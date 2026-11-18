@@ -1,30 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <phpunit
-    backupGlobals               = "false"
-    backupStaticAttributes      = "false"
-    colors                      = "true"
-    convertErrorsToExceptions   = "true"
-    convertNoticesToExceptions  = "true"
-    convertWarningsToExceptions = "true"
-    processIsolation            = "false"
-    stopOnFailure               = "false"
-    syntaxCheck                 = "false"
-    bootstrap                   = "./vendor/autoload.php" >
-
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+    bootstrap="vendor/autoload.php"
+    cacheDirectory=".phpunit.cache"
+    colors="true"
+    displayDetailsOnTestsThatTriggerDeprecations="true"
+    displayDetailsOnTestsThatTriggerNotices="true"
+    displayDetailsOnTestsThatTriggerWarnings="true"
+    displayDetailsOnTestsThatTriggerErrors="true"
+    displayDetailsOnPhpunitDeprecations="true"
+    failOnDeprecation="true"
+    failOnNotice="true"
+    failOnWarning="true"
+    failOnRisky="true"
+    beStrictAboutOutputDuringTests="true"
+>
     <testsuites>
-        <testsuite name="Unit tests">
-            <directory>./tests/unit/</directory>
+        <testsuite name="unit">
+            <directory>tests/unit</directory>
         </testsuite>
-        <testsuite name="Integration tests">
-            <directory>./tests/integration/</directory>
+        <testsuite name="integration">
+            <directory>tests/integration</directory>
         </testsuite>
     </testsuites>
 
-    <php>
-        <env name="goid" value="" />
-        <env name="clientId" value="" />
-        <env name="clientSecret" value="" />
-    </php>
-
+    <source>
+        <include>
+            <directory suffix=".php">src</directory>
+            <file>factory.php</file>
+        </include>
+    </source>
 </phpunit>

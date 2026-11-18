@@ -1,19 +1,11 @@
 <?php
 
-namespace GoPay;
-
-require_once 'TestUtils.php';
+namespace GoPay\Tests\Integration;
 
 use GoPay\Definition\Account\StatementGeneratingFormat;
 use GoPay\Definition\Payment\Currency;
-
-use function PHPUnit\Framework\assertArrayHasKey;
-use function PHPUnit\Framework\assertArrayNotHasKey;
-use function PHPUnit\Framework\assertNotEmpty;
-use function PHPUnit\Framework\assertNotNull;
-use function PHPUnit\Framework\assertTrue;
-
-use PHPUnit\Framework\TestCase;
+use GoPay\Definition\Payment\PaymentInstrument;
+use GoPay\Definition\Response\PaymentStatus;
 
 /**
  * Class CommonMethodTests
@@ -22,52 +14,51 @@ use PHPUnit\Framework\TestCase;
  *
  * To execute test for certain method properly it is necessary to add prefix 'test' to its name.
  */
-class CommonMethodTest extends TestCase
+class CommonMethodTest extends IntegrationTestCase
 {
-    private Payments $gopay;
-
-    protected function setUp(): void
-    {
-        $this->gopay = TestUtils::setup();
-    }
-
     public function testPaymentStatus(): void
     {
         $paymentId = 3178283550;
 
         $response = $this->gopay->getStatus($paymentId);
-        $responseBody = $response->json;
 
-        assertNotEmpty($responseBody);
-        assertArrayNotHasKey('errors', $responseBody);
+        $payment = $this->assertSucceeded($response);
+        $this->assertSame($paymentId, $payment['id'] ?? null);
+        $this->assertContains($payment['state'] ?? null, (new \ReflectionClass(PaymentStatus::class))->getConstants());
+        $this->assertIsInt($payment['amount'] ?? null);
+        $this->assertSame(Currency::CZECH_CROWNS, $payment['currency'] ?? null);
+        $this->assertIsArray($payment['target'] ?? null);
+        $this->assertSame(TestUtils::GO_ID, (string) ($payment['target']['goid'] ?? null));
+        $this->assertIsString($payment['gw_url'] ?? null);
 
-        assertNotNull($responseBody['id']);
-        echo print_r($responseBody, true);
-
-        if ($response->hasSucceed()) {
-            print_r('Payment ID: ' . $responseBody['id'] . "\n");
-            print_r('Payment gwUrl: ' . $responseBody['gw_url'] . "\n");
-            print_r('Payment state: ' . $responseBody['state'] . "\n");
-        }
+        TestUtils::debug($payment);
     }
 
     public function testGetPaymentInstruments(): void
     {
         $response = $this->gopay->getPaymentInstruments(TestUtils::GO_ID, Currency::CZECH_CROWNS);
-        $responseBody = $response->json;
 
-        assertNotEmpty($responseBody);
-        assertArrayNotHasKey('errors', $responseBody);
-        assertArrayHasKey('enabledPaymentInstruments', $responseBody);
+        $body = $this->assertSucceeded($response);
+        $this->assertIsArray($body['groups'] ?? null);
+        $this->assertNotEmpty($body['groups']);
+        $this->assertIsArray($body['enabledPaymentInstruments'] ?? null);
+        $instruments = [];
+        foreach ($body['enabledPaymentInstruments'] as $instrument) {
+            $this->assertIsArray($instrument);
+            $this->assertIsString($instrument['paymentInstrument'] ?? null);
+            $instruments[] = $instrument['paymentInstrument'];
+        }
+        $this->assertContains(PaymentInstrument::PAYMENT_CARD, $instruments);
+        $this->assertContains(PaymentInstrument::BANK_ACCOUNT, $instruments);
 
-        echo print_r($responseBody, true);
+        TestUtils::debug($body);
     }
 
     public function testGetAccountStatement(): void
     {
         $accountStatement = [
-            'date_from' => '2026-01-01',
-            'date_to' => '2026-02-27',
+            'date_from' => (new \DateTimeImmutable('first day of last month'))->format('Y-m-d'),
+            'date_to' => (new \DateTimeImmutable('last day of last month'))->format('Y-m-d'),
             'goid' => TestUtils::GO_ID,
             'currency' => Currency::CZECH_CROWNS,
             'format' => StatementGeneratingFormat::CSV_A,
@@ -75,7 +66,10 @@ class CommonMethodTest extends TestCase
 
         $response = $this->gopay->getAccountStatement($accountStatement);
 
-        assertTrue($response->hasSucceed());
-        assertNotEmpty($response);
+        $this->assertTrue($response->hasSucceed(), "Request failed: {$response->rawBody}");
+        $this->assertStatusCode(200, $response);
+        // Statement is CSV, not JSON: header row of quoted column names separated by semicolons
+        $this->assertNull($response->json);
+        $this->assertMatchesRegularExpression('/^"[^"]+"(;"[^"]+")+\R/u', $response->rawBody);
     }
 }

@@ -1,8 +1,9 @@
 <?php
 
-namespace GoPay;
+namespace GoPay\Tests\Unit;
 
 use GoPay\Definition\Language;
+use GoPay\GoPay;
 use GoPay\Http\JsonBrowser;
 use GoPay\Http\Request;
 use GoPay\Http\Response;
@@ -187,14 +188,15 @@ class UnicodeEncodingTest extends TestCase
     }
 
     /**
-     * Empty array data must return an empty string (no encoding attempted).
+     * Null or empty array data must result in an empty body (no encoding attempted).
      */
     public function testEmptyDataReturnsEmptyString(): void
     {
-        [$gopay, $capture] = $this->makeGoPayWithCapture();
-        // Pass null explicitly via call() – body should be ''
-        $gopay->call('/payments/payment', 'Bearer mock', 'POST', GoPay::JSON, null);
-        $this->assertSame('', $capture->body);
+        foreach ([null, []] as $data) {
+            [$gopay, $capture] = $this->makeGoPayWithCapture();
+            $gopay->call('/payments/payment', 'Bearer mock', 'POST', GoPay::JSON, $data);
+            $this->assertSame('', $capture->body);
+        }
     }
 
     // -------------------------------------------------------------------------
@@ -205,8 +207,8 @@ class UnicodeEncodingTest extends TestCase
      * When a payment with Cyrillic item names is submitted via call(), the
      * captured HTTP request body must not contain \uXXXX escape sequences.
      *
-     * This is the exact scenario that caused HTTP 403 for O-global s.r.o.
-     * (EVČ: 1878275146) when ordering from www.orsay.com/bg.
+     * This is the exact scenario that caused HTTP 403 for a merchant
+     * with Bulgarian item names.
      */
     public function testCallWithCyrillicItemNamesDoesNotEscapeUnicode(): void
     {
@@ -222,8 +224,8 @@ class UnicodeEncodingTest extends TestCase
                 ['name' => 'СОФИЯ - ЦЕНТРАЛНА ГАРА',    'amount' => 5000, 'count' => 1],
             ],
             'callback' => [
-                'return_url'       => 'https://orsay.com/bg/return',
-                'notification_url' => 'https://orsay.com/bg/notify',
+                'return_url'       => 'https://example.com/return',
+                'notification_url' => 'https://example.com/notify',
             ],
         ];
 
@@ -278,5 +280,33 @@ class UnicodeEncodingTest extends TestCase
         $this->assertStringContainsString('Příliš žluťoučký kůň', $capture->body);
         $this->assertStringContainsString('СЛИВЕН - РЕЧИЦА (АВТОМАТ)', $capture->body);
         $this->assertStringContainsString('Standard ASCII item', $capture->body);
+    }
+
+    /**
+     * Czech diacritics (lower + upper case) combined with JSON special characters
+     * must produce valid JSON that decodes back to the exact original data.
+     *
+     * Characters like / \ " are escaped by json_encode (\/, \\, \"), so the
+     * check compares decoded data instead of searching for the raw string.
+     */
+    public function testCallWithSpecialCharactersRoundTrips(): void
+    {
+        [$gopay, $capture] = $this->makeGoPayWithCapture();
+
+        $items = [
+            ['name' => 'item01', 'amount' => 2300, 'count' => 1],
+            ['name' => 'item01 (ěščřžýáíéóúůťďňĚŠČŘŽÝÁÍÉÓÚŮŤĎŇ)[]/\\"\'<>{}&', 'amount' => 2300, 'count' => 1],
+        ];
+
+        $gopay->call('/payments/payment', 'Bearer mock-token', 'POST', GoPay::JSON, ['items' => $items]);
+
+        $body = (string) $capture->body;
+        $this->assertJson($body);
+        $this->assertStringNotContainsString('\u', $body, 'Diacritics must not be \\uXXXX-escaped');
+        $this->assertStringContainsString('ěščřžýáíéóúůťďňĚŠČŘŽÝÁÍÉÓÚŮŤĎŇ', $body);
+
+        $decoded = json_decode($body, true);
+        $this->assertIsArray($decoded);
+        $this->assertSame($items, $decoded['items']);
     }
 }

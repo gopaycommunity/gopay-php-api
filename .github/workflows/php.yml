@@ -11,7 +11,7 @@ jobs:
     name: Code quality
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -30,17 +30,36 @@ jobs:
       - name: Run static analysis
         run: composer phpstan
 
+  security-audit:
+    runs-on: ubuntu-latest
+
+    name: Security audit
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.1"
+
+      - name: Audit dependencies for known vulnerabilities
+        run: composer audit --locked
+
   build:
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
-        operating-system: [ubuntu-latest, windows-latest, macOS-latest]
-        php-versions: ["8.1", "8.2", "8.3", "8.4"]
+        operating-system: [ubuntu-latest]
+        php-versions: ["8.1", "8.2", "8.3", "8.4", "8.5"]
+        include:
+          - { operating-system: windows-latest, php-versions: "8.1" }
+          - { operating-system: macOS-latest, php-versions: "8.1" }
 
-    name: PHP ${{ matrix.php-versions }} Test on ${{ matrix.operating-system }}
+    name: PHP ${{ matrix.php-versions }} unit tests on ${{ matrix.operating-system }}
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -53,8 +72,43 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
 
-      # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
-      # Docs: https://getcomposer.org/doc/articles/scripts.md
+      - name: Run unit tests
+        run: php vendor/phpunit/phpunit/phpunit --testsuite unit
 
-      - name: Run test suite
-        run: php vendor/phpunit/phpunit/phpunit --no-configuration tests/integration
+  # Integration tests call the GoPay sandbox and create real sandbox payments,
+  # so they run once instead of in every job of the matrix. The job runs both
+  # suites to measure code coverage of the whole SDK.
+  integration:
+    runs-on: ubuntu-latest
+
+    name: Integration tests and coverage
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          coverage: pcov
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress
+
+      - name: Run all tests with coverage
+        run: php vendor/phpunit/phpunit/phpunit --coverage-clover build/coverage/clover.xml --coverage-text=build/coverage/coverage.txt
+
+      - name: Add coverage summary to the job summary
+        if: always() && hashFiles('build/coverage/coverage.txt') != ''
+        run: |
+          echo '### Code coverage' >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          cat build/coverage/coverage.txt >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload coverage report
+        if: always() && hashFiles('build/coverage/clover.xml') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: build/coverage/

@@ -38,10 +38,10 @@
     ]
   },
   "autoload-dev": {
-    "files": [
-      "tests/integration/GivenGoPay.php",
-      "vendor/hamcrest/hamcrest-php/hamcrest/Hamcrest.php"
-    ]
+    "psr-4": {
+      "GoPay\\Tests\\Integration\\": "tests/integration/",
+      "GoPay\\Tests\\Unit\\": "tests/unit/"
+    }
   },
   "require": {
     "php": ">=8.1",
@@ -49,10 +49,7 @@
     "symfony/deprecation-contracts": "^3.3.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "9.6.33",
-    "hamcrest/hamcrest-php": "*",
-    "phpspec/prophecy": "~1.0",
-    "phpspec/prophecy-phpunit": "^2.0",
+    "phpunit/phpunit": "10.5.67",
     "phpstan/phpstan": "^2.1",
     "phpstan/phpstan-phpunit": "^2.0",
     "friendsofphp/php-cs-fixer": "^3.95",
@@ -60,6 +57,10 @@
     "captainhook/captainhook": "^5.29"
   },
   "scripts": {
+    "test": "@php bin/phpunit",
+    "test:unit": "@php bin/phpunit --testsuite unit",
+    "test:integration": "@php bin/phpunit --testsuite integration",
+    "test:coverage": "@php bin/phpunit --coverage-html build/coverage/html --coverage-text",
     "phpstan": "phpstan analyse --no-progress",
     "cs-check": "php-cs-fixer fix --dry-run --diff",
     "cs-fix": "php-cs-fixer fix"

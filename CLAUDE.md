@@ -8,23 +8,31 @@
 
 ```bash
 composer install                                   # composer bin-dir is ./bin, so tools land in bin/
-bin/phpunit tests/integration                      # run all tests (same as CI, which uses --no-configuration)
+composer test                                      # run all tests (bin/phpunit, uses phpunit.xml.dist)
+composer test:unit                                 # offline unit tests (CI: PHP 8.1–8.5 on Ubuntu, PHP 8.1 on Windows and macOS)
+composer test:integration                          # sandbox tests (CI runs them once, Ubuntu + PHP 8.4)
+composer test:coverage                             # all tests + HTML report in build/coverage/html, needs pcov or Xdebug (XDEBUG_MODE=coverage)
+GOPAY_TEST_DEBUG=1 composer test:integration       # print API responses from integration tests (TestUtils::debug, to STDERR)
 bin/phpunit tests/integration/RefundTest.php       # single test file
-bin/phpunit --filter testRefundPayment tests/integration   # single test method
+bin/phpunit --filter testRefundPayment             # single test method
 composer validate --strict                         # CI also runs this
+composer audit --locked                            # security audit of locked dependencies, CI runs it as a separate job (not in the git hook)
 composer phpstan                                   # PHPStan on src + tests (config phpstan.neon.dist, level 8), CI also runs this
 composer cs-check                                  # PHP-CS-Fixer dry run with diff (config .php-cs-fixer.dist.php), CI also runs this
 composer cs-fix                                    # apply coding style fixes
 bin/captainhook install -f                         # (re)install git hooks; normally done automatically by composer install
 ```
 
-Git hooks are managed by CaptainHook ([captainhook.json](captainhook.json)), installed into `.git/hooks` by the `captainhook/hook-installer` Composer plugin. The `pre-commit` hook runs on staged files only: PHP-CS-Fixer dry run and PHPStan on staged `*.php`, `composer validate --strict` when `composer.json`/`composer.lock` is staged. Integration tests are intentionally not in the hook (network, slow). Tools are invoked as `php bin/...`, so `php` in `PATH` must be >= 8.1. Bypass with `git commit --no-verify`.
+Git hooks are managed by CaptainHook ([captainhook.json](captainhook.json)), installed into `.git/hooks` by the `captainhook/hook-installer` Composer plugin. The `pre-commit` hook runs on staged files only: PHP-CS-Fixer dry run and PHPStan on staged `*.php`, `composer validate --strict` when `composer.json`/`composer.lock` is staged. Tests are intentionally not in the hook (integration tests need network and are slow). Tools are invoked as `php bin/...`, so `php` in `PATH` must be >= 8.1. Bypass with `git commit --no-verify`.
 
-PHPStan rules for this repo: public API (public/protected methods, public properties, interfaces) is typed **only via PHPDoc** to keep BC; native types only on private members. Legacy unreachable code is ignored inline with `@phpstan-ignore <identifier>` plus a reason, no baseline. The Jenkins script [bin/jenkins.sh](bin/jenkins.sh) runs `phpqa` if available. `phpunit.xml.dist` references a `tests/unit/` suite that does not exist — only `tests/integration/` exists.
+PHPStan rules for this repo: public API (public/protected methods, public properties, interfaces) is typed **only via PHPDoc** to keep BC; native types only on private members. Legacy unreachable code is ignored inline with `@phpstan-ignore <identifier>` plus a reason, no baseline. The Jenkins script [bin/jenkins.sh](bin/jenkins.sh) runs `phpqa` if available. `phpunit.xml.dist` is used by CI and makes deprecations, warnings and risky tests (including any test printing to stdout, `beStrictAboutOutputDuringTests`) fail the run (PHPUnit 10, `failOnDeprecation`/`failOnNotice`/`failOnWarning`/`failOnRisky`; these are set only in the XML, so don't run CI with `--no-configuration`). Coverage (filter `src` + `factory.php`) is measured in the CI integration job with pcov over both suites; the Clover report is uploaded as the `coverage` artifact and the text summary goes to the job summary. Without a coverage driver PHPUnit only warns and writes no report.
 
-### Tests hit the real sandbox
+### Tests
 
-All tests are integration tests against `https://gw.sandbox.gopay.com/api` and need network access. Sandbox credentials are hardcoded in [tests/integration/TestUtils.php](tests/integration/TestUtils.php) (`TestUtils::setup()` builds a `Payments` instance; there is a separate EET account). Many tests require IDs of existing sandbox payments/cards (test files note that a method only runs if its name has the `test` prefix). `QrPaymentTest.php.disabled` is disabled on purpose. Tests use Hamcrest (`assertThat`, `is(...)`) loaded via `autoload-dev`, plus PHPUnit asserts.
+Two suites, test classes are autoloaded via PSR-4 (`autoload-dev`):
+
+- `tests/unit/` (`GoPay\Tests\Unit`) – offline. [RecordingBrowser](tests/unit/RecordingBrowser.php) replaces `JsonBrowser`: it records sent `Request`s and returns queued `Response`s, so `GoPay`, `OAuth2`, `CachedOAuth` and `Payments` are tested without network. `JsonBrowser` creates its Guzzle client internally, so only its transport error path is unit-tested. A new endpoint in `Payments` belongs to `PaymentsTest::provideEndpoints()`.
+- `tests/integration/` (`GoPay\Tests\Integration`) – against `https://gw.sandbox.gopay.com/api`, need network access. Test classes extend [IntegrationTestCase](tests/integration/IntegrationTestCase.php) (`$this->gopay` client, `createPayments()` to switch the account) and check responses with its assertions: `assertSucceeded()` (returns decoded JSON), `assertApiError($response, $status, $errorName)`, `assertStatusCode()` (status is a numeric string on success, int on error) and `assertPaymentCreated()` (CREATED payment matching the sent one, default target goid from the config). Sandbox credentials are hardcoded in [tests/integration/TestUtils.php](tests/integration/TestUtils.php) (`TestUtils::setup()` builds a `Payments` instance; there is a separate EET account). Many tests require IDs of existing sandbox payments/cards (test files note that a method only runs if its name has the `test` prefix). `QrPaymentTest.php.disabled` is disabled on purpose, tests that no longer work against the sandbox are skipped via `markTestSkipped` with a reason. Tests use PHPUnit asserts only. Debug output goes through `TestUtils::debug()`, never `echo`/`print_r`: it prints only with `GOPAY_TEST_DEBUG` set and writes to STDERR, so it is not captured by PHPUnit and does not make tests risky.
 
 ## Architecture
 

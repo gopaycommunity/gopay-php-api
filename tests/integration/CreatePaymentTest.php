@@ -1,20 +1,12 @@
 <?php
 
-namespace GoPay;
-
-require_once 'TestUtils.php';
+namespace GoPay\Tests\Integration;
 
 use GoPay\Definition\Language;
 use GoPay\Definition\Payment\BankSwiftCode;
 use GoPay\Definition\Payment\BnplType;
 use GoPay\Definition\Payment\Currency;
 use GoPay\Definition\Payment\PaymentInstrument;
-
-use function PHPUnit\Framework\assertArrayNotHasKey;
-use function PHPUnit\Framework\assertNotEmpty;
-use function PHPUnit\Framework\assertNotNull;
-
-use PHPUnit\Framework\TestCase;
 
 /**
  * Class CreatePaymentTests
@@ -23,15 +15,8 @@ use PHPUnit\Framework\TestCase;
  *
  * To execute test for certain method properly it is necessary to add prefix 'test' to its name.
  */
-class CreatePaymentTest extends TestCase
+class CreatePaymentTest extends IntegrationTestCase
 {
-    private Payments $gopay;
-
-    protected function setUp(): void
-    {
-        $this->gopay = TestUtils::setup();
-    }
-
     /**
      * @return array<string, mixed>
      */
@@ -83,18 +68,10 @@ class CreatePaymentTest extends TestCase
         $basePayment = self::createBasePayment();
 
         $response = $this->gopay->createPayment($basePayment);
-        $responseBody = $response->json;
 
-        assertNotEmpty($responseBody);
-        assertArrayNotHasKey('errors', $responseBody);
-        assertNotNull($responseBody['id']);
-
-        echo print_r($responseBody, true);
-
-        if ($response->hasSucceed()) {
-            print_r('Payment ID: ' . $responseBody['id'] . "\n");
-            print_r('Payment gwUrl: ' . $responseBody['gw_url'] . "\n");
-            print_r('Payment state: ' . $responseBody['state'] . "\n");
-        }
+        $payment = $this->assertPaymentCreated($response, $basePayment);
+        $this->assertSame($basePayment['additional_params'], $payment['additional_params'] ?? null);
+        $this->assertArrayNotHasKey('recurrence', $payment);
+        $this->assertArrayNotHasKey('preauthorization', $payment);
     }
 }
